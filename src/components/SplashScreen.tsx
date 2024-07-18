@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { Sparkles, RefreshCcw } from "lucide-react";
+import { Sparkles, RefreshCcw, PanelRight, Paperclip } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface RecommendationProps {
@@ -18,13 +18,22 @@ export default function SplashScreen() {
 
     return (
         <div className="h-[66vh] flex flex-col !overflow-hidden px-auto w-[85vw] lg:w-[35vw]">
-            <div className="w-full h-[75%] flex flex-col text-center ">
+            <div className="w-full h-[75%] flex flex-col text-center lg:text-left ">
                 <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                     Create-A-Curriculum
                 </h1>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
-                Our AI-driven approach revolutionizes education. Enter a product, and receive a comprehensive, tailored curriculum fit to your needs.
+                    Our AI-driven approach revolutionizes education. Enter a product, and receive a comprehensive, tailored curriculum fit to your needs.
                 </p>
+                <p className="leading-7 [&:not(:first-child)]:mt-6">
+                    You can generate a curriculum in two ways:
+                </p>
+                <div className="w-full flex items-center gap-2 mt-2"> 
+                    <p className="flex flex-row gap-2"><span className="font-bold">1.</span> Press the <PanelRight/> button and fill out the form.</p>
+                </div>
+                <div className="w-full flex items-center gap-2 mt-2"> 
+                    <p className="flex flex-row gap-2"><span className="font-bold">2.</span> Press the <Paperclip className="transform rotate-[-45deg]"/> button, enter a link, then generate.</p>
+                </div>
             </div>
             <div className="w-full h-[25%] flex flex-row gap-3 justify-center p-2">
                 <div className="w-[95%] h-full flex flex-row gap-2">
@@ -43,7 +52,9 @@ export default function SplashScreen() {
 
 function Reccomendation({ message, type }: RecommendationProps) {
     return (
-        <div className="w-1/2 h-full flex flex-row bg-slate-200 dark:bg-slate-600 transition-all duration-300 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg p-3 cursor-pointer font-semibold">
+        <div className="w-1/2 h-full flex flex-row bg-slate-200 dark:bg-slate-600 
+        transition-all duration-300 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg p-3 
+        cursor-pointer font-semibold">
             <div className="flex-grow">
                 <h4 className="scroll-m-20 text-l font-semibold tracking-tight">
                     {type === "idea" ? "Curriculum Idea:" : ""}
