@@ -106,3 +106,34 @@
 .spin {
   animation: spin 1s linear;
 }
+
+@keyframes gradientShift {
+  0% {
+    background: linear-gradient(45deg, #ff6b6b, #ff9a9e);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  50% {
+    background: linear-gradient(45deg, #ff9a9e, #f06595);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  100% {
+    background: linear-gradient(45deg, #ff6b6b, #ff9a9e);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+
+
+.gradient-text {
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff6b6b, #f06595);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 1s forwards;
+  transition: all 1s;
+}
+

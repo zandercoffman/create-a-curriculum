@@ -19,7 +19,7 @@ export default function SplashScreen() {
     return (
         <div className="h-[66vh] flex flex-col !overflow-hidden px-auto w-[85vw] lg:w-[35vw]">
             <div className="w-full h-[75%] flex flex-col text-center lg:text-left ">
-                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+                <h1 className="gradient-text text-4xl lg:text-5xl">
                     Create-A-Curriculum
                 </h1>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
@@ -28,11 +28,11 @@ export default function SplashScreen() {
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
                     You can generate a curriculum in two ways:
                 </p>
-                <div className="w-full flex items-center gap-2 mt-2"> 
-                    <p className="flex flex-row gap-2"><span className="font-bold">1.</span> Press the <PanelRight/> button and fill out the form.</p>
+                <div className="w-full flex items-center gap-2 mt-2">
+                    <p className="flex flex-row gap-2"><span className="font-bold">1.</span> Press the <PanelRight /> button and fill out the form.</p>
                 </div>
-                <div className="w-full flex items-center gap-2 mt-2"> 
-                    <p className="flex flex-row gap-2"><span className="font-bold">2.</span> Press the <Paperclip className="transform rotate-[-45deg]"/> button, enter a link, then generate.</p>
+                <div className="w-full flex items-center gap-2 mt-2">
+                    <p className="flex flex-row gap-2"><span className="font-bold">2.</span> Press the <Paperclip className="transform rotate-[-45deg]" /> button, enter a link, then generate.</p>
                 </div>
             </div>
             <div className="w-full h-[25%] flex flex-row gap-3 justify-center p-2">
