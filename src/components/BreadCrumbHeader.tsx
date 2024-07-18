@@ -39,14 +39,13 @@ import {
 import ApplicantInfo from "./ApplicantInfoCard";
 import ThemeSwitcher from "./ui/ThemeSwitcher";
 
-
 export default function BreadCrumbHeader() {
     return <>
         <Breadcrumb className="normal-case">
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <Sheet>
-                        <SheetTrigger>
+                        <SheetTrigger className="lg:hidden">
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger>
@@ -80,8 +79,8 @@ export default function BreadCrumbHeader() {
                     </Sheet>
 
                 </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                    <Slashy />
+                <BreadcrumbSeparator className="lg:hidden dark:opacity-40">
+                    <Slashy  />
                 </BreadcrumbSeparator>
                 <BreadcrumbItem>
                     <TooltipProvider>
@@ -97,7 +96,7 @@ export default function BreadCrumbHeader() {
                         </Tooltip>
                     </TooltipProvider>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator>
+                <BreadcrumbSeparator className="dark:opacity-40">
                     <Slashy />
                 </BreadcrumbSeparator>
                 <BreadcrumbItem >
@@ -114,7 +113,7 @@ export default function BreadCrumbHeader() {
                         </Tooltip>
                     </TooltipProvider>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator>
+                <BreadcrumbSeparator className="dark:opacity-40">
                     <Slashy />
                 </BreadcrumbSeparator>
                 <BreadcrumbItem>

@@ -11,14 +11,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
-import { Send } from "lucide-react";
+import { Paperclip, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SplashScreen from "@/components/SplashScreen";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { MessageBubble } from "@/components/ChatBubble";
+import Link from "next/link";
 
 const messages: string[] = [
-  "**Hello** Hello",
+  /**
+   * "**Hello** Hello",
   "Hey!",
   "How can I help?",
   "You can help by...",
@@ -33,6 +35,7 @@ const messages: string[] = [
   "Got it. I can guide you through that.",
   "Thank you!",
   "You're welcome! Let's get started."
+   */
 ];
 
 export default function Home() {
@@ -45,7 +48,7 @@ export default function Home() {
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
       <div className="w-full h-[90vh] flex justify-center">
-        <div className="w-[98vw] lg:w-[40vw] max-h-[90vh] relative flex flex-col p-6 gap-2">
+        <div className="w-[98vw] lg:w-[40vw] h-[95vh] relative flex flex-col p-6 gap-2">
           <ScrollArea className="w-full mx-auto lg:w-[38vw] flex flex-col gap-1 h-[80%] p-2">
             {messages.length > 0 ? (
               messages.map((message, index) => (
@@ -57,11 +60,12 @@ export default function Home() {
               <SplashScreen />
             )}
           </ScrollArea>
-          <div className="w-full h-[12%] bg-slate-300 rounded-full flex flex-row gap-3 items-center px-5">
+          <div className="w-full h-[10%] bg-slate-300 dark:bg-slate-600 dark:text-white rounded-full flex flex-row gap-3 items-center px-5">
+            <Button className="p-0 !bg-transparent dark:text-white text-black transform rotate-[-45deg]" disabled={!able}><Paperclip className="dark:text-white"/></Button>
             <Input placeholder={able ? "Enter Message Here.." : "Fill out form fully.."} className="!bg-transparent !border-0 w-full text-1xl" disabled={!able} />
-            <Button className="p-0 !bg-transparent !text-black" disabled={!able}><Send /></Button>
+            <Button className="p-0 !bg-transparent text-black" disabled={!able}><Send className="dark:text-white" /></Button>
           </div>
-          <h1 className="text-center text-gray-700 font-semibold text-[1rem]">Note: AI is not always perfect. Check the validity before using.</h1>
+          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes. Verify important info.</h1>
         </div>
       </div>
     </main>

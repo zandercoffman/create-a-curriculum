@@ -5,14 +5,15 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-  } from "@/components/ui/sheet"
+} from "@/components/ui/sheet"
 import { Button } from "./ui/button"
 import { ArrowRightFromLine } from "lucide-react"
+import Link from "next/link"
 
 export default function ExportButton() {
     return <>
         <Sheet>
-            <SheetTrigger>
+            <SheetTrigger className="lg:hidden">
                 <Button className="transform rotate-180">
                     <div className="flex flex-row gap-2 items-center w-fit overflow-hidden">
                         <div className="w-6 h-6 flex-shrink-0 transform rotate-180">
@@ -24,6 +25,11 @@ export default function ExportButton() {
                     </div>
                 </Button>
             </SheetTrigger>
+            <div className="hidden lg:block normal-case">
+                <Button asChild>
+                    <Link href="https://create-a-curriculum.vercel.app/">https://create-a-curriculum.vercel.app/</Link>
+                </Button>
+            </div>
             <SheetContent className="normal-case">
                 <SheetHeader>
                     <SheetTitle className="justify-center lg:justify-end w-full flex">Export</SheetTitle>
