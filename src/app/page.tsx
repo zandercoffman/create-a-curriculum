@@ -44,12 +44,12 @@ export default function Home() {
       <Header />
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
-      <div className="w-full h-full flex justify-center">
-        <div className="w-full lg:w-[40vw] max-h-[90vh] relative flex flex-col p-6 gap-2">
+      <div className="w-full h-[90vh] flex justify-center">
+        <div className="w-[98vw] lg:w-[40vw] max-h-[90vh] relative flex flex-col p-6 gap-2">
           <ScrollArea className="w-full mx-auto lg:w-[38vw] flex flex-col gap-1 h-[80%] p-2">
             {messages.length > 0 ? (
               messages.map((message, index) => (
-                <div key={index} className={`w-full flex justify-${index % 2 !== 0 ? "end" : "start"}`}>
+                <div key={index} className={`w-2/3 lg:w-full flex justify-${index % 2 !== 0 ? "end" : "start"}`}>
                   <MessageBubble isUser={index % 2 !== 0} text={message} />
                 </div>
               ))
@@ -61,7 +61,7 @@ export default function Home() {
             <Input placeholder={able ? "Enter Message Here.." : "Fill out form fully.."} className="!bg-transparent !border-0 w-full text-1xl" disabled={!able} />
             <Button className="p-0 !bg-transparent !text-black" disabled={!able}><Send /></Button>
           </div>
-          <h1 className="text-center text-gray-700 font-semibold">Note: AI is not always perfect. Check the validity before using.</h1>
+          <h1 className="text-center text-gray-700 font-semibold text-[1rem]">Note: AI is not always perfect. Check the validity before using.</h1>
         </div>
       </div>
     </main>

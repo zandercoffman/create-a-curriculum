@@ -120,12 +120,6 @@ export default function BreadCrumbHeader() {
                 <BreadcrumbItem>
                     <ThemeSwitcher/>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                    <Slashy />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem>
-                    <UserProfile />
-                </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>
     </>
