@@ -37,6 +37,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import ApplicantInfo from "./ApplicantInfoCard";
+import ThemeSwitcher from "./ui/ThemeSwitcher";
 
 
 export default function BreadCrumbHeader() {
@@ -112,6 +113,12 @@ export default function BreadCrumbHeader() {
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                    <Slashy />
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                    <ThemeSwitcher/>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>
                     <Slashy />

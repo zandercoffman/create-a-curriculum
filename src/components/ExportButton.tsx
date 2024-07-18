@@ -24,10 +24,10 @@ export default function ExportButton() {
                     </div>
                 </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="normal-case">
                 <SheetHeader>
-                    <SheetTitle>Are you absolutely sure?</SheetTitle>
-                    <SheetDescription>
+                    <SheetTitle className="justify-center lg:justify-end w-full flex">Export</SheetTitle>
+                    <SheetDescription className="justify-center lg:justify-end w-full flex">
                         This action cannot be undone. This will permanently delete your account
                         and remove your data from our servers.
                     </SheetDescription>
