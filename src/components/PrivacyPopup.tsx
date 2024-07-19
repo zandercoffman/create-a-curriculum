@@ -88,7 +88,14 @@ export default function PrivacyPopup() {
     </>
 }
 
-function Rule({ title, desc, index, tldr }) {
+interface RuleIn {
+    title: string;
+    desc: string;
+    index: number;
+    tldr: string;
+}
+
+function Rule({ title, desc, index, tldr } : RuleIn) {
     return (
         <div className="flex flex-row h-fit gap-4 items-center">
 
