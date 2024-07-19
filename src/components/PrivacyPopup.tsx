@@ -14,24 +14,72 @@ export default function PrivacyPopup() {
     return <>
         <Dialog>
             <DialogTrigger className="font-bold text-blue-500">privacy overview</DialogTrigger>
-            <DialogContent className="!w-[90vw] h-[60vh] !rounded-2xl">
+            <DialogContent className="w-[86vw] lg:w-[70vw] h-[86vh] lg:h-[60vh] !rounded-2xl">
                 <DialogHeader>
                     <DialogTitle>Privacy Overview</DialogTitle>
                     <DialogDescription>
-                        Privacy? That{"'"}s our motto. In making this application, AI has always been a prominant key to deliver access to the community. In developing, there are rules I am following to ensure every user{"'"}s security.
+                        Privacy? That&apos;s our motto. In making this application, AI has always been a prominent key to delivering access to the community. In development, there are rules that I am following to ensure every user&apos;s security.
                     </DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="w-full h-full">
-                    <div className="flex flex-col gap-8 w-full justify-start mb-auto h-full pr-2">
-                        <Rule title="You are in control of your data." 
-                        desc="Decide whether to let the AI see the grade of the applicant and choose if and how your information is saved, ensuring it aligns with your preferences." index={1} />
-                        <Rule title="Your information remains private and secure." 
-                        desc="The AI is provided solely with your product name, description, and number of lessons. Your personal information is managed separately, ensuring that models do not use it for training purposes." index={2} />
-                        <Rule title="Your information is not defaultly stored." 
-                        desc="Any details you provide are used solely for the current session and are not saved afterward. Features like history and storing information are managed by you, ensuring your data remains transient and unarchived." index={3} />
-                        <Rule title="title" desc="desc" index={3} />
-                        <Rule title="title" desc="desc" index={3} />
-                        <Rule title="title" desc="desc" index={3} />
+                <ScrollArea className="w-full h-full overflow-auto">
+                    <div className="flex flex-col gap-8 w-full justify-start mb-auto h-full pr-4 lg:pr-2">
+                        <Rule
+                            title="You are in control of your data."
+                            desc="Decide whether to let the AI see the grade of the applicant and choose if and how your information is saved, ensuring it aligns with your preferences."
+                            index={1}
+                            tldr="You control whether the AI sees your data and how it is saved."
+                        />
+
+                        <Rule
+                            title="Your information remains private and secure."
+                            desc="The AI is provided solely with your product name, description, and number of lessons. Your personal information is managed separately, ensuring that models do not use it for training purposes."
+                            index={2}
+                            tldr="Only your product info is shared with the AI; your personal data is kept separate and private."
+                        />
+
+                        <Rule
+                            title="Your information is not stored by default."
+                            desc="Any details you provide are used solely for the current session and are not saved afterward. Features like history and storing information are managed by you, ensuring your data remains transient and unarchived."
+                            index={3}
+                            tldr="Your data is used only for the current session and is not stored permanently by default. You have access to delete all stored data as well."
+                        />
+
+                        <Rule
+                            title="Your experience is secured by Vercel."
+                            desc="Vercel, a trusted hosting platform used by major companies like Stripe, eBay, and Adobe, provides top-notch security with encryption and regular updates. Learn more: https://vercel.com/customers"
+                            index={4}
+                            tldr="Vercel ensures top-notch security for your experience, used by major companies."
+                        />
+
+                        <Rule
+                            title="Your product is protected by Vercel’s firewall."
+                            desc="Vercel employs a robust firewall to safeguard your data. Additionally, all requests to use AI are encrypted and secure, ensuring safe and reliable interactions. Learn more: https://vercel.com/docs/security/vercel-firewall"
+                            index={5}
+                            tldr="Vercel’s firewall and encryption protect your data and AI interactions."
+                        />
+
+                        <Rule
+                            title="Framework security is built-in."
+                            desc="The framework that made this website integrates strong security features, including automatic updates and secure handling of data."
+                            index={6}
+                            tldr="The framework ensures built-in security with automatic updates and secure data handling."
+                        />
+
+                        <Rule
+                            title="Your data is protected with HTTPS."
+                            desc="Vercel uses HTTPS to secure your connection. This keeps your personal information and data encrypted while being sent or received, ensuring no one can tamper with it, giving you peace of mind that your information is private and secure."
+                            index={7}
+                            tldr="HTTPS encrypts your data, keeping your information secure and private during transmission."
+                        />
+
+                        <Rule
+                            title="Data is stored locally, not in a database."
+                            desc="We don't use a traditional database; all data is stored locally on your device. This means that the data you allow to be seen stays on your device and isn't sent to external servers, ensuring enhanced privacy and control."
+                            index={8}
+                            tldr="Data is kept on your device, not stored in a database."
+                        />
+
+
                     </div>
                 </ScrollArea>
             </DialogContent>
@@ -40,23 +88,26 @@ export default function PrivacyPopup() {
     </>
 }
 
-function Rule({ title, desc, index }) {
+function Rule({ title, desc, index, tldr }) {
     return (
-        <div className="flex flex-row h-fit gap-2 items-center">
+        <div className="flex flex-row h-fit gap-4 items-center">
 
             <div
-                className="w-12 h-12 flex-shrink-0 bg-gray-500 flex items-center justify-center rounded-full text-xl font-bold text-white"
+                className="w-12 h-12 flex-shrink-0 bg-gray-700 flex items-center justify-center rounded-full text-xl font-bold text-white"
                 style={{ width: '3rem', height: '3rem' }} // Adjust the size here
             >
                 {index}
             </div>
             <div className="flex flex-col justify-center">
-                <h4 className="text-xl font-semibold tracking-tight">
+                <h4 className="text-xl font-semibold tracking-tight dark:text-white text-black">
                     {title}
                 </h4>
-                <p className="leading-4 mt-1">
+                <p className="leading-4 mt-1 dark:text-gray-300 text-gray-800">
                     {desc}
                 </p>
+                <blockquote className="mt-5 border-l-2 pl-6 leading-4 italic">
+                    {tldr}
+                </blockquote>
             </div>
 
         </div>

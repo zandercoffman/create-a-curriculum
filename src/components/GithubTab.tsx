@@ -15,7 +15,7 @@ export default function GithubTab() {
     return <>
         <Dialog>
             <DialogTrigger><Github /></DialogTrigger>
-            <DialogContent className="!w-screen h-[60vh] !rounded-2xl">
+            <DialogContent className="lg:w-fit w-[80vw] lg:h-[60vh] h-[80vh] !rounded-2xl">
                 <DialogHeader>
                     <DialogTitle>Github</DialogTitle>
                     <DialogDescription>
