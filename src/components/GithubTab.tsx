@@ -26,7 +26,7 @@ export default function GithubTab() {
                     <div className="flex flex-col gap-1 h-full w-1/2">
                         <div className="w-full h-min flex flex-col items-start justify-start">
                             <div className="flex flex-col gap-1 h-full w-full">
-                                <Image src={"/profilepic.jpg"} width={90} height={90} className="rounded-full" />
+                                <Image src={"/profilepic.jpg"} width={90} height={90} className="rounded-full" alt="A colorful gradient" />
                                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                                     Zander Coffman
                                 </h3>
