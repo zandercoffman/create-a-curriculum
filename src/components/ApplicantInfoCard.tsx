@@ -143,7 +143,7 @@ export default function ApplicantInfo() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="mt-2" disabled={hasSubmitted}>Submit</Button>
+                            <Button type="submit" variant={"secondary"} className="mt-2" disabled={hasSubmitted}>Submit</Button>
                         </form>
                     </Form>
                 </CardContent>

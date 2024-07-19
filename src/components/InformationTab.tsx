@@ -13,7 +13,7 @@ export default function InformationTab() {
     return <>
         <Dialog>
             <DialogTrigger><Info /></DialogTrigger>
-            <DialogContent className="!w-[90vw] h-[60vh]">
+            <DialogContent className="!w-[90vw] h-[60vh] !rounded-2xl">
                 <DialogHeader>
                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                     <DialogDescription>

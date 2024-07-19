@@ -38,6 +38,9 @@ import {
 } from "@/components/ui/card"
 import ApplicantInfo from "./ApplicantInfoCard";
 import ThemeSwitcher from "./ui/ThemeSwitcher";
+import ProductInfoCard from "./ProductInfoCard";
+import GithubTab from "./GithubTab";
+import PrivacyPopup from "./PrivacyPopup";
 
 export default function BreadCrumbHeader() {
     return <>
@@ -59,22 +62,22 @@ export default function BreadCrumbHeader() {
                                 </Tooltip>
                             </TooltipProvider>
                         </SheetTrigger>
-                        <SheetContent side={"left"} >
+                        <SheetContent side={"left"} className="rounded-r-3xl">
                             <SheetHeader>
                                 <SheetTitle>Form</SheetTitle>
                                 <SheetDescription>
-                                Please provide the details needed to optimize your curriculum. All options in the Applicant Information setting are optional, respecting your privacy. Refer to our privacy overview for more details.
+                                Please provide the details needed to optimize your curriculum. All options in the Applicant Information setting are optional, respecting your privacy. Refer to our <PrivacyPopup/> for more details.
                                 </SheetDescription>
                             </SheetHeader>
-                            <Tabs defaultValue="information" className="w-full flex flex-col justify-center mt-2">
+                            <Tabs defaultValue="information" className="w-full flex flex-col justify-center my-2">
                                 <TabsList className="w-full">
                                     <TabsTrigger value="information" className="w-1/2">Applicant Information</TabsTrigger>
                                     <TabsTrigger value="product-information" className="w-1/2">Product Information</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="information"><ApplicantInfo/></TabsContent>
-                                <TabsContent value="product-information">Change your product information here.</TabsContent>
+                                <TabsContent value="product-information"><ProductInfoCard/></TabsContent>
                             </Tabs>
-
+                            <Button className="w-full mt-2">Submit</Button>
                         </SheetContent>
                     </Sheet>
 
@@ -104,7 +107,7 @@ export default function BreadCrumbHeader() {
                         <Tooltip>
                             <TooltipTrigger>
                                 <Button variant="outline" className="!bg-transparent px-0 !border-0">
-                                    <Link href="https://github.com/zandercoffman"><Github /></Link>
+                                    <GithubTab/>
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>

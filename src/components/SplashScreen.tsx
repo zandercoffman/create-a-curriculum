@@ -23,13 +23,13 @@ export default function SplashScreen() {
                     Create-A-Curriculum
                 </h1>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
-                    Our AI-driven approach revolutionizes education. Enter a product, and receive a comprehensive, tailored curriculum fit to your needs.
+                    Our AI-driven approach revolutionizes education. Enter a product, and receive a comprehensive, tailored curriculum fit to your needs. All for <span className="font-bold">$0.00</span>.
                 </p>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
                     You can generate a curriculum in two ways:
                 </p>
                 <div className="w-full flex items-center gap-2 mt-2">
-                    <p className="flex flex-row gap-2"><span className="font-bold">1.</span> Press the <PanelRight /> button and fill out the form.</p>
+                    <p className="flex flex-row gap-2"><span className="font-bold">1.</span> Press the <PanelRight className="transform rotate-180"/> button, fill out the form, and press Submit.</p>
                 </div>
                 <div className="w-full flex items-center gap-2 mt-2">
                     <p className="flex flex-row gap-2"><span className="font-bold">2.</span> Press the <Paperclip className="transform rotate-[-45deg]" /> button, enter a link, then generate.</p>

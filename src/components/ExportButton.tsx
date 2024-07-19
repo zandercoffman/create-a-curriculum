@@ -9,6 +9,7 @@ import {
 import { Button } from "./ui/button"
 import { ArrowRightFromLine } from "lucide-react"
 import Link from "next/link"
+import Export from "./Export"
 
 export default function ExportButton() {
     return <>
@@ -30,14 +31,14 @@ export default function ExportButton() {
                     <Link href="https://create-a-curriculum.vercel.app/">https://create-a-curriculum.vercel.app/</Link>
                 </Button>
             </div>
-            <SheetContent className="normal-case">
-                <SheetHeader>
+            <SheetContent className="normal-case rounded-l-3xl">
+                <SheetHeader className="h-[15%]">
                     <SheetTitle className="justify-center lg:justify-end w-full flex">Export</SheetTitle>
-                    <SheetDescription className="justify-center lg:justify-end w-full flex">
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
+                    <SheetDescription className="lg:text-right text-center w-full flex">
+                        Check to see your outputted curriculum. Feel free to edit parts you would like to change.
                     </SheetDescription>
                 </SheetHeader>
+                <Export/>
             </SheetContent>
         </Sheet>
     </>
