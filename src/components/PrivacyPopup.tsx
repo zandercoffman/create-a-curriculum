@@ -9,12 +9,25 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "./ui/scroll-area";
+import Image from "next/image";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+
+
 
 export default function PrivacyPopup() {
     return <>
         <Dialog>
             <DialogTrigger className="font-bold text-blue-500">privacy overview</DialogTrigger>
-            <DialogContent className="w-[86vw] lg:w-[70vw] h-[86vh] lg:h-[60vh] !rounded-2xl">
+            <DialogContent className="w-[86vw] lg:w-[70vw] h-[90vh] lg:h-[60vh] my-3 lg:my-0 !rounded-2xl">
                 <DialogHeader>
                     <DialogTitle>Privacy Overview</DialogTitle>
                     <DialogDescription>
@@ -73,12 +86,26 @@ export default function PrivacyPopup() {
                         />
 
                         <Rule
-                            title="Data is stored locally, not in a database."
-                            desc="We don't use a traditional database; all data is stored locally on your device. This means that the data you allow to be seen stays on your device and isn't sent to external servers, ensuring enhanced privacy and control."
+                            title="Data is stored locally, not in an external server."
+                            desc="Data is stored locally on your device using built-in web technology. This means that the data you choose to save remains on your device and isn't sent to external servers, ensuring enhanced privacy and control. "
                             index={8}
-                            tldr="Data is kept on your device, not stored in a database."
+                            tldr="Data is kept on your device."
                         />
 
+                        <div className="w-full h-fit flex flex-col items-center text-center font-bold gap-1">
+                            <p>Here is a diagram outlining the direction of where information goes (click the image to view fully):</p>
+                            <Drawer>
+                                <DrawerTrigger>
+                                    <Image src={"/privacydiagram.png"} alt={"a diagram outlining direction of information"} width={900} height={500} />
+                                </DrawerTrigger>
+                                <DrawerContent className="w-full h-full flex flex-col items-center">
+                                    <DrawerHeader>
+                                        <DrawerTitle>Privacy Overview</DrawerTitle>
+                                    </DrawerHeader>
+                                    <Image src={"/privacydiagram.png"} alt={"a diagram outlining direction of information"} width={1200} height={500} />
+                                </DrawerContent>
+                            </Drawer>
+                        </div>
 
                     </div>
                 </ScrollArea>
@@ -95,7 +122,7 @@ interface RuleIn {
     tldr: string;
 }
 
-function Rule({ title, desc, index, tldr } : RuleIn) {
+function Rule({ title, desc, index, tldr }: RuleIn) {
     return (
         <div className="flex flex-row h-fit gap-4 items-center">
 

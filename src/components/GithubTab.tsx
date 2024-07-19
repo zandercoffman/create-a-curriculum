@@ -22,15 +22,15 @@ export default function GithubTab() {
                         You can check out most of my coding projects on my GitHub. I am a solo developer aiming to better the future of tommorow. If you ever need to catch me, email <Link href={"mailto:zandercoffman34@gmail.com"} className="text-blue-600 font-bold">zandercoffman34@gmail.com</Link>.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-row gap-1">
-                    <div className="flex flex-col gap-1 h-full w-1/2">
+                <div className="flex flex-col lg:flex-row gap-1">
+                    <div className="flex flex-col gap-1 h-full w-full lg:w-1/3 ">
                         <div className="w-full h-min flex flex-col items-start justify-start">
-                            <div className="flex flex-col gap-1 h-full w-full">
+                            <div className="flex flex-col items-center lg:items-start gap-1 h-full w-full">
                                 <Image src={"/profilepic.jpg"} width={90} height={90} className="rounded-full" alt="A colorful gradient" />
-                                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                                <h3 className="scroll-m-20 ml-5 lg:ml-0 text-2xl font-semibold tracking-tight">
                                     Zander Coffman
                                 </h3>
-                                <h4 className="scroll-m-20 text-l text-gray-800 font-semibold tracking-tight">
+                                <h4 className="scroll-m-20 hidden lg:block text-l dark:text-gray-300 text-gray-800 font-semibold tracking-tight">
                                     @zandercoffman - he/him
                                 </h4>
                             </div>
@@ -40,12 +40,12 @@ export default function GithubTab() {
                             <DialogTitle><Button asChild><Link href={"https://github.com/zandercoffman"} className="flex flex-row gap-2"><ExternalLink />Link Here</Link></Button></DialogTitle>
                         </DialogHeader>
                     </div>
-                    <div className="flex flex-col gap-1 h-full w-1/2">
+                    <div className="flex flex-col gap-1 h-full w-full lg:w-2/3 text-center lg:text-left">
                         <h4 className="scroll-m-20 text-sm font-semibold tracking-tight">
                             Some of my achivements include:
                         </h4>
-                        <ul className="!list-disc pl-6 space-y-2 text-gray-800">
-                            <li>Getting a 4 on the AP Computer Science</li>
+                        <ul className="!list-disc pl-6 space-y-2 text-gray-800 dark:text-gray-300">
+                            <li>Getting a 4 on the AP Computer Science Exam</li>
                             <li>Becoming certified in Java. <Link href={"https://www.credly.com/badges/aa15effd-3d7e-4ea8-a109-0c410424489e/public_url"} className="text-blue-500 font-bold">Certification Link</Link></li>
                             <li>Creating an app to help students learn Java: <Link href={"https://java-brewed.vercel.app/"} className="text-blue-500 font-bold">Link</Link></li>
                         </ul>

@@ -13,9 +13,9 @@ export default function InformationTab() {
     return <>
         <Dialog>
             <DialogTrigger><Info /></DialogTrigger>
-            <DialogContent className="!w-[90vw] h-[60vh] !rounded-2xl">
+            <DialogContent className="w-[90vw] lg:w-[70vw] h-[70vh] !rounded-2xl">
                 <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogTitle>Welcome to Create A Curriculum!</DialogTitle>
                     <DialogDescription>
                         This action cannot be undone. This will permanently delete your account
                         and remove your data from our servers.

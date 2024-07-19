@@ -121,10 +121,9 @@ export default function Home() {
       <Header />
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
-      <div className="w-full h-[90vh] flex justify-center">
+      <div className="w-full lg:h-[90vh] h-[92vh] flex justify-center">
         <div className="w-[98vw] lg:w-[40vw] lg:h-[90vh] relative flex flex-col px-6 py-2">
           <div className="flex flex-row gap-2 mx-auto lg:mx-0">
-            <Button variant={"outline"} className="mx-1 px-3 flex flex-row gap-1 "><Plus /> New Product</Button>
             <ChatHistory/>
           </div>
           <ScrollArea className="w-full mx-auto lg:w-[38vw] flex flex-col gap-1 h-[80%] p-2">
@@ -171,7 +170,8 @@ export default function Home() {
             <Input placeholder={able ? "Enter Message Here.." : "Fill out form fully.."} className="!bg-transparent !border-0 w-full text-1xl" disabled={!able} />
             <Button className="p-0 !bg-transparent text-black" disabled={!able}><Send className="dark:text-white" /></Button>
           </div>
-          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes. Verify important info.</h1>
+          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
+          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs">&copy; COPYRIGHT create-a-curriculum.vercel.app OF {new Date().getFullYear()}</h1>
         </div>
       </div>
     </main>
