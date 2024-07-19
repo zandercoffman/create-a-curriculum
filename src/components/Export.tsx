@@ -49,7 +49,7 @@ export default function Export() {
 function BigButton({ text, icon: Icon, callback }: BigButtonProps) {
     return (
         <Button className="w-1/3 h-max flex flex-col items-center justify-center my-auto gap-1 py-2">
-            <Icon size={24} /> {/* Adjust icon size as needed */}
+            <Icon className="w-15 h-15" /> {/* Adjust icon size as needed */}
             <p>{text}</p>
         </Button>
     );
