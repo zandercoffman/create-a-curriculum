@@ -101,6 +101,7 @@ export default function PrivacyPopup() {
                                 <DrawerContent className="w-full h-full flex flex-col items-center">
                                     <DrawerHeader>
                                         <DrawerTitle>Privacy Overview</DrawerTitle>
+                                        <DrawerDescription>Click and drag from the top to the bottom to get out of this mode.</DrawerDescription>
                                     </DrawerHeader>
                                     <Image src={"/privacydiagram.png"} alt={"a diagram outlining direction of information"} width={1200} height={500} />
                                 </DrawerContent>

@@ -31,7 +31,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Define form schema with zod
 const formSchema = z.object({
@@ -41,7 +41,12 @@ const formSchema = z.object({
     grade: z.string().default("").optional().default("")
 });
 
-export default function ApplicantInfo() {
+interface Props {
+    form: any;
+    setForm: Function;
+}
+
+export default function ApplicantInfo(props: Props) {
 
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -50,11 +55,12 @@ export default function ApplicantInfo() {
     });
 
     function onSubmit(values: any) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        alert(JSON.stringify(values));
-        setHasSubmitted(!hasSubmitted);
+        props.setForm(values);
     }
+
+    useEffect(() => {
+        setHasSubmitted(props.form !== null);
+    }, [props.form])
 
     return (
         <ScrollArea className="lg:h-[300px] h-[65vh] w-full">
@@ -74,7 +80,7 @@ export default function ApplicantInfo() {
                                     <FormItem>
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter name" {...field} />
+                                            <Input placeholder={!hasSubmitted ? "Enter name" : props.form.name} {...field} disabled={hasSubmitted} />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -86,7 +92,7 @@ export default function ApplicantInfo() {
                                     <FormItem>
                                         <FormLabel>Unique Identifier</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter identifier" {...field} />
+                                            <Input placeholder={!hasSubmitted ? "Enter identifier" : props.form.uniqueid} {...field} disabled={hasSubmitted}/>
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -97,10 +103,10 @@ export default function ApplicantInfo() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Grade</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={hasSubmitted}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select a grade to tailor your needs." />
+                                                    <SelectValue placeholder={!hasSubmitted ? "Select a grade to tailor your needs." : props.form.grade} />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -128,8 +134,9 @@ export default function ApplicantInfo() {
                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                         <FormControl>
                                             <Checkbox
-                                                checked={field.value}
+                                                checked={!hasSubmitted ? field.value : props.form.saveInfo}
                                                 onCheckedChange={field.onChange}
+                                                disabled={hasSubmitted}
                                             />
                                         </FormControl>
                                         <div className="space-y-1 leading-none">

@@ -171,7 +171,6 @@ export default function Home() {
             <Button className="p-0 !bg-transparent text-black" disabled={!able}><Send className="dark:text-white" /></Button>
           </div>
           <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
-          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs">&copy; COPYRIGHT create-a-curriculum.vercel.app OF {new Date().getFullYear()}</h1>
         </div>
       </div>
     </main>

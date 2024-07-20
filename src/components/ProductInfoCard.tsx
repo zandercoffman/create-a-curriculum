@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import MultipleProductsForm from "./MultipleProductsForm";
+import ChoiceSeperator from "./ChoiceSeperator";
 
 // Define form schema with zod
 const formSchema = z.object({
@@ -40,7 +42,12 @@ const formSchema = z.object({
     description: z.string().min(1, 'Description is required')
 });
 
-export default function ProductInfoCard() {
+interface Props {
+    form: any;
+    setForm: Function;
+}
+
+export default function ProductInfoCard(props: Props) {
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const form = useForm({
@@ -59,8 +66,10 @@ export default function ProductInfoCard() {
     }
 
     return (
-        <ScrollArea className="lg:h-[300px] h-[65vh] w-full">
-            <Card className="h-[70%] mb-10 w-full">
+        <ScrollArea className="lg:h-[300px] h-[65vh] w-full flex flex-col gap-2 pr-4">
+            <MultipleProductsForm/>
+            <ChoiceSeperator text="or" className="mb-3" />
+            <Card className="h-[300px] mb-10 w-full">
                 <CardHeader>
                     {hasSubmitted && <CardDescription>✅ You’ve submitted this section!</CardDescription>}
                     <CardTitle>Product Information</CardTitle>
