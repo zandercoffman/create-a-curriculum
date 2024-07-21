@@ -40,7 +40,7 @@ export default function SplashScreen() {
                 </div>
 
             </div>
-            <div className="w-full h-[25%] flex flex-row gap-3 justify-center p-2">
+            <div className="w-[80vw] lg:w-full h-[25%] flex flex-row gap-3 justify-center p-2">
                 <div className="w-[95%] h-full flex flex-row gap-2">
                     <Reccomendation message="Create a Cooking curriculum" type="idea" />
                     <Reccomendation message="Pancake Maker Curriculum" type="idea" />

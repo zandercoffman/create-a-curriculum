@@ -75,7 +75,7 @@ export default function ChatHistory() {
         <AlertDialogTrigger>
           <Button variant={"outline"} className="mx-1 px-3 flex flex-row gap-1 "><ShieldCheck /> Enable History</Button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent className="rounded-xl mx:2 lg:mx-0">
           <AlertDialogHeader>
             <AlertDialogTitle>Would you like to enable History?</AlertDialogTitle>
             <AlertDialogDescription>
