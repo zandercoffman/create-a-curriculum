@@ -63,13 +63,13 @@ interface LINKStorage {
     name: string;
     link: string;
     id: string;
-  }
+}
 
 interface Props {
     submit: (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => void;
 }
 
-  export default function BreadCrumbHeader(props: Props) {
+export default function BreadCrumbHeader(props: Props) {
     const { toast } = useToast();
     const [form1, setForm1] = useState<FORM1 | null>(null);
     const [form2, setForm2] = useState<FORM2TITLES | FORM2PRODUCT | null>(null);
@@ -81,13 +81,13 @@ interface Props {
                 throw new Error('Form2 is null or undefined.');
             }
             alert(typeof form2)
-             // Debugging: Log form data before submission
-             console.log("Submitting form2:", form2);
-             console.log("Submitting form1:", form1);
+            // Debugging: Log form data before submission
+            console.log("Submitting form2:", form2);
+            console.log("Submitting form1:", form1);
 
             if (typeof form2 == 'string') {
                 if (form2 !== "") {
-                    props.submit({titles: form2} satisfies FORM2TITLES, form1);
+                    props.submit({ titles: form2 } satisfies FORM2TITLES, form1);
                 }
             } else if ('name' in form2) {
                 if (form2.name !== "") {
@@ -96,11 +96,11 @@ interface Props {
             } else {
                 throw new Error('Form2 does not match expected types.');
             }
-    
-           
-    
+
+
+
             // Call the submit function
-            
+
         } catch (err: any) {
             toast({
                 variant: "destructive",
@@ -109,7 +109,7 @@ interface Props {
             });
         }
     };
-    
+
 
     useEffect(() => {
         setSubmitButton(
@@ -127,9 +127,7 @@ interface Props {
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger>
-                                            <Button variant="outline" className="!bg-transparent px-0 !border-0">
-                                                <PanelRight className="transform rotate-180 w-full h-full" />
-                                            </Button>
+                                            <PanelRight className="transform rotate-180 w-full h-full" />
                                         </TooltipTrigger>
                                         <TooltipContent>
                                             <p>Toggle Information Panel</p>
@@ -169,9 +167,7 @@ interface Props {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <Button variant="outline" className="!bg-transparent px-0 !border-0">
-                                        <InformationTab />
-                                    </Button>
+                                    <InformationTab />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Learn More</p>
@@ -186,9 +182,7 @@ interface Props {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <Button variant="outline" className="!bg-transparent px-0 !border-0">
-                                        <GithubTab />
-                                    </Button>
+                                    <GithubTab />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Learn More</p>

@@ -217,14 +217,6 @@ export default function Home() {
       }
   
       localStorage.setItem("messageData", JSON.stringify(chatHistory));
-    } else {
-      const newId = generateId();
-      const initialChatHistory = [{
-        id: newId,
-        messages: messagesToSave,
-      }];
-      localStorage.setItem("messageData", JSON.stringify(initialChatHistory));
-      localStorage.setItem("currentChatId", newId);
     }
   };
 
