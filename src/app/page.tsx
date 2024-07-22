@@ -116,22 +116,29 @@ export default function Home() {
             const filter = (item: any) => {
               return item.id == id;
             }
-            var filtered = [];
+            var filtered: any[] = [];
             if (Array.isArray(parsed)) {
               filtered = parsed.filter(filter);
             }
-
-            if (typeof filtered[0] !== 'undefined') {
-              filtered[0].messages[filtered[0].messages.length] = message;
-
-              parsed[parsed.length - 1] = filtered[0];
-              localStorage.setItem("messageData", JSON.stringify(parsed));
+  
+            if (filtered.length > 0) {
+              // Find the index of the filtered item in the parsed array
+              const index = parsed.findIndex((item: any) => item.id === filtered[0].id);
+  
+              if (index !== -1) {
+                filtered[0].messages[filtered[0].messages.length] = message;
+  
+                // Update the parsed array at the correct index
+                parsed[index] = filtered[0];
+                localStorage.setItem("messageData", JSON.stringify(parsed));
+              }
             }
           }
         }
       }
     }
-  )
+  );
+  
 
   
 
