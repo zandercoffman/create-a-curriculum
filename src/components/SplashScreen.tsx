@@ -47,7 +47,7 @@ export default function SplashScreen() {
                 </div>
                 <div className="w-[5%] h-full flex mt-auto flex-row">
                     <Button className="!p-0 mt-auto !bg-transparent text-black dark:text-white" onClick={handleClick}>
-                        <RefreshCcw className={isSpinning ? 'spin' : ''} />
+                        <RefreshCcw className={isSpinning ? 'animate-spin' : ''} />
                     </Button>
                 </div>
             </div>

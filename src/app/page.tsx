@@ -46,7 +46,7 @@ import {
 import { cn } from "@/lib/utils"
 import ChatHistory from "@/components/ChatHistory";
 import { useChat, Message } from 'ai/react'
-import { generateId } from 'ai';
+import { generateId, ToolInvocation } from 'ai';
 
 const formSchemaLink = z.object({
   link: z.string().refine(
@@ -103,7 +103,34 @@ interface LINKStorage {
 }
 
 export default function Home() {
-  const { messages, input, handleInputChange, handleSubmit, setMessages } = useChat()
+  const { messages, input, handleInputChange, handleSubmit, setMessages, append } = useChat(
+    {
+      keepLastMessageOnError: true,
+      onFinish(message: Message) {
+        const s = localStorage.getItem("enabledHistory");
+        if (s) {
+          const p = localStorage.getItem("messageData");
+          if (p) {
+            const parsed = JSON.parse(p);
+            const currentChatId = localStorage.getItem("currentChatId");
+            const filter = (item: any) => {
+              return item.id == currentChatId;
+            }
+            var filtered = [];
+            if (Array.isArray(parsed)) {
+              filtered = parsed.filter(filter);
+            }
+
+            if (typeof filtered[0] !== 'undefined') {
+              filtered[0].messages[filtered[0].messages.length] = message;
+              localStorage.setItem("messageData", JSON.stringify([...messages, filtered[0]]));
+            }
+          }
+        }
+      }
+    }
+  )
+
   const [id, setId] = useState<string>(generateId());
 
   const [able, setAble] = useState(false);
@@ -111,37 +138,26 @@ export default function Home() {
     resolver: zodResolver(formSchemaLink),
   })
 
-  
+
 
   function getProductFromLink(link: string) {
     const linkParsed = getLink(link);
     return linkParsed;
   }
 
-  const submit = (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null): void => {
-    const newMessage: Message = {
-      id: new Date().toISOString(),
-      content: decideCurToUse(form2),
-      role: 'user'
-    };
+  const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => {
+    const input = decideCurToUse(form2);
 
-    const updatedMessages = [...messages, newMessage];
-    const currentChatId = localStorage.getItem("currentChatId");
-
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: new Date().toISOString(),
-        content: "Ah cool!",
-        role: 'assistant'
-      };
-
-      setMessages([...updatedMessages, aiResponse]);
-      handleLocalStorage([...updatedMessages, aiResponse], aiResponse.id, form2);
-    }, 500);
-
-    handleLocalStorage([...updatedMessages], null, form2);
+    // Append the user message
+    const obj = {
+      role: 'user',
+      content: input,
+      id: generateId()
+    }
+    append(obj as Message);
+    const lastAiMessageId = messages.length > 0 ? messages[messages.length - 1].id : null;
+    handleLocalStorage([...messages, obj] as Message[], lastAiMessageId, form2);
   };
-
 
   useEffect(() => {
     const me = localStorage.getItem("messageData");
@@ -171,10 +187,10 @@ export default function Home() {
 
   const handleLocalStorage = (messagesToSave: Message[], lastAiMessageId: string | null, data: FORM2TITLES | FORM2PRODUCT | LINKStorage) => {
     const d = localStorage.getItem("enabledHistory");
-  
+
     if (d) {
       let chatHistory: any[] = [];
-  
+
       const storedData = localStorage.getItem("messageData");
       if (storedData) {
         try {
@@ -187,9 +203,9 @@ export default function Home() {
           chatHistory = [];
         }
       }
-  
+
       const currentChatId = localStorage.getItem("currentChatId");
-  
+
       if (currentChatId) {
         const chatIndex = chatHistory.findIndex((chat: any) => chat.id === currentChatId);
         if (chatIndex >= 0) {
@@ -210,12 +226,15 @@ export default function Home() {
         const newId = generateId();
         const newChat = {
           id: newId,
+          name: 'titles' in data ? "Collection of " + data.titles.split(",").length : data.name,
+          type: ('titles' in data ? "titles" : ('link' in data ? "link" : "form")),
+          extra: 'titles' in data ? JSON.stringify(data.titles.split(",")) : 'link' in data ? data.link : "",
           messages: messagesToSave,
         };
         chatHistory.push(newChat);
         localStorage.setItem("currentChatId", newId);
       }
-  
+
       localStorage.setItem("messageData", JSON.stringify(chatHistory));
     }
   };
@@ -233,7 +252,7 @@ export default function Home() {
     try {
       // Parse the JSON string to an object
       const obj = JSON.parse(s);
-  
+
       // Access the 'titles' property
       return obj.titles || "Woopsies";
     } catch (e) {
@@ -244,11 +263,11 @@ export default function Home() {
 
   const decideCurToUse = (obj: FORM2TITLES | FORM2PRODUCT | LINKStorage): string => {
     if ('link' in obj) {
-      return `Link details: Name: ${obj.name}, Link: ${obj.link}`;
+      return `${makeCurriculum(obj.name)}`;
     } else if ('titles' in obj) {
       return `${makeCurriculums(getTitleValue(obj.titles).split(","))}`;
     } else if ('name' in obj) {
-      return `Form data: Name: ${obj.name}, Description: ${obj.description}`;
+      return `${makeCurriculum(obj.name)}`;
     } else {
       return "Unknown data type";
     }
@@ -297,12 +316,12 @@ export default function Home() {
       Make sure the curriculum is comprehensive and engaging for young learners. 
       ${activities.length > 1 && `Your goal is to blend ${activitiesStr} into a cohesive curriculum.`}
     `;
-}
+  }
 
   function cleanString(input: string): string {
     return input
-        .replace(/\s+/g, ' ') // Replace multiple whitespace characters with a single space
-        .trim();              // Remove leading and trailing whitespace
+      .replace(/\s+/g, ' ') // Replace multiple whitespace characters with a single space
+      .trim();              // Remove leading and trailing whitespace
   }
 
 
@@ -314,13 +333,13 @@ export default function Home() {
       {/** Es Tiempo de enviar mensajes (suavemente) */}
       <div className="w-full lg:h-[90vh] h-[92vh] flex justify-center">
         <div className="w-[98vw] lg:w-[40vw] lg:h-[90vh] relative flex flex-col px-6 py-2">
-          <div className="flex flex-row gap-2 mx-auto lg:mx-0 max-w-[90%] lg:max-w-[94%]">
+          <div className="flex flex-row gap-2 mx-auto lg:mx-0 max-w-[90%] lg:max-w-[94%] xl:max-w-full">
             <ChatHistory setId={setId} id={id} />
           </div>
           <ScrollArea className="w-[85vw] mx-auto lg:w-[40vw] flex flex-col gap-10 lg:gap-3 h-[80%] p-2 overflow-auto">
             {messages.length > 0 ? (
-              messages.map((m: Message) => (
-                <MessageBubble text={cleanString(m.content)} key={m.id} isUser={m.role === "user"} />
+              messages.map((m: Message, index: number) => (
+                <MessageBubble text={cleanString(m.content)} key={m.id} isUser={m.role === "user"} isLast={index == Object.keys(messages).length - 1}/>
               ))
             ) : (
               <SplashScreen />
@@ -359,7 +378,7 @@ export default function Home() {
             <Input placeholder={able ? "Enter Message Here.." : "Fill out form fully.."} className="!bg-transparent !border-0 w-full text-1xl" disabled={!able} />
             <Button className="p-0 !bg-transparent text-black" disabled={!able}><Send className="dark:text-white" /></Button>
           </div>
-          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs mt-1">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
+          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs xl:text-base mt-1">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
         </div>
       </div>
     </main>

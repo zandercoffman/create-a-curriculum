@@ -74,10 +74,10 @@ export default function ProductInfoCard(props: Props) {
     }
 
     return (
-        <ScrollArea className="lg:h-[300px] h-[65vh] w-full flex flex-col gap-2 pr-4">
+        <ScrollArea className="lg:h-[300px] h-[65vh] xl:h-[60vh] w-full flex flex-col gap-2 pr-4">
             <MultipleProductsForm setForm={doMultiple}/>
             <ChoiceSeperator text="or" className="mb-3" />
-            <Card className="h-[440px] mb-10 w-full">
+            <Card className="h-[470px] mb-10 w-full">
                 <CardHeader>
                     {hasSubmitted && <CardDescription>✅ You’ve submitted this section!</CardDescription>}
                     <CardTitle>Product Information</CardTitle>

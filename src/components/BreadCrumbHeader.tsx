@@ -113,7 +113,7 @@ export default function BreadCrumbHeader(props: Props) {
 
     useEffect(() => {
         setSubmitButton(
-            form1 !== null && form2 !== null
+            form2 !== null
         );
     }, [form1, form2]);
 

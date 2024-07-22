@@ -208,7 +208,7 @@ export default function ChatHistory(props: Props) {
                         })
                       }
                     </> : <>
-                      <div className="grid place-items-center w-[240px] px-10 py-5 h-full">
+                      <div className="grid place-items-center w-[240px] xl:w-full px-10 py-5 h-full">
                         <div className="flex flex-col gap-2 items-center text-center justify-center">
                           <CircleOff className="w-10 h-10" />
                           <p className="text-sm">Whoops, it looks like nothing is in your history.</p>
@@ -234,10 +234,10 @@ export default function ChatHistory(props: Props) {
             'titles' == dat.type ? <>
 
             </> : 'link' == dat.type ? <>
-              <div className="w-[400px] bg-white p-3 flex flex-col gap-2">
+              <div className="w-[90vw] lg:w-[450px] bg-white dark:bg-gray-950 p-3 flex flex-col gap-2">
                 <div className="flex flex-row gap-2">
                   <Box className="my-auto w-8 h-8" />
-                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight my-auto">
+                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight my-auto text-right">
                     Product:
                   </h4>
                   <p className="text-sm my-auto text-right">
@@ -245,13 +245,13 @@ export default function ChatHistory(props: Props) {
                   </p>
                 </div>
                 <div className="flex flex-row gap-2">
-                  <Paperclip className="my-auto transform rotate-[-45deg] w-10 h-10" />
+                  <Paperclip className="my-auto transform rotate-[-45deg] w-8 h-8 flex-shrink-0" />
                   <h4 className="scroll-m-20 text-xl font-semibold tracking-tight my-auto">
                     Link:
                   </h4>
-                  <p className="text-xs my-auto text-right font-semibold">
-                    <LinkPreview url={dat.extra} className="text-blue-500">
-                      <p>{dat.extra}</p>
+                  <p className="my-auto text-right font-semibold overflow-hidden">
+                    <LinkPreview url={dat.extra} className="text-blue-500 text-sm truncate my-auto">
+                      <p className="truncate max-w-[500px]">{dat.extra}</p>
                     </LinkPreview>
                   </p>
                 </div>
@@ -287,7 +287,7 @@ function Item(params: any) {
   }
 
   return <>
-    <SelectItem value={params.data?.id || "unknown"} className="w-full max-w-[250px] flex flex-row gap-2">
+    <SelectItem value={params.data?.id || "unknown"} className="w-full max-w-[250px] lg:max-w-full flex flex-row gap-2">
       <p>{params.data.name || "Collection of " + params.data.titles.length || ""}</p>
       <Badge>{capitalizeFirstLetter(params.data.type)}</Badge>
     </SelectItem>

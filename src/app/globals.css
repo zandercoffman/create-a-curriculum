@@ -202,19 +202,6 @@
   margin-right: auto;
 }
 
-
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(180deg); }
-}
-
-.spin {
-  animation: spin 1s linear;
-}
-
-
-
 .gradient-text {
   font-weight: bold;
   background: linear-gradient(45deg, #ff6b6b, #f06595);

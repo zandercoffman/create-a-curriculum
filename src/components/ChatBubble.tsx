@@ -1,4 +1,4 @@
-import { ClipboardCopy, Headphones } from 'lucide-react';
+import { ArrowUpFromLine, ClipboardCopy, Headphones, Sparkles } from 'lucide-react';
 import Markdown from 'react-markdown';
 import { Button } from './ui/button';
 import {
@@ -46,12 +46,12 @@ export const MessageBubble = (params: any) => {
                 description: "Enjoy using the AI's message!",
             });
         })
-        .catch(err => {
-            toast({
-                title: "There was an error trying to copy.",
-                description: err.message,
+            .catch(err => {
+                toast({
+                    title: "There was an error trying to copy.",
+                    description: err.message,
+                });
             });
-        });
     };
 
     return (
@@ -61,6 +61,20 @@ export const MessageBubble = (params: any) => {
             </ScrollArea>
             {!params.isUser && (
                 <div className='flex flex-row gap-2'>
+                    {
+                        params.isLast && <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Button className='!p-0 !bg-transparent !m-0' onClick={copy}>
+                                        <ArrowUpFromLine className='dark:text-white text-[#050505] w-6 h-6 my-auto ' />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Export This
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    }
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
