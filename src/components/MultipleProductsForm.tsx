@@ -43,13 +43,34 @@ interface Item {
     selected: boolean;
 }
 
-export default function MultipleProductsForm() {
+interface Props {
+    setForm: Function
+}
+
+interface FORM2TITLES {
+    titles: string;
+}
+
+
+export default function MultipleProductsForm(props: Props) {
     const { toast } = useToast()
 
-    const [items, setItems] = useState<Item[]>([{
-        name: "hello",
-        selected: true
-    }]);
+    const [items, setItems] = useState<Item[]>([]);
+
+    const submit = () => {
+        const names: string[] = [];
+    
+        Object.keys(items).forEach((key: any) => {
+            names.push(items[key].name);
+        });
+    
+        const form: FORM2TITLES = {
+            titles: names.join(", "), // Joining names with a comma and space
+        };
+    
+        props.setForm(form); // Assuming setForm expects an object of type FORM2TITLES
+    };
+    
 
     const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
         const newItems = [...items];
@@ -145,18 +166,7 @@ export default function MultipleProductsForm() {
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger>
-                                            <Button type="submit" variant={"secondary"} className="w-full">Submit</Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            Submit Portion
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button type="submit" variant={"secondary"} className="w-full">Quick Submit</Button>
+                                            <Button type="submit" variant={"secondary"} className="w-full" onClick={submit}>Quick Submit</Button>
                                         </TooltipTrigger>
                                         <TooltipContent>
                                             Submit and Automatically ask the AI

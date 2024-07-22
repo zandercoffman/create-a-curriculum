@@ -11,7 +11,11 @@ import { ArrowRightFromLine } from "lucide-react"
 import Link from "next/link"
 import Export from "./Export"
 
-export default function ExportButton() {
+interface Props {
+    messages: any;
+}
+
+export default function ExportButton(props: Props) {
     return <>
         <Sheet>
             <SheetTrigger className="lg:hidden">

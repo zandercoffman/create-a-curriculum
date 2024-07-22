@@ -86,21 +86,106 @@
   }
 }
 
+@keyframes fadeInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px); /* Adjust the value for desired distance */
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
 .bubble {
-  padding: 10px 15px;
+  padding: 15px 15px;
   margin: 10px;
   border-radius: 20px;
-  word-wrap: break-word;
   position: relative;
   font-size: 14px;
   width: max-content;
-  max-width: 80%;
   display: flex;
+  opacity: 0;
   flex-direction: column;
 }
 
+@media (max-width: 600px) { /* Adjust the max-width value to your needs */
+  .bubble {
+    max-width: 65vw;
+  }
+}
+
+
+.bubble {
+  animation: fadeInFromTop 0.5s forwards;/* Ensure elements are hidden before animation starts */
+}
+
+.bubble:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.bubble:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bubble:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.bubble:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.bubble:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+.bubble:nth-child(6) {
+  animation-delay: 1s;
+}
+
+.bubble:nth-child(7) {
+  animation-delay: 1.2s;
+}
+
+.bubble:nth-child(8) {
+  animation-delay: 1.4s;
+}
+
+.bubble:nth-child(9) {
+  animation-delay: 1.6s;
+}
+
+.bubble:nth-child(10) {
+  animation-delay: 1.8s;
+}
+
+.bubble:nth-child(11) {
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(12) {
+  animation-delay: 2.2s;
+}
+
+.bubble:nth-child(13) {
+  animation-delay: 2.4s;
+}
+
+.bubble:nth-child(14) {
+  animation-delay: 2.6s;
+}
+
+.bubble:nth-child(15) {
+  animation-delay: 2.8s;
+}
+
+/* Add more nth-child selectors as needed for additional children */
+
 .user {
-  background-color: #dcf8c6;
+  background-color: #e4dfdf;
   color: #000;
   border-bottom-right-radius: 0;
   text-align: right;
@@ -114,7 +199,10 @@
   border-bottom-left-radius: 0;
   text-align: left;
   align-self: flex-start;
+  margin-right: auto;
 }
+
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }

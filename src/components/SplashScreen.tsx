@@ -46,7 +46,7 @@ export default function SplashScreen() {
                     <Reccomendation message="Pancake Maker Curriculum" type="idea" />
                 </div>
                 <div className="w-[5%] h-full flex mt-auto flex-row">
-                    <Button className="!p-0 mt-auto !bg-transparent !text-black" onClick={handleClick}>
+                    <Button className="!p-0 mt-auto !bg-transparent text-black dark:text-white" onClick={handleClick}>
                         <RefreshCcw className={isSpinning ? 'spin' : ''} />
                     </Button>
                 </div>

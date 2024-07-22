@@ -242,7 +242,7 @@ export default function InformationTab() {
     return (
         <Dialog>
             <DialogTrigger><Info /></DialogTrigger>
-            <DialogContent className="w-[90vw] lg:w-[70vw] h-[92vh] lg:h-[78vh] !rounded-2xl">
+            <DialogContent className="w-[90vw] lg:w-[70vw] h-[95vh] lg:h-[85vh] !rounded-2xl">
                 <DialogHeader>
                     <DialogTitle>Welcome to Create-A-Curriculum!</DialogTitle>
                     <DialogDescription>
@@ -282,7 +282,7 @@ export default function InformationTab() {
                     {selectedId && (
                         <motion.div layoutId={selectedId}>
                             <ScrollArea className="h-[70vh] lg:h-screen">
-                                <Card className="w-full h-[340px] text-center lg:text-left lg:overflow-hidden">
+                                <Card className="w-full h-[340px] lg:h-[390px] text-center lg:text-left lg:overflow-hidden">
                                     {getFromId(selectedId).html}
                                     <motion.button onClick={() => setSelectedId(null)} className="absolute top-0 right-0 mt-3 mr-3" ><X className="text-gray-500" /></motion.button>
                                 </Card>

@@ -45,10 +45,11 @@ const formSchema = z.object({
 interface Props {
     form: any;
     setForm: Function;
+    check: Function;
 }
 
 export default function ProductInfoCard(props: Props) {
-    const [hasSubmitted, setHasSubmitted] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(props.form !== null);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -62,14 +63,21 @@ export default function ProductInfoCard(props: Props) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         alert(JSON.stringify(values));
+        props.setForm(values);
         setHasSubmitted(true);
+    }
+
+    const doMultiple = (a: string[]) => {
+        props.setForm(JSON.stringify(a));
+        setHasSubmitted(true);
+        props.check();
     }
 
     return (
         <ScrollArea className="lg:h-[300px] h-[65vh] w-full flex flex-col gap-2 pr-4">
-            <MultipleProductsForm/>
+            <MultipleProductsForm setForm={doMultiple}/>
             <ChoiceSeperator text="or" className="mb-3" />
-            <Card className="h-[300px] mb-10 w-full">
+            <Card className="h-[440px] mb-10 w-full">
                 <CardHeader>
                     {hasSubmitted && <CardDescription>✅ You’ve submitted this section!</CardDescription>}
                     <CardTitle>Product Information</CardTitle>
@@ -85,7 +93,7 @@ export default function ProductInfoCard(props: Props) {
                                     <FormItem>
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter name" {...field} />
+                                            <Input placeholder="Enter name" {...field} disabled={hasSubmitted}/>
                                         </FormControl>
                                         <FormDescription>
                                             You can <span>@mention</span> other users and organizations.
@@ -105,6 +113,7 @@ export default function ProductInfoCard(props: Props) {
                                                 placeholder="Enter Description here"
                                                 className="resize-none"
                                                 {...field}
+                                                disabled={hasSubmitted}
                                             />
                                         </FormControl>
                                         <FormDescription>

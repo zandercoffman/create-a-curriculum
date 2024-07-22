@@ -1,7 +1,7 @@
 "use client"
 import Header from "@/components/Header";
 import Image from "next/image";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -45,29 +45,8 @@ import {
 } from "@/components/ui/command"
 import { cn } from "@/lib/utils"
 import ChatHistory from "@/components/ChatHistory";
-
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
+import { useChat, Message } from 'ai/react'
+import { generateId } from 'ai';
 
 const formSchemaLink = z.object({
   link: z.string().refine(
@@ -78,66 +57,284 @@ const formSchemaLink = z.object({
   ).default(""),
 })
 
-const messages: string[] = [
-  /**
-   * "**Hello** Hello",
-  "Hey!",
-  "How can I help?",
-  "You can help by...",
-  "Sure, I can help with that.",
-  "Can you provide more details?",
-  "Of course. What exactly do you need help with?",
-  "I need help with my project.",
-  "Let's dive deeper into your project details.",
-  "It's about creating an AI chat interface.",
-  "That sounds interesting. What features would you like to include?",
-  "I want suggestions on top and a chat input below.",
-  "Got it. I can guide you through that.",
-  "Thank you!",
-  "You're welcome! Let's get started."
-   */
-];
+interface FORMStorage {
+  name: string;
+  desc: string;
+  id: string;
+}
+
+interface LINKStorage {
+  name: string;
+  link: string;
+  id: string;
+}
+
+interface NAMESStorage {
+  names: string[];
+  id: string;
+}
+
+interface userData {
+  name: string;
+  uniqueid: string;
+  grade: number | undefined | string;
+  saveinfo: boolean;
+}
+
+interface FORM1 {
+  name: string;
+  uniqueid: string;
+  grade: number | undefined | string;
+  saveinfo: boolean;
+}
+
+interface FORM2TITLES {
+  titles: string;
+}
+
+interface FORM2PRODUCT {
+  name: string;
+  description: string;
+}
+interface LINKStorage {
+  name: string;
+  link: string;
+  id: string;
+}
 
 export default function Home() {
-  
+  const { messages, input, handleInputChange, handleSubmit, setMessages } = useChat()
+  const [id, setId] = useState<string>(generateId());
 
   const [able, setAble] = useState(false);
   const form = useForm<z.infer<typeof formSchemaLink>>({
     resolver: zodResolver(formSchemaLink),
   })
 
-  function onsubmitLink(values: z.infer<typeof formSchemaLink>) {
-    alert(getProductFromLink(values.link));
-  }
+  
 
   function getProductFromLink(link: string) {
     const linkParsed = getLink(link);
     return linkParsed;
   }
 
+  const submit = (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null): void => {
+    const newMessage: Message = {
+      id: new Date().toISOString(),
+      content: decideCurToUse(form2),
+      role: 'user'
+    };
+
+    const updatedMessages = [...messages, newMessage];
+    const currentChatId = localStorage.getItem("currentChatId");
+
+    setTimeout(() => {
+      const aiResponse: Message = {
+        id: new Date().toISOString(),
+        content: "Ah cool!",
+        role: 'assistant'
+      };
+
+      setMessages([...updatedMessages, aiResponse]);
+      handleLocalStorage([...updatedMessages, aiResponse], aiResponse.id, form2);
+    }, 500);
+
+    handleLocalStorage([...updatedMessages], null, form2);
+  };
+
+
+  useEffect(() => {
+    const me = localStorage.getItem("messageData");
+    if (me) {
+      const parsed: any[] = JSON.parse(me);
+      if (parsed) {
+        const filter = (item: any) => {
+          return item.id == id;
+        }
+
+        var filtered = [];
+        if (Array.isArray(parsed)) {
+          filtered = parsed.filter(filter);
+        }
+
+        if (typeof filtered[0] !== 'undefined') {
+          setMessages(filtered[0]["messages"] as Message[]);
+        } else {
+          setMessages([]);
+        }
+
+        localStorage.setItem("currentChatId", id);
+
+      }
+    }
+  }, [id, setMessages])
+
+  const handleLocalStorage = (messagesToSave: Message[], lastAiMessageId: string | null, data: FORM2TITLES | FORM2PRODUCT | LINKStorage) => {
+    const d = localStorage.getItem("enabledHistory");
+  
+    if (d) {
+      let chatHistory: any[] = [];
+  
+      const storedData = localStorage.getItem("messageData");
+      if (storedData) {
+        try {
+          chatHistory = JSON.parse(storedData);
+          if (!Array.isArray(chatHistory)) {
+            chatHistory = [];
+          }
+        } catch (err) {
+          console.error("Failed to parse chat history from localStorage", err);
+          chatHistory = [];
+        }
+      }
+  
+      const currentChatId = localStorage.getItem("currentChatId");
+  
+      if (currentChatId) {
+        const chatIndex = chatHistory.findIndex((chat: any) => chat.id === currentChatId);
+        if (chatIndex >= 0) {
+          chatHistory[chatIndex].messages = messagesToSave;
+        } else {
+          const newId = generateId();
+          const newChat = {
+            id: newId,
+            name: 'titles' in data ? "Collection of " + data.titles.split(",").length : data.name,
+            type: ('titles' in data ? "titles" : ('link' in data ? "link" : "form")),
+            extra: 'titles' in data ? JSON.stringify(data.titles.split(",")) : 'link' in data ? data.link : "",
+            messages: messagesToSave,
+          };
+          chatHistory.push(newChat);
+          localStorage.setItem("currentChatId", newId);
+        }
+      } else {
+        const newId = generateId();
+        const newChat = {
+          id: newId,
+          messages: messagesToSave,
+        };
+        chatHistory.push(newChat);
+        localStorage.setItem("currentChatId", newId);
+      }
+  
+      localStorage.setItem("messageData", JSON.stringify(chatHistory));
+    } else {
+      const newId = generateId();
+      const initialChatHistory = [{
+        id: newId,
+        messages: messagesToSave,
+      }];
+      localStorage.setItem("messageData", JSON.stringify(initialChatHistory));
+      localStorage.setItem("currentChatId", newId);
+    }
+  };
+
+  function onsubmitLink(values: z.infer<typeof formSchemaLink>) {
+    alert(getProductFromLink(values.link));
+    submit({
+      name: getProductFromLink(values.link),
+      link: values.link,
+      id: generateId()
+    } satisfies LINKStorage, null);
+  }
+
+  const getTitleValue = (s: string): string => {
+    try {
+      // Parse the JSON string to an object
+      const obj = JSON.parse(s);
+  
+      // Access the 'titles' property
+      return obj.titles || "Woopsies";
+    } catch (e) {
+      // Handle JSON parsing errors
+      return "Woopsies";
+    }
+  };
+
+  const decideCurToUse = (obj: FORM2TITLES | FORM2PRODUCT | LINKStorage): string => {
+    if ('link' in obj) {
+      return `Link details: Name: ${obj.name}, Link: ${obj.link}`;
+    } else if ('titles' in obj) {
+      return `${makeCurriculums(getTitleValue(obj.titles).split(","))}`;
+    } else if ('name' in obj) {
+      return `Form data: Name: ${obj.name}, Description: ${obj.description}`;
+    } else {
+      return "Unknown data type";
+    }
+  }
+
+  function makeCurriculum(activity: string): string {
+    return `
+        Curriculum for ${activity}:
+
+        Write a curriculum that has the word "educational" somewhere in it. The curriculum should include the following elements for a child wanting to learn how to engage in ${activity}: 
+
+        1. **Scope and Sequence**
+        2. **Learning Objectives**
+        3. **15 Detailed Lessons in Order**
+        4. **Activities**
+        5. **Instructional Materials Required**
+        6. **Assessment**
+
+        Also, list the educational benefits of learning how to use ${activity}, the subjects it covers, and a brief history of ${activity}. Finally, provide a summary of materials required at the end.
+
+        Ensure that the curriculum for using ${activity} is comprehensive and engaging for young learners.
+    `;
+  }
+
+  function makeCurriculums(activities: string[]): string {
+    if (activities.length == 1) {
+      return makeCurriculum(activities[0]);
+    }
+
+    const activitiesStr = `${activities.slice(0, -1).join(', ')} and ${activities[activities.length - 1]}`
+
+    return `
+      Curriculum for ${activitiesStr}:
+
+      Write a curriculum that includes the word "educational" and covers the following for a child learning ${activitiesStr}:
+
+      1. Scope and Sequence
+      2. Learning Objectives
+      3. 15 Detailed Lessons in Order
+      4. Activities
+      5. Instructional Materials Required
+      6. Assessment
+
+      Include the educational benefits of ${activitiesStr}, the subjects it covers, and a brief history of ${activitiesStr}. Provide a summary of materials required at the end.
+
+      Make sure the curriculum is comprehensive and engaging for young learners. 
+      ${activities.length > 1 && `Your goal is to blend ${activitiesStr} into a cohesive curriculum.`}
+    `;
+}
+
+  function cleanString(input: string): string {
+    return input
+        .replace(/\s+/g, ' ') // Replace multiple whitespace characters with a single space
+        .trim();              // Remove leading and trailing whitespace
+  }
+
+
 
   return (
     <main className="h-screen w-screen overflow-hidden">
-      <Header />
+      <Header messages={messages} submit={submit} />
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
       <div className="w-full lg:h-[90vh] h-[92vh] flex justify-center">
         <div className="w-[98vw] lg:w-[40vw] lg:h-[90vh] relative flex flex-col px-6 py-2">
-          <div className="flex flex-row gap-2 mx-auto lg:mx-0">
-            <ChatHistory/>
+          <div className="flex flex-row gap-2 mx-auto lg:mx-0 max-w-[90%] lg:max-w-[94%]">
+            <ChatHistory setId={setId} id={id} />
           </div>
-          <ScrollArea className="w-full mx-auto lg:w-[38vw] flex flex-col gap-1 h-[80%] p-2">
-
+          <ScrollArea className="w-[85vw] mx-auto lg:w-[40vw] flex flex-col gap-10 lg:gap-3 h-[80%] p-2 overflow-auto">
             {messages.length > 0 ? (
-              messages.map((message, index) => (
-                <div key={index} className={`w-2/3 lg:w-full flex justify-${index % 2 !== 0 ? "end" : "start"}`}>
-                  <MessageBubble isUser={index % 2 !== 0} text={message} />
-                </div>
+              messages.map((m: Message) => (
+                <MessageBubble text={cleanString(m.content)} key={m.id} isUser={m.role === "user"} />
               ))
             ) : (
               <SplashScreen />
             )}
           </ScrollArea>
+
           <div className="w-full h-[10%] bg-slate-300 dark:bg-slate-600 dark:text-white rounded-full flex flex-row gap-3 items-center px-5">
             <Popover>
               <PopoverTrigger>
