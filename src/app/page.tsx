@@ -103,6 +103,7 @@ interface LINKStorage {
 }
 
 export default function Home() {
+  const [id, setId] = useState<string>(generateId());
   const { messages, input, handleInputChange, handleSubmit, setMessages, append } = useChat(
     {
       keepLastMessageOnError: true,
@@ -112,9 +113,8 @@ export default function Home() {
           const p = localStorage.getItem("messageData");
           if (p) {
             const parsed = JSON.parse(p);
-            const currentChatId = localStorage.getItem("currentChatId");
             const filter = (item: any) => {
-              return item.id == currentChatId;
+              return item.id == id;
             }
             var filtered = [];
             if (Array.isArray(parsed)) {
@@ -123,7 +123,9 @@ export default function Home() {
 
             if (typeof filtered[0] !== 'undefined') {
               filtered[0].messages[filtered[0].messages.length] = message;
-              localStorage.setItem("messageData", JSON.stringify([...messages, filtered[0]]));
+
+              parsed[parsed.length - 1] = filtered[0];
+              localStorage.setItem("messageData", JSON.stringify(parsed));
             }
           }
         }
@@ -131,7 +133,7 @@ export default function Home() {
     }
   )
 
-  const [id, setId] = useState<string>(generateId());
+  
 
   const [able, setAble] = useState(false);
   const form = useForm<z.infer<typeof formSchemaLink>>({
@@ -147,16 +149,16 @@ export default function Home() {
 
   const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => {
     const input = decideCurToUse(form2);
-
+  
     // Append the user message
     const obj = {
       role: 'user',
       content: input,
       id: generateId()
-    }
+    };
     append(obj as Message);
     const lastAiMessageId = messages.length > 0 ? messages[messages.length - 1].id : null;
-    handleLocalStorage([...messages, obj] as Message[], lastAiMessageId, form2);
+    handleLocalStorage([...messages, obj] as Message[], lastAiMessageId, form2, id);
   };
 
   useEffect(() => {
@@ -185,12 +187,12 @@ export default function Home() {
     }
   }, [id, setMessages])
 
-  const handleLocalStorage = (messagesToSave: Message[], lastAiMessageId: string | null, data: FORM2TITLES | FORM2PRODUCT | LINKStorage) => {
+  const handleLocalStorage = (messagesToSave: Message[], lastAiMessageId: string | null, data: FORM2TITLES | FORM2PRODUCT | LINKStorage, chatId: string) => {
     const d = localStorage.getItem("enabledHistory");
-
+  
     if (d) {
       let chatHistory: any[] = [];
-
+  
       const storedData = localStorage.getItem("messageData");
       if (storedData) {
         try {
@@ -203,38 +205,22 @@ export default function Home() {
           chatHistory = [];
         }
       }
-
-      const currentChatId = localStorage.getItem("currentChatId");
-
-      if (currentChatId) {
-        const chatIndex = chatHistory.findIndex((chat: any) => chat.id === currentChatId);
-        if (chatIndex >= 0) {
-          chatHistory[chatIndex].messages = messagesToSave;
-        } else {
-          const newId = generateId();
-          const newChat = {
-            id: newId,
-            name: 'titles' in data ? "Collection of " + data.titles.split(",").length : data.name,
-            type: ('titles' in data ? "titles" : ('link' in data ? "link" : "form")),
-            extra: 'titles' in data ? JSON.stringify(data.titles.split(",")) : 'link' in data ? data.link : "",
-            messages: messagesToSave,
-          };
-          chatHistory.push(newChat);
-          localStorage.setItem("currentChatId", newId);
-        }
+  
+      const chatIndex = chatHistory.findIndex((chat: any) => chat.id === chatId);
+  
+      if (chatIndex >= 0) {
+        chatHistory[chatIndex].messages = messagesToSave;
       } else {
-        const newId = generateId();
         const newChat = {
-          id: newId,
+          id: chatId,
           name: 'titles' in data ? "Collection of " + data.titles.split(",").length : data.name,
           type: ('titles' in data ? "titles" : ('link' in data ? "link" : "form")),
           extra: 'titles' in data ? JSON.stringify(data.titles.split(",")) : 'link' in data ? data.link : "",
           messages: messagesToSave,
         };
         chatHistory.push(newChat);
-        localStorage.setItem("currentChatId", newId);
       }
-
+  
       localStorage.setItem("messageData", JSON.stringify(chatHistory));
     }
   };
