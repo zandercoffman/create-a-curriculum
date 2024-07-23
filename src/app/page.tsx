@@ -1,7 +1,7 @@
 "use client"
 import Header from "@/components/Header";
 import Image from "next/image";
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -104,6 +104,15 @@ interface LINKStorage {
 
 export default function Home() {
   const [id, setId] = useState<string>(generateId());
+  const [canCreateNew, setCanNew] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleButtonClick = () => {
+    if (buttonRef.current) {
+      buttonRef.current.click(); // Trigger the button click
+    }
+  };
+
   const { messages, input, handleInputChange, handleSubmit, setMessages, append } = useChat(
     {
       keepLastMessageOnError: true,
@@ -120,17 +129,18 @@ export default function Home() {
             if (Array.isArray(parsed)) {
               filtered = parsed.filter(filter);
             }
-  
+
             if (filtered.length > 0) {
               // Find the index of the filtered item in the parsed array
               const index = parsed.findIndex((item: any) => item.id === filtered[0].id);
-  
+
               if (index !== -1) {
                 filtered[0].messages[filtered[0].messages.length] = message;
-  
+
                 // Update the parsed array at the correct index
                 parsed[index] = filtered[0];
                 localStorage.setItem("messageData", JSON.stringify(parsed));
+                setCanNew(true);
               }
             }
           }
@@ -138,9 +148,9 @@ export default function Home() {
       }
     }
   );
-  
 
-  
+
+
 
   const [able, setAble] = useState(false);
   const form = useForm<z.infer<typeof formSchemaLink>>({
@@ -156,7 +166,7 @@ export default function Home() {
 
   const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => {
     const input = decideCurToUse(form2);
-  
+
     // Append the user message
     const obj = {
       role: 'user',
@@ -196,10 +206,10 @@ export default function Home() {
 
   const handleLocalStorage = (messagesToSave: Message[], lastAiMessageId: string | null, data: FORM2TITLES | FORM2PRODUCT | LINKStorage, chatId: string) => {
     const d = localStorage.getItem("enabledHistory");
-  
+
     if (d) {
       let chatHistory: any[] = [];
-  
+
       const storedData = localStorage.getItem("messageData");
       if (storedData) {
         try {
@@ -212,9 +222,9 @@ export default function Home() {
           chatHistory = [];
         }
       }
-  
+
       const chatIndex = chatHistory.findIndex((chat: any) => chat.id === chatId);
-  
+
       if (chatIndex >= 0) {
         chatHistory[chatIndex].messages = messagesToSave;
       } else {
@@ -227,7 +237,7 @@ export default function Home() {
         };
         chatHistory.push(newChat);
       }
-  
+
       localStorage.setItem("messageData", JSON.stringify(chatHistory));
     }
   };
@@ -270,16 +280,16 @@ export default function Home() {
     return `
         Curriculum for ${activity}:
 
-        Write a curriculum that has the word "educational" somewhere in it. The curriculum should include the following elements for a child wanting to learn how to engage in ${activity}: 
+      Write a curriculum that has the word "educational" somewhere in it with scope and sequence, learning objectives, 5 detailed lessons in order, activity, and assessment for a child wanting to learn about ${activity}. Please provide a comprehensive list of all materials needed for the rock storytelling curriculum, including the additional products mentioned. For each item, give a detailed explanation of how it is specifically used within the curriculum, including which lessons or activities it's used for and any particular techniques or applications involved. List materials at the end.
 
-        1. **Scope and Sequence**
-        2. **Learning Objectives**
-        3. **15 Detailed Lessons in Order**
-        4. **Activities**
-        5. **Instructional Materials Required**
-        6. **Assessment**
+      1. Scope and Sequence
+      2. Learning Objectives
+      3. 15 Detailed Lessons in Order
+      4. Activities
+      5. Instructional Materials Required
+      6. Assessment
 
-        Also, list the educational benefits of learning how to use ${activity}, the subjects it covers, and a brief history of ${activity}. Finally, provide a summary of materials required at the end.
+      Include the educational benefits of ${activity}, the subjects it covers, and a brief history of ${activity}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
         Ensure that the curriculum for using ${activity} is comprehensive and engaging for young learners.
     `;
@@ -295,7 +305,7 @@ export default function Home() {
     return `
       Curriculum for ${activitiesStr}:
 
-      Write a curriculum that includes the word "educational" and covers the following for a child learning ${activitiesStr}:
+      Write a curriculum that has the word "educational" somewhere in it with scope and sequence, learning objectives, 5 detailed lessons in order, activity, and assessment for a child wanting to learn about ${activitiesStr}. Please provide a comprehensive list of all materials needed for the rock storytelling curriculum, including the additional products mentioned. For each item, give a detailed explanation of how it is specifically used within the curriculum, including which lessons or activities it's used for and any particular techniques or applications involved. List materials at the end.
 
       1. Scope and Sequence
       2. Learning Objectives
@@ -304,8 +314,9 @@ export default function Home() {
       5. Instructional Materials Required
       6. Assessment
 
-      Include the educational benefits of ${activitiesStr}, the subjects it covers, and a brief history of ${activitiesStr}. Provide a summary of materials required at the end.
+      Include the educational benefits of ${activitiesStr}, the subjects it covers, and a brief history of ${activitiesStr}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
+      
       Make sure the curriculum is comprehensive and engaging for young learners. 
       ${activities.length > 1 && `Your goal is to blend ${activitiesStr} into a cohesive curriculum.`}
     `;
@@ -321,21 +332,24 @@ export default function Home() {
 
   return (
     <main className="h-screen w-screen overflow-hidden">
-      <Header messages={messages} submit={submit} />
+      <Header messages={messages} submit={submit} buttonRef={buttonRef} />
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
       <div className="w-full lg:h-[90vh] h-[92vh] flex justify-center">
         <div className="w-[98vw] lg:w-[40vw] lg:h-[90vh] relative flex flex-col px-6 py-2">
           <div className="flex flex-row gap-2 mx-auto lg:mx-0 max-w-[90%] lg:max-w-[94%] xl:max-w-full">
-            <ChatHistory setId={setId} id={id} />
+            <ChatHistory setId={setId} id={id} messages={messages} canCreateNew={canCreateNew}/>
           </div>
           <ScrollArea className="w-[85vw] mx-auto lg:w-[40vw] flex flex-col gap-10 lg:gap-3 h-[80%] p-2 overflow-auto">
             {messages.length > 0 ? (
-              messages.map((m: Message, index: number) => (
-                <MessageBubble text={cleanString(m.content)} key={m.id} isUser={m.role === "user"} isLast={index == Object.keys(messages).length - 1}/>
+              messages.map((m: Message, index) => (
+                <MessageBubble text={cleanString(m.content)} 
+                key={m.id} isUser={m.role === "user"} 
+                isReady={index === Object.keys(messages).length - 1 && index % 2 !== 0}
+                handleButtonClick={handleButtonClick} />
               ))
             ) : (
-              <SplashScreen />
+              <SplashScreen submit={submit} />
             )}
           </ScrollArea>
 
@@ -371,7 +385,7 @@ export default function Home() {
             <Input placeholder={able ? "Enter Message Here.." : "Fill out form fully.."} className="!bg-transparent !border-0 w-full text-1xl" disabled={!able} />
             <Button className="p-0 !bg-transparent text-black" disabled={!able}><Send className="dark:text-white" /></Button>
           </div>
-          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs xl:text-base mt-1">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
+          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs mt-1">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
         </div>
       </div>
     </main>

@@ -26,7 +26,7 @@ export default function ThemeSwitcher() {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger>
-                    <div className='flex flex-row gap-2 font-bold'>
+                    <div className='flex flex-row gap-2 font-bold mb-2'>
                         {
                             theme === 'dark' ? <MoonStar /> : theme === 'light' ? <Sun /> : <Computer />
                         }

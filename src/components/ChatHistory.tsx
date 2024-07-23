@@ -40,13 +40,14 @@ import { z } from "zod"
 import { useToast } from "./ui/use-toast"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
-import { generateId } from "ai"
+import { generateId, Message } from "ai"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { LinkPreview } from "./link-preview"
+import { ScrollArea } from "./ui/scroll-area"
 
 const FormSchema = z.object({
   chat: z
@@ -90,14 +91,14 @@ function isLINKStorage(data: any): data is LINKStorage {
 interface Props {
   setId: Function;
   id: string;
+  messages: Message[];
+  canCreateNew: boolean
 }
 
 export default function ChatHistory(props: Props) {
   const { toast } = useToast();
   const [tempId, setTempId] = React.useState<string>(props.id);
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  })
+  const form = useForm<z.infer<typeof FormSchema>>({ resolver: zodResolver(FormSchema) })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     props.setId(data.chat);
@@ -127,6 +128,13 @@ export default function ChatHistory(props: Props) {
     }
   }, [props.id, tempId]);
 
+  function doStuff() {
+    const id = generateId();
+    props.setId(id);
+    setTempId(id);
+    form.reset({ chat: "" }); // Reset the 'chat' field to an empty string or placeholder
+  }
+
   React.useEffect(() => {
     const d = localStorage.getItem("messageData");
     if (d) {
@@ -138,7 +146,7 @@ export default function ChatHistory(props: Props) {
       setShow(true);
     else
       setShow(false);
-  }, [])
+  }, [props.canCreateNew])
 
   if (canShow == undefined)
     return null;
@@ -179,7 +187,7 @@ export default function ChatHistory(props: Props) {
 
   return <>
     <Button variant={"outline"} className="mx-1 px-3 flex flex-row gap-1 "
-      onClick={() => props.setId(generateId())}>
+      onClick={() => doStuff()}>
       <Plus /> New <span className="hidden lg:block">Product</span>
     </Button>
     <Form {...form}>
@@ -188,45 +196,54 @@ export default function ChatHistory(props: Props) {
           control={form.control}
           name="chat"
           render={({ field }) => (
-            <FormItem>
-              <Select onValueChange={(value) => {
-                field.onChange(value);
-                onSubmit({ chat: value });
-              }} defaultValue={field.value}>
+            <FormField
+              control={form.control}
+              name="chat"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      onSubmit({ chat: value });
+                    }}
+                    value={field.value} // Ensure the Select value is controlled by the form
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-[160px] lg:w-full">
+                        <SelectValue placeholder="Select a chat to display" className="w-[100px] lg:w-[200px]" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <ScrollArea className="max-h-[250px]">
+                      <SelectContent>
+                        {messageData && Object.keys(messageData).length > 0 ? (
+                          Object.keys(messageData).map((key: string | number, index: any) => (
+                            <Item key={index} data={messageData[key]} />
+                          ))
+                        ) : (
+                          <div className="grid place-items-center w-[240px] xl:w-full px-10 py-5 h-full">
+                            <div className="flex flex-col gap-2 items-center text-center justify-center">
+                              <CircleOff className="w-10 h-10" />
+                              <p className="text-sm">Whoops, it looks like nothing is in your history.</p>
+                              <p className="text-xs">
+                                <span className="font-bold">Note:</span> The history will only update upon a page reload.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </SelectContent>
+                    </ScrollArea>
+                  </Select>
+                </FormItem>
+              )}
+            />
 
-                <FormControl>
-                  <SelectTrigger className="w-[160px] lg:w-full">
-                    <SelectValue placeholder="Select a chat to display" className="w-[100px] lg:w-[200px]" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="w-[170px] lg:w-full">
-                  {
-                    messageData && Object.keys(messageData).length > 0 ? <>
-                      {
-                        Object.keys(messageData).map((key: string | number, index: any) => {
-                          return <Item key={index} data={messageData[key]} />
-                        })
-                      }
-                    </> : <>
-                      <div className="grid place-items-center w-[240px] xl:w-full px-10 py-5 h-full">
-                        <div className="flex flex-col gap-2 items-center text-center justify-center">
-                          <CircleOff className="w-10 h-10" />
-                          <p className="text-sm">Whoops, it looks like nothing is in your history.</p>
-                          <p className="text-xs"><span className="font-bold">Note:</span> The history will only update upon a page reload.</p>
-                        </div>
-                      </div>
-                    </>
-                  }
-                </SelectContent>
-              </Select>
-            </FormItem>
           )}
         />
       </form>
     </Form>
     <Popover>
       <PopoverTrigger>
-        <Button variant={"outline"}><Info /></Button>
+        <Button variant={"outline"} className="mb-2"><Info /></Button>
       </PopoverTrigger>
       <PopoverContent className="flex flex-col w-max gap-1">
         {dat ? <>

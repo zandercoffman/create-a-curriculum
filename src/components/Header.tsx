@@ -1,3 +1,5 @@
+"use client"
+
 import { ArrowRightFromLine, PanelRight, Slash } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import {
@@ -18,6 +20,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import ExportButton from "./ExportButton";
+import { useState } from "react";
 
 interface FORM1 {
     name: string;
@@ -44,13 +47,17 @@ interface LINKStorage {
 interface Props {
     messages: any;
     submit: (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => void;
+    buttonRef: any;
 }
 
 export default function Header(props: Props) {
+
+    const [ud, setUD] = useState<FORM1 | null>(null);
+
     return (
         <div className="w-full h-[10vh] px-4 flex flex-row justify-between size-7 shrink-0 select-none items-center rounded-b-lg bg-muted/50 text-xs font-medium uppercase text-muted-foreground">
             <BreadCrumbHeader submit={props.submit} />
-            <ExportButton messages={props.messages}/>
+            <ExportButton messages={props.messages} buttonRef={props.buttonRef}/>
         </div>
     );
 }
