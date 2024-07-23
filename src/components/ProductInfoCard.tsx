@@ -9,7 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
     Form,
@@ -34,18 +34,27 @@ import {
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import MultipleProductsForm from "./MultipleProductsForm";
+import ChoiceSeparator from "./ChoiceSeperator";
+import { Slider } from "@/components/ui/slider"
 import ChoiceSeperator from "./ChoiceSeperator";
 
 // Define form schema with zod
 const formSchema = z.object({
     name: z.string().min(1, 'Name is required'),
-    description: z.string().min(1, 'Description is required')
+    description: z.string().min(1, 'Description is required'),
+    lessons: z.number().min(1, 'At least 1 lesson is required.')
 });
 
 interface Props {
     form: any;
     setForm: Function;
     check: Function;
+}
+
+interface FORM2PRODUCT {
+    name: string;
+    description: string;
+    lessons: number;
 }
 
 export default function ProductInfoCard(props: Props) {
@@ -55,7 +64,8 @@ export default function ProductInfoCard(props: Props) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: '',
-            description: ''
+            description: '',
+            lessons: 5
         }
     });
 
@@ -63,7 +73,7 @@ export default function ProductInfoCard(props: Props) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         alert(JSON.stringify(values));
-        props.setForm(values);
+        props.setForm(values as FORM2PRODUCT);
         setHasSubmitted(true);
     }
 
@@ -75,7 +85,7 @@ export default function ProductInfoCard(props: Props) {
 
     return (
         <ScrollArea className="lg:h-[300px] h-[65vh] xl:h-[60vh] w-full flex flex-col gap-2 pr-4">
-            <MultipleProductsForm setForm={doMultiple}/>
+            <MultipleProductsForm setForm={doMultiple} />
             <ChoiceSeperator text="or" className="mb-3" />
             <Card className="h-[470px] mb-10 w-full">
                 <CardHeader>
@@ -93,11 +103,8 @@ export default function ProductInfoCard(props: Props) {
                                     <FormItem>
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter name" {...field} disabled={hasSubmitted}/>
+                                            <Input placeholder="Enter name" {...field} disabled={hasSubmitted} />
                                         </FormControl>
-                                        <FormDescription>
-                                            You can <span>@mention</span> other users and organizations.
-                                        </FormDescription>
                                         <FormMessage>{fieldState.error?.message}</FormMessage>
                                     </FormItem>
                                 )}
@@ -116,14 +123,28 @@ export default function ProductInfoCard(props: Props) {
                                                 disabled={hasSubmitted}
                                             />
                                         </FormControl>
-                                        <FormDescription>
-                                            You can <span>@mention</span> other users and organizations.
-                                        </FormDescription>
                                         <FormMessage>{fieldState.error?.message}</FormMessage>
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" variant={"secondary"} className="mt-2" disabled={hasSubmitted}>Submit</Button>
+                            <FormField
+                                control={form.control}
+                                name="lessons"
+                                render={({ field, fieldState }) => (
+                                    <FormItem>
+                                        <FormLabel>Amount of Lessons: {field.value}</FormLabel>
+                                        <Slider
+                                            value={[field.value]}
+                                            onValueChange={([value]) => field.onChange(value)}
+                                            max={20}
+                                            step={1}
+                                            disabled={hasSubmitted}
+                                        />
+                                        <FormMessage>{fieldState.error?.message}</FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" variant={"secondary"} className="mt-5" disabled={hasSubmitted}>Submit</Button>
                         </form>
                     </Form>
                 </CardContent>

@@ -42,7 +42,7 @@ interface MessageDat {
     messages: Message[]
 }
 
-export default function MessageSelector() {
+export default function MessageSelector(props: any) {
     const [api, setApi] = React.useState<CarouselApi>()
     const [current, setCurrent] = React.useState(0)
     const [count, setCount] = React.useState(0)
@@ -52,6 +52,8 @@ export default function MessageSelector() {
     const [data, setData] = useState<MessageDat[]>([]);
     const [loading, setLoading] = useState(true);
     const [cant, setCant] = useState(false);
+
+    const [selected, setSelected] = useState(0);
 
     const {toast} = useToast();
 
@@ -85,13 +87,14 @@ export default function MessageSelector() {
             const dat = localStorage.getItem("messageData");
             if (dat && dat.length > 0) {
                 setData(JSON.parse(dat) as MessageDat[]);
+                props.setselIndex(0);
                 setLoading(false);
             } else {
                 setCant(true);
                 return;
             }
         }
-    }, [])
+    }, [props])
 
     function capitalizeFirstLetter(string: string = " ") {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -173,7 +176,12 @@ export default function MessageSelector() {
             </div>
 
             <div className="mt-auto">
-                <Button className="w-full" variant={arr[current - 1] == true ? 'secondary' : 'default'}>{arr[current - 1] == true ? 'Currently Selected' : 'Select'}</Button>
+                <Button className="w-full" variant={selected == current - 1 ? 'secondary' : 'default'}
+                onClick={() => {
+                    setSelected(current - 1);
+                    props.setselIndex(current - 1);
+                }}
+                >{selected == current - 1 ? 'Currently Selected' : 'Select'}</Button>
             </div>
         </div>
     </>

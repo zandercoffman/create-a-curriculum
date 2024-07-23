@@ -132,7 +132,7 @@ export default function ChatHistory(props: Props) {
     const id = generateId();
     props.setId(id);
     setTempId(id);
-    form.reset({ chat: "" }); // Reset the 'chat' field to an empty string or placeholder
+    form.reset({ chat: id }); // Reset the 'chat' field to an empty string or placeholder
   }
 
   React.useEffect(() => {

@@ -86,6 +86,7 @@ interface FORM1 {
   uniqueid: string;
   grade: number | undefined | string;
   saveinfo: boolean;
+  wantstousegrade: boolean;
 }
 
 interface FORM2TITLES {
@@ -95,11 +96,21 @@ interface FORM2TITLES {
 interface FORM2PRODUCT {
   name: string;
   description: string;
+  lessons: number;
 }
+
 interface LINKStorage {
   name: string;
   link: string;
   id: string;
+}
+
+interface MessageDat {
+  id: string;
+  name: string;
+  type: string;
+  extra: any;
+  messages: Message[]
 }
 
 export default function Home() {
@@ -117,6 +128,7 @@ export default function Home() {
     {
       keepLastMessageOnError: true,
       onFinish(message: Message) {
+        message.content = message.content.replace(/\n/g, '')
         const s = localStorage.getItem("enabledHistory");
         if (s) {
           const p = localStorage.getItem("messageData");
@@ -143,13 +155,41 @@ export default function Home() {
                 setCanNew(true);
               }
             }
+          } else {
+            const a: MessageDat = {
+              id: "A",
+              name: "Curriculum",
+              type: "product",
+              extra: "",
+              messages: [message] as Message[]
+            }
+  
+            localStorage.setItem("messageData", JSON.stringify(a));
           }
+        } else {
+
+          const obj = [
+            {
+              id: localStorage.getItem("currentChatId") || "id",
+              name: "Curriculum",
+              type: "product",
+              extra: "",
+              messages: [message] as Message[]
+            }
+          ]
+
+          localStorage.setItem("messageData", JSON.stringify(obj));
         }
       }
     }
   );
 
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem("messageData") && !localStorage.getItem("enabledHistory"))
+        localStorage.removeItem("messageData");
+    }
+  }, [])
 
 
   const [able, setAble] = useState(false);
@@ -165,7 +205,7 @@ export default function Home() {
   }
 
   const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => {
-    const input = decideCurToUse(form2);
+    const input = decideCurToUse(form2, form1);
 
     // Append the user message
     const obj = {
@@ -173,6 +213,9 @@ export default function Home() {
       content: input,
       id: generateId()
     };
+
+
+
     append(obj as Message);
     const lastAiMessageId = messages.length > 0 ? messages[messages.length - 1].id : null;
     handleLocalStorage([...messages, obj] as Message[], lastAiMessageId, form2, id);
@@ -264,38 +307,47 @@ export default function Home() {
     }
   };
 
-  const decideCurToUse = (obj: FORM2TITLES | FORM2PRODUCT | LINKStorage): string => {
+  const decideCurToUse = (obj: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null | undefined): string => {
     if ('link' in obj) {
-      return `${makeCurriculum(obj.name)}`;
+      return `${makeCurriculum(obj.name, form1?.grade?.toString(), 8)}`;
     } else if ('titles' in obj) {
-      return `${makeCurriculums(getTitleValue(obj.titles).split(","))}`;
+      return `${makeCurriculums(getTitleValue(obj.titles).split(","), form1?.grade?.toString(), 8)}`;
     } else if ('name' in obj) {
-      return `${makeCurriculum(obj.name)}`;
+      return `${makeCurriculum(obj.name, form1?.grade?.toString(), obj.lessons)}`;
     } else {
       return "Unknown data type";
     }
   }
 
-  function makeCurriculum(activity: string): string {
+  function makeCurriculum(activity: string, grade: string | undefined | null = "", lesson: number = 5): string {
     return `
         Curriculum for ${activity}:
 
-      Write a curriculum that has the word "educational" somewhere in it with scope and sequence, learning objectives, 5 detailed lessons in order, activity, and assessment for a child wanting to learn about ${activity}. Please provide a comprehensive list of all materials needed for the rock storytelling curriculum, including the additional products mentioned. For each item, give a detailed explanation of how it is specifically used within the curriculum, including which lessons or activities it's used for and any particular techniques or applications involved. List materials at the end.
+      Write a curriculum that has the word "educational" somewhere 
+      in it with scope and sequence, learning objectives, activity, and assessment for 
+      a child wanting to learn about ${activity}. 
+      Please provide a comprehensive list of all materials 
+      needed for the  ${activity} curriculum, including the 
+      additional products mentioned. For each item, give a 
+      detailed explanation of how it is specifically used within 
+      the curriculum, including which lessons or activities it's 
+      used for and any particular techniques or applications involved.
+       List materials at the end.
 
       1. Scope and Sequence
       2. Learning Objectives
-      3. 15 Detailed Lessons in Order
+      3. ${lesson} Detailed Lessons in Order
       4. Activities
       5. Instructional Materials Required
       6. Assessment
 
       Include the educational benefits of ${activity}, the subjects it covers, and a brief history of ${activity}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
-        Ensure that the curriculum for using ${activity} is comprehensive and engaging for young learners.
+        Ensure that the curriculum for using ${activity} is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}.
     `;
   }
 
-  function makeCurriculums(activities: string[]): string {
+  function makeCurriculums(activities: string[], grade: string | undefined | null = "", lesson: number = 5): string {
     if (activities.length == 1) {
       return makeCurriculum(activities[0]);
     }
@@ -305,11 +357,11 @@ export default function Home() {
     return `
       Curriculum for ${activitiesStr}:
 
-      Write a curriculum that has the word "educational" somewhere in it with scope and sequence, learning objectives, 5 detailed lessons in order, activity, and assessment for a child wanting to learn about ${activitiesStr}. Please provide a comprehensive list of all materials needed for the rock storytelling curriculum, including the additional products mentioned. For each item, give a detailed explanation of how it is specifically used within the curriculum, including which lessons or activities it's used for and any particular techniques or applications involved. List materials at the end.
+      Write a curriculum that has the word "educational" somewhere in it with scope and sequence, learning objectives, activity, and assessment for a child wanting to learn about ${activitiesStr}. Please provide a comprehensive list of all materials needed for the ${activitiesStr} curriculum, including the additional products mentioned. For each item, give a detailed explanation of how it is specifically used within the curriculum, including which lessons or activities it's used for and any particular techniques or applications involved. List materials at the end.
 
       1. Scope and Sequence
       2. Learning Objectives
-      3. 15 Detailed Lessons in Order
+      3. ${lesson} Detailed Lessons in Order
       4. Activities
       5. Instructional Materials Required
       6. Assessment
@@ -317,7 +369,7 @@ export default function Home() {
       Include the educational benefits of ${activitiesStr}, the subjects it covers, and a brief history of ${activitiesStr}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
       
-      Make sure the curriculum is comprehensive and engaging for young learners. 
+      Make sure the curriculum is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}. 
       ${activities.length > 1 && `Your goal is to blend ${activitiesStr} into a cohesive curriculum.`}
     `;
   }
@@ -338,15 +390,15 @@ export default function Home() {
       <div className="w-full lg:h-[90vh] h-[92vh] flex justify-center">
         <div className="w-[98vw] lg:w-[40vw] lg:h-[90vh] relative flex flex-col px-6 py-2">
           <div className="flex flex-row gap-2 mx-auto lg:mx-0 max-w-[90%] lg:max-w-[94%] xl:max-w-full">
-            <ChatHistory setId={setId} id={id} messages={messages} canCreateNew={canCreateNew}/>
+            <ChatHistory setId={setId} id={id} messages={messages} canCreateNew={canCreateNew} />
           </div>
           <ScrollArea className="w-[85vw] mx-auto lg:w-[40vw] flex flex-col gap-10 lg:gap-3 h-[80%] p-2 overflow-auto">
             {messages.length > 0 ? (
               messages.map((m: Message, index) => (
-                <MessageBubble text={cleanString(m.content)} 
-                key={m.id} isUser={m.role === "user"} 
-                isReady={index === Object.keys(messages).length - 1 && index % 2 !== 0}
-                handleButtonClick={handleButtonClick} />
+                <MessageBubble text={cleanString(m.content)}
+                  key={m.id} isUser={m.role === "user"}
+                  isReady={index === Object.keys(messages).length - 1 && index % 2 !== 0}
+                  handleButtonClick={handleButtonClick} />
               ))
             ) : (
               <SplashScreen submit={submit} />

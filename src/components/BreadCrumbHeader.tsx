@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRightFromLine, Github, PanelRight, Slash } from "lucide-react";
+import { ArrowRightFromLine, Cog, Github, PanelRight, Settings, Slash } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import {
     Breadcrumb,
@@ -43,12 +43,22 @@ import GithubTab from "./GithubTab";
 import PrivacyPopup from "./PrivacyPopup";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 interface FORM1 {
     name: string;
     uniqueid: string;
     grade: number | undefined | string;
     saveinfo: boolean;
+    wantstousegrade: boolean;
 }
 
 interface FORM2TITLES {
@@ -58,6 +68,7 @@ interface FORM2TITLES {
 interface FORM2PRODUCT {
     name: string;
     description: string;
+    lessons: number;
 }
 interface LINKStorage {
     name: string;
@@ -67,6 +78,7 @@ interface LINKStorage {
 
 interface Props {
     submit: (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => void;
+    setUD: Function;
 }
 
 export default function BreadCrumbHeader(props: Props) {
@@ -110,12 +122,21 @@ export default function BreadCrumbHeader(props: Props) {
         }
     };
 
+    const del = () => {
+        localStorage.clear();
+        toast({
+            title: "Successfully deleted!",
+        })
+        window.location.reload();
+        
+    }
 
     useEffect(() => {
         setSubmitButton(
             form2 !== null
         );
-    }, [form1, form2]);
+        props.setUD(form1 as FORM1);
+    }, [form1, form2, props]);
 
     return (
         <>
@@ -195,6 +216,29 @@ export default function BreadCrumbHeader(props: Props) {
                     </BreadcrumbSeparator>
                     <BreadcrumbItem>
                         <ThemeSwitcher />
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator className="dark:opacity-40">
+                        <Slashy />
+                    </BreadcrumbSeparator>
+                    <BreadcrumbItem>
+                        <Dialog>
+                            <DialogTrigger><Settings className="mb-2" /></DialogTrigger>
+                            <DialogContent className="w-[95vw] lg:w-[60vw] rounded-xl h-[90vh]">
+                                <DialogHeader>
+                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                    <DialogDescription>
+                                        This action cannot be undone. This will permanently delete your account
+                                        and remove your data from our servers.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="absolute bottom-0 left-0 w-full mb-5 ml-5 flex flex-row gap-2">
+                                    <Button variant={"destructive"}
+                                    onClick={del}>Delete Data</Button>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+
+
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>

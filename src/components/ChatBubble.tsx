@@ -110,32 +110,11 @@ export const MessageBubble = (params: any) => {
                             <div className='flex flex-row gap-2'>
                                 <Sparkles className='w-8 h-8' />
                                 <div className='flex flex-col gap-2'>
-                                    <p>This curriculum is production-ready.</p>
+                                    <p className='lg:my-auto'>This curriculum is production-ready.</p>
                                     <div className='w-full flex flex-row gap-2'>
-                                        <Button className='w-1/2' variant={'secondary'}
+                                        <Button className='w-1/2 lg:hidden' variant={'secondary'}
                                             onClick={() => params.handleButtonClick()}
                                         >Export Now</Button>
-                                        <Dialog>
-                                            <DialogTrigger>
-                                                <Button variant={'secondary'}>View Now</Button>
-                                            </DialogTrigger>
-                                            <DialogContent className="w-[90vw] lg:w-[80vw] rounded-xl pr-5 ">
-                                                <DialogHeader className="font-extrabold">
-                                                    Curriculum
-                                                </DialogHeader>
-                                                <ScrollArea className="w-[80vw] lg:w-[78vw] h-[75vh] overflow-hidden relative">
-                                                    <div className="whitespace-normal">
-                                                        <Markdown>{`${params.text}`}</Markdown>
-                                                    </div>
-                                                    <div className="absolute bottom-0 right-0 size-2 mr-8 w-10 h-10 grid place-items-center bg-gray-200">
-                                                        <Button onClick={() => copy()}><ClipboardCopy /></Button>
-                                                    </div>
-                                                </ScrollArea>
-
-
-
-                                            </DialogContent>
-                                        </Dialog>
                                     </div>
                                 </div>
                             </div>
