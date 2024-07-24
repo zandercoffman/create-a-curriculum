@@ -71,11 +71,11 @@ export default function ExportButton(props: Props) {
     const [curriculumContent, setCurriculumContent] = useState<string>("");
 
     const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setMessageContent(e.target.value);
+        setMessageContent(e.target.value.replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, ''));
     };
 
     const handleCurriculumChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setCurriculumContent(e.target.value);
+        setCurriculumContent(e.target.value.replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, ''));
     };
 
     const [loading, setLoading] = useState(false);
@@ -88,7 +88,7 @@ export default function ExportButton(props: Props) {
 
             const m = obj.messages;
             const goodm = m[m.length - 1];
-            setCurriculumContent(JSON.stringify(goodm.content))
+            setCurriculumContent((goodm.content))
         }
     }, [selIndex])
 
@@ -110,7 +110,7 @@ export default function ExportButton(props: Props) {
         // Define form1Data and form2Data
         const form1Data: FORM1 | null = props.userData || null; // Ensure props.userData matches FORM1 type or set to null
         const c = await remark().use(strip).process(curriculumContent);
-        const form2Data = String(c).replace(/\n/g, '');
+        const form2Data = String(c).replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, '');
     
         try {
             // Send a POST request with form1 and form2 data
@@ -122,7 +122,7 @@ export default function ExportButton(props: Props) {
                 body: JSON.stringify({
                     form1: form1Data,
                     form2: form2Data
-                })
+                })  
             });
     
             if (!response.ok) {

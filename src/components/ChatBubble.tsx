@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowUpFromLine, ClipboardCopy, Headphones, Sparkles } from 'lucide-react';
+import { ArrowUpFromLine, ClipboardCopy, Headphones, Loader, Sparkles } from 'lucide-react';
 import Markdown from "react-markdown"
 import { Button } from './ui/button';
 import {
@@ -67,6 +67,19 @@ export const MessageBubble = (params: any) => {
                 });
             });
     };
+
+    if (params.is) return <>
+        <div className={`bubble !text-white my-2 bg-gradient-to-r from-blue-600 to-violet-600 relative`}>
+            <ScrollArea className='max-w-[300px] h-full overflow-auto'>
+                <div className='flex flex-row gap-2'>
+                    <Loader className='w-6 h-6 motion-safe:animate-spin' />
+                    <div className='flex flex-col gap-2'>
+                        <p className='lg:my-auto'>Generating curriculum...</p>
+                    </div>
+                </div>
+            </ScrollArea>
+        </div>
+    </>
 
     return (
         <>

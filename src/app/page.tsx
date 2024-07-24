@@ -117,6 +117,7 @@ export default function Home() {
   const [id, setId] = useState<string>(generateId());
   const [canCreateNew, setCanNew] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [c, setc] = useState<boolean>(false);
 
   const handleButtonClick = () => {
     if (buttonRef.current) {
@@ -153,6 +154,7 @@ export default function Home() {
                 parsed[index] = filtered[0];
                 localStorage.setItem("messageData", JSON.stringify(parsed));
                 setCanNew(true);
+                setc(false);
               }
             }
           } else {
@@ -165,6 +167,7 @@ export default function Home() {
             }
   
             localStorage.setItem("messageData", JSON.stringify(a));
+            setc(false);
           }
         } else {
 
@@ -179,6 +182,7 @@ export default function Home() {
           ]
 
           localStorage.setItem("messageData", JSON.stringify(obj));
+          setc(false);
         }
       }
     }
@@ -205,6 +209,8 @@ export default function Home() {
   }
 
   const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => {
+    
+    setc(true);
     const input = decideCurToUse(form2, form1);
 
     // Append the user message
@@ -319,7 +325,7 @@ export default function Home() {
     }
   }
 
-  function makeCurriculum(activity: string, grade: string | undefined | null = "", lesson: number = 5): string {
+  function makeCurriculum(activity: string, grade: string | undefined | null = null, lesson: number | null = null): string {
     return `
         Curriculum for ${activity}:
 
@@ -344,10 +350,12 @@ export default function Home() {
       Include the educational benefits of ${activity}, the subjects it covers, and a brief history of ${activity}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
         Ensure that the curriculum for using ${activity} is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}.
+
+        Type in plain text.
     `;
   }
 
-  function makeCurriculums(activities: string[], grade: string | undefined | null = "", lesson: number = 5): string {
+  function makeCurriculums(activities: string[], grade: string | undefined | null = null, lesson: number = 5): string {
     if (activities.length == 1) {
       return makeCurriculum(activities[0]);
     }
@@ -371,6 +379,7 @@ export default function Home() {
       
       Make sure the curriculum is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}. 
       ${activities.length > 1 && `Your goal is to blend ${activitiesStr} into a cohesive curriculum.`}
+      Type in plain text.
     `;
   }
 
@@ -393,14 +402,21 @@ export default function Home() {
             <ChatHistory setId={setId} id={id} messages={messages} canCreateNew={canCreateNew} />
           </div>
           <ScrollArea className="w-[85vw] mx-auto lg:w-[40vw] flex flex-col gap-10 lg:gap-3 h-[80%] p-2 overflow-auto">
-            {messages.length > 0 ? (
-              messages.map((m: Message, index) => (
-                <MessageBubble text={cleanString(m.content)}
-                  key={m.id} isUser={m.role === "user"}
-                  isReady={index === Object.keys(messages).length - 1 && index % 2 !== 0}
-                  handleButtonClick={handleButtonClick} />
-              ))
-            ) : (
+            {messages.length > 0 ? <>
+              {
+                messages.map((m: Message, index) => (
+                  <MessageBubble text={cleanString(m.content)}
+                    key={m.id} isUser={m.role === "user"}
+                    isReady={index === Object.keys(messages).length - 1 && index % 2 !== 0}
+                    handleButtonClick={handleButtonClick} />
+                ))
+              }
+              {
+                c && <><MessageBubble
+                key={"w"} 
+                is={true} /></>
+              }
+            </> : (
               <SplashScreen submit={submit} />
             )}
           </ScrollArea>
@@ -437,7 +453,7 @@ export default function Home() {
             <Input placeholder={able ? "Enter Message Here.." : "Fill out form fully.."} className="!bg-transparent !border-0 w-full text-1xl" disabled={!able} />
             <Button className="p-0 !bg-transparent text-black" disabled={!able}><Send className="dark:text-white" /></Button>
           </div>
-          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs mt-1">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama</Link> and may make mistakes.</h1>
+          <h1 className="text-center text-gray-700 dark:text-white font-semibold text-xs mt-1">Note: This AI uses <Link href="https://llama.meta.com/" className="font-bold">Meta-Llama 3.1</Link> and may make mistakes.</h1>
         </div>
       </div>
     </main>
