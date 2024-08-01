@@ -50,9 +50,9 @@ import { generateId, ToolInvocation } from 'ai';
 
 const formSchemaLink = z.object({
   link: z.string().refine(
-    (value) => value.includes("http") && value.includes("/") && value.includes("."),
+    (value) => value.length > 1,
     {
-      message: "Link must contain 'http', at least one '/', and at least one '.'.",
+      message: "Please enter a product.",
     }
   ).default(""),
 })
@@ -292,7 +292,6 @@ export default function Home() {
   };
 
   function onsubmitLink(values: z.infer<typeof formSchemaLink>) {
-    alert(getProductFromLink(values.link));
     submit({
       name: getProductFromLink(values.link),
       link: values.link,
@@ -396,7 +395,7 @@ export default function Home() {
       <Header messages={messages} submit={submit} buttonRef={buttonRef} />
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
-      <div className="w-full lg:h-[90vh] h-[92vh] flex justify-center">
+      <div className="w-full h-[90vh] flex justify-center">
         <div className="w-[98vw] lg:w-[40vw] lg:h-[90vh] relative flex flex-col px-6 py-2">
           <div className="flex flex-row gap-2 mx-auto lg:mx-0 max-w-[90%] lg:max-w-[94%] xl:max-w-full">
             <ChatHistory setId={setId} id={id} messages={messages} canCreateNew={canCreateNew} />
@@ -434,9 +433,9 @@ export default function Home() {
                       name="link"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Link</FormLabel>
+                          <FormLabel>Link/Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter link here" {...field} />
+                            <Input placeholder="Enter link/title here" {...field} />
                           </FormControl>
                           <FormDescription className="flex flex-col">
                             <span>Your product: </span><span className="font-bold text-lg leading-5">{getProductFromLink(field.value)}</span><span className="mt-2"><span className="font-bold">Note:</span> The algorithm may not capture every link accurately.</span>

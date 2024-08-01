@@ -73,7 +73,6 @@ export default function ApplicantInfo(props: Props) {
 
     function onSubmit(values: any) {
         props.setForm(values as FORM1);
-        alert(JSON.stringify(values))
     }
 
     useEffect(() => {

@@ -92,7 +92,6 @@ export default function BreadCrumbHeader(props: Props) {
             if (!form2) {
                 throw new Error('Form2 is null or undefined.');
             }
-            alert(typeof form2)
             // Debugging: Log form data before submission
             console.log("Submitting form2:", form2);
             console.log("Submitting form1:", form1);
@@ -117,7 +116,7 @@ export default function BreadCrumbHeader(props: Props) {
             toast({
                 variant: "destructive",
                 title: "There was an error.",
-                description: "The form was not filled out correctly. " + err.message,
+                description: "The form was not filled out correctly. Note: If you are submitting via titles, hit the button again.",
             });
         }
     };

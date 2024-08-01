@@ -132,7 +132,7 @@ export const MessageBubble = (params: any) => {
                                 </div>
                             </div>
                         </ScrollArea>
-                        <span className="motion-safe:animate-ping absolute inline-flex lg:h-8 lg:w-8 h-7 w-7 rounded-full bg-sky-400 opacity-75"></span>
+                        <span className="motion-safe:animate-ping motion-reduce:hidden absolute inline-flex lg:h-8 lg:w-8 h-7 w-7 rounded-full bg-sky-400 opacity-75"></span>
                     </div>
 
                 </>

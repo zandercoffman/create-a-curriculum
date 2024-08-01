@@ -70,9 +70,6 @@ export default function ProductInfoCard(props: Props) {
     });
 
     function onSubmit(values: any) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        alert(JSON.stringify(values));
         props.setForm(values as FORM2PRODUCT);
         setHasSubmitted(true);
     }

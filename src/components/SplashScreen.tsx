@@ -66,7 +66,7 @@ export default function SplashScreen(props: Props) {
                 </div>
                 <div className="w-full flex items-center gap-2 mt-2 overflow-x-auto leading-3">
                     <p className="flex flex-row gap-2 text-sm lg:text-base whitespace-nowrap">
-                        <span className="font-bold">2.</span> Press the <Paperclip className="transform rotate-[-45deg]" /> button, enter a link, then generate.
+                        <span className="font-bold">2.</span> Press the <Paperclip className="transform rotate-[-45deg]" /> button, enter a link/title, then generate.
                     </p>
                 </div>
 

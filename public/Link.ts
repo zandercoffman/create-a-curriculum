@@ -35,7 +35,7 @@ export function getLink(link: string = "") {
         case "zappos":
             return subs[1]?.replace(/-/g, " ") || "No Item Selected";
         default:
-            return product;
+            return link;
     }
 }
 
