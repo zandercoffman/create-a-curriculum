@@ -163,10 +163,10 @@ export default function ExportButton(props: Props) {
     const handleExportText = async () => {
         console.log("Export to DOCX clicked");
         setLoading(true);
-    
+
         const form1Data: FORM1 | null = props.userData || null;
         const form2Data = curriculumContent;
-    
+
         try {
             const response = await fetch('/api/generate-doc', {
                 method: 'POST',
@@ -178,15 +178,15 @@ export default function ExportButton(props: Props) {
                     form1: form1Data,
                 }),
             });
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             // Convert response to blob and initiate download using file-saver
             const blob = await response.blob();
             saveAs(blob, 'curriculum.docx'); // Save the file with file-saver
-    
+
             toast({
                 title: "Your .DOC file has been generated.",
                 description: "Enjoy using it!"
@@ -205,7 +205,7 @@ export default function ExportButton(props: Props) {
     const handleCopy = () => {
         console.log("Copy clicked");
         setLoading(true);
-    
+
         const form1Data: FORM1 | null = props.userData || null;
         const form2Data = curriculumContent;
 
@@ -218,7 +218,7 @@ export default function ExportButton(props: Props) {
                     description: "Enjoy using your curriculum!"
                 })
             })
-        } catch(err) {
+        } catch (err) {
 
         } finally {
             setLoading(false);
@@ -265,7 +265,7 @@ export default function ExportButton(props: Props) {
                                     <div className="flex flex-col gap-2 items-center text-center ">
                                         <CircleSlash2 className="w-10 h-10" />
                                         <span className="text-2xl">We couldn{"'"}t locate any curriculums at the moment. Please check back later.</span>
-                                        <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try refreshing the page.</span>
+                                        <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try pressing to a different section.</span>
                                     </div>
                                 </div>
                             </> : <>

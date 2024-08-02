@@ -108,7 +108,7 @@ export default function MessageSelector(props: any) {
                 <div className="flex flex-col gap-2 items-center text-center ">
                     <CircleSlash2 className="w-10 h-10" />
                     <span className="text-2xl">We couldn{"'"}t locate any curriculums at the moment. Please check back later.</span>
-                    <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try refreshing the page.</span>
+                    <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try pressing to a different section.</span>
                 </div>
             </div>
         </>
