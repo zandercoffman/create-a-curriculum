@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Box, Check, ChevronsUpDown, CircleHelp, CircleOff, Info, Paperclip, Plus, ShieldCheck } from "lucide-react"
+import { Box, Check, ChevronsUpDown, CircleHelp, CircleOff, Component, Info, Paperclip, Plus, ShieldCheck } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -148,6 +148,16 @@ export default function ChatHistory(props: Props) {
       setShow(false);
   }, [props.canCreateNew])
 
+  function formatTitles(input: string): string {
+    // First, we replace all the unnecessary characters: brackets, braces, and quotes
+    const cleaned = input.replace(/[\{\}\"\\]/g, '');
+
+    // Then, we replace the ": " and ":\" to commas for a list of titles
+    const formatted = cleaned.replace(/titles:/g, '').split(',').join(', ');
+
+    return formatted;
+  }
+
   if (canShow == undefined)
     return null;
   else if (!canShow) {
@@ -249,7 +259,14 @@ export default function ChatHistory(props: Props) {
         {dat ? <>
           {
             'titles' == dat.type ? <>
-
+              <div className="w-[90vw] lg:w-[450px] bg-white dark:bg-gray-950 p-3 flex flex-col gap-2">
+                <div className="flex flex-row gap-2 w-full">
+                  <h1 className="flex flex-row gap-1">
+                    <Component />Products:
+                  </h1>
+                  {formatTitles(dat.extra)}
+                </div>
+              </div>
             </> : 'link' == dat.type ? <>
               <div className="w-[90vw] lg:w-[450px] bg-white dark:bg-gray-950 p-3 flex flex-col gap-2">
                 <div className="flex flex-row gap-2">

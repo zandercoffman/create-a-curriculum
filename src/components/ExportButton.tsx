@@ -9,7 +9,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "./ui/button"
-import { ArrowRightFromLine, Loader } from "lucide-react"
+import { ArrowRightFromLine, CircleSlash2, Loader } from "lucide-react"
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileText, Text, ClipboardCopy } from "lucide-react";
@@ -20,8 +20,10 @@ import MessageSelector from "./MessageSelector"
 import { Badge } from "./ui/badge"
 import { useToast } from "./ui/use-toast"
 
-import {remark} from 'remark'
+import { remark } from 'remark'
 import strip from 'strip-markdown'
+import { saveAs } from 'file-saver';
+
 
 interface BigButtonProps {
     text: string;
@@ -35,23 +37,23 @@ interface FORM1 {
     grade: number | undefined | string;
     saveinfo: boolean;
     wantstousegrade: boolean;
-  }
-  
-  interface FORM2TITLES {
+}
+
+interface FORM2TITLES {
     titles: string;
-  }
-  
-  interface FORM2PRODUCT {
+}
+
+interface FORM2PRODUCT {
     name: string;
     description: string;
     lessons: number;
-  }
-  
-  interface LINKStorage {
+}
+
+interface LINKStorage {
     name: string;
     link: string;
     id: string;
-  }
+}
 
 interface Props {
     messages: any;
@@ -61,7 +63,7 @@ interface Props {
 
 export default function ExportButton(props: Props) {
 
-    const [selIndex, setselIndex] = useState<number | null>(null);
+    const [selIndex, setselIndex] = useState<number>(0);
     const [canedit, setedit] = useState(false)
 
     const { toast } = useToast();
@@ -106,12 +108,12 @@ export default function ExportButton(props: Props) {
     const handleExportPDF = async () => {
         console.log("Export to PDF clicked");
         setLoading(true);
-    
+
         // Define form1Data and form2Data
         const form1Data: FORM1 | null = props.userData || null; // Ensure props.userData matches FORM1 type or set to null
         const c = await remark().use(strip).process(curriculumContent);
-        const form2Data = String(c).replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, '');
-    
+        const form2Data = curriculumContent;
+
         try {
             // Send a POST request with form1 and form2 data
             const response = await fetch('/api/generate-pdf', {
@@ -122,16 +124,16 @@ export default function ExportButton(props: Props) {
                 body: JSON.stringify({
                     form1: form1Data,
                     form2: form2Data
-                })  
+                })
             });
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             // Create a blob from the response
             const blob = await response.blob();
-    
+
             // Create a URL for the blob and trigger the download
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -139,35 +141,89 @@ export default function ExportButton(props: Props) {
             link.setAttribute('download', 'example.pdf'); // Set the filename for the download
             document.body.appendChild(link);
             link.click();
-    
+
             // Cleanup
             link.remove();
             window.URL.revokeObjectURL(url);
             toast({
-                title: "Your PDF has been generated.",
+                title: "Your .PDF file has been generated.",
                 description: "Enjoy using it!"
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error downloading PDF:', error);
             toast({
                 title: "Error generating PDF",
-                description: "There was a problem generating your PDF. Please try again."
+                description: "There was a problem generating your PDF. Error: " + error.message
             });
         } finally {
             setLoading(false);
         }
     };
+
+    const handleExportText = async () => {
+        console.log("Export to DOCX clicked");
+        setLoading(true);
     
-
-
-    const handleExportText = () => {
-        console.log("Export to Text clicked");
-        // Add Text export logic here
+        const form1Data: FORM1 | null = props.userData || null;
+        const form2Data = curriculumContent;
+    
+        try {
+            const response = await fetch('/api/generate-doc', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    form2: form2Data,
+                    form1: form1Data,
+                }),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            // Convert response to blob and initiate download using file-saver
+            const blob = await response.blob();
+            saveAs(blob, 'curriculum.docx'); // Save the file with file-saver
+    
+            toast({
+                title: "Your .DOC file has been generated.",
+                description: "Enjoy using it!"
+            });
+        } catch (error: any) {
+            console.error('Error downloading document:', error);
+            toast({
+                title: "Error generating DOCX",
+                description: "There was a problem generating your DOCX. Error: " + error.message
+            });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCopy = () => {
         console.log("Copy clicked");
-        // Add Copy logic here
+        setLoading(true);
+    
+        const form1Data: FORM1 | null = props.userData || null;
+        const form2Data = curriculumContent;
+
+        try {
+            navigator.clipboard.writeText(
+                JSON.stringify(form1Data || "" + " " + form2Data).replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, '')
+            ).then(() => {
+                toast({
+                    title: "Successfully copied!",
+                    description: "Enjoy using your curriculum!"
+                })
+            })
+        } catch(err) {
+
+        } finally {
+            setLoading(false);
+        }
+
     };
 
 
@@ -205,7 +261,13 @@ export default function ExportButton(props: Props) {
                     <TabsContent value="overview">
                         {
                             selIndex == null ? <>
-                                Try selecting something
+                                <div className="w-full grid h-[70vh] lg:h-[65vh] place-items-center">
+                                    <div className="flex flex-col gap-2 items-center text-center ">
+                                        <CircleSlash2 className="w-10 h-10" />
+                                        <span className="text-2xl">We couldn{"'"}t locate any curriculums at the moment. Please check back later.</span>
+                                        <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try refreshing the page.</span>
+                                    </div>
+                                </div>
                             </> : <>
                                 <div className="flex flex-col h-[70vh] lg:h-[62vh] py-2 gap-2 mx-auto">
                                     {
@@ -238,7 +300,7 @@ export default function ExportButton(props: Props) {
                                     <div className="w-full h-[20%] flex flex-row gap-2">
                                         {
                                             loading ? <>
-                                                <div className="gird place-items-center w-full h-full" >
+                                                <div className="grid place-items-center w-full h-full" >
                                                     <div className="flex flex-row gap-2 mx-auto my-auto text-center">
                                                         <Loader className="animate-spin" />
                                                         <p>Your file is currently being generated!</p>
@@ -254,14 +316,16 @@ export default function ExportButton(props: Props) {
 
                                     </div>
                                     <Button onClick={() => setedit(!canedit)}>Toggle Editable (Currently: {canedit ? 'Can Edit' : 'Cannot edit'})</Button>
-
+                                    <div className="text-center">
+                                        (.doc is the best format as of now)
+                                    </div>
                                 </div>
                             </>
                         }
 
                     </TabsContent>
                     <TabsContent value="messages">
-                        <MessageSelector setselIndex={setselIndex} />
+                        <MessageSelector setselIndex={setselIndex} selIndex={selIndex} />
                     </TabsContent>
                 </Tabs>
             </SheetContent>

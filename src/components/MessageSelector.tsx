@@ -75,19 +75,23 @@ export default function MessageSelector(props: any) {
         }
 
         setCount(api.scrollSnapList().length)
-        setCurrent(api.selectedScrollSnap() + 1)
+        setCurrent(props.selIndex + 1)
 
         api.on("select", () => {
             setCurrent(api.selectedScrollSnap() + 1)
         })
-    }, [api])
+    }, [api, props.selIndex])
+
+    React.useEffect(() => {
+        props.setselIndex(current - 1);
+    }, [current, props])
 
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             const dat = localStorage.getItem("messageData");
             if (dat && dat.length > 0) {
                 setData(JSON.parse(dat) as MessageDat[]);
-                props.setselIndex(0);
+                props.setselIndex(props.selIndex);
                 setLoading(false);
             } else {
                 setCant(true);
@@ -179,7 +183,6 @@ export default function MessageSelector(props: any) {
                 <Button className="w-full" variant={selected == current - 1 ? 'secondary' : 'default'}
                 onClick={() => {
                     setSelected(current - 1);
-                    props.setselIndex(current - 1);
                 }}
                 >{selected == current - 1 ? 'Currently Selected' : 'Select'}</Button>
             </div>

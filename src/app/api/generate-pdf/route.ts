@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PDFDocument, rgb } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 interface FORM1 {
     name: string;
@@ -19,11 +19,16 @@ export async function POST(req: NextRequest) {
         const body: RequestBody = await req.json();
         const { form2, form1 } = body;
 
+        const split = form2.split(/\*\*(.*?)\*\*/g);
+
         // Create a new PDF document
         const pdfDoc = await PDFDocument.create();
-        const page = pdfDoc.addPage([816, 2556]);
+        const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
+        var page = pdfDoc.addPage([816, 1056]);
+        const { width, height } = page.getSize()
+        const fontSize = 30
 
-        let yPosition = 2540; // Starting y position for the text
+        let yPosition = 1056; // Starting y position for the text
 
         // Draw content based on form1
         if (form1) {
@@ -32,6 +37,7 @@ export async function POST(req: NextRequest) {
                 y: yPosition,
                 size: 20,
                 color: rgb(0, 0, 0),
+                font: timesRomanFont
             });
             yPosition -= 30; // Move down for the next line
             page.drawText(`ID #:${form1.uniqueid}`, {
@@ -39,26 +45,30 @@ export async function POST(req: NextRequest) {
                 y: yPosition,
                 size: 20,
                 color: rgb(0, 0, 0),
+                font: timesRomanFont
             });
             yPosition -= 30; // Move down for the next line
         }
 
-        // Draw content based on form2 (treated as a string)
-        page.drawText(`Curriculum Details:`, {
-            x: 50,
-            y: yPosition,
-            size: 20,
-            color: rgb(0, 0, 0),
-        });
-        yPosition -= 20; // Move down for the paragraph content
-        page.drawText(form2, {
-            x: 50,
-            y: yPosition,
-            size: 15,
-            color: rgb(0, 0, 0),
-            maxWidth: 500, // Adjust width if needed
-            lineHeight: 18, // Adjust line height if needed
-        });
+        split.forEach((splitten, index) => {
+            page.drawText(splitten, {
+                x: 50,
+                y: yPosition,
+                size: 15,
+                color: rgb(0, 0, 0),
+                maxWidth: 700, // Adjust width if needed
+                lineHeight: 15, // Adjust line height if needed
+                font: timesRomanFont
+            });
+            yPosition -= 40;
+
+            if (yPosition <= 100) {
+                page = pdfDoc.addPage([816, 1056]);
+                yPosition = 950;
+            }
+        })
+
+
 
         // Serialize the PDF document to bytes
         const pdfBytes = await pdfDoc.save();
@@ -67,7 +77,7 @@ export async function POST(req: NextRequest) {
         const response = new NextResponse(pdfBytes, {
             headers: {
                 'Content-Type': 'application/pdf',
-                'Content-Disposition': 'attachment; filename="example.pdf"',
+                'Content-Disposition': 'attachment; filename="curriculum.pdf"',
             },
         });
 
