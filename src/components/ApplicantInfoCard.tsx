@@ -80,7 +80,7 @@ export default function ApplicantInfo(props: Props) {
     }, [props.form])
 
     return (
-        <ScrollArea className="lg:h-[300px] xl:h-[60vh] h-[65vh] w-full">
+        <ScrollArea className="lg:h-[280px] xl:h-[60vh] h-[65vh] w-full">
             <Card className="h-[70%] mb-10 w-full">
                 <CardHeader>
                     {hasSubmitted && <CardDescription>✅ You’ve submitted this section!</CardDescription>}

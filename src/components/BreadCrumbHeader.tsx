@@ -158,11 +158,11 @@ export default function BreadCrumbHeader(props: Props) {
                             <SheetContent side={"left"} className="rounded-r-3xl">
                                 <SheetHeader>
                                     <SheetTitle>Form</SheetTitle>
-                                    <SheetDescription>
+                                    <SheetDescription className="lg:!text-xs">
                                         Please provide the details needed to optimize your curriculum. All options in the Applicant Information setting are optional, respecting your privacy. Refer to our <PrivacyPopup /> for more details.
                                     </SheetDescription>
                                 </SheetHeader>
-                                <Tabs defaultValue="product-information" className="w-full flex flex-col justify-center max-h-[70vh] my-2">
+                                <Tabs defaultValue="product-information" className="w-full flex flex-col justify-center max-h-[70vh] lg:max-h-[60vh] my-2">
                                     <TabsList className="w-full">
                                         <TabsTrigger value="product-information" className="w-1/2">Product Information</TabsTrigger>
                                         <TabsTrigger value="information" className="w-1/2">Applicant Information</TabsTrigger>
@@ -174,7 +174,7 @@ export default function BreadCrumbHeader(props: Props) {
                                         <ProductInfoCard form={form2} setForm={setForm2} check={check} />
                                     </TabsContent>
                                 </Tabs>
-                                <Button className="w-full lg:mt-2" onClick={check} disabled={!submitButtonShow}>
+                                <Button className="w-full" onClick={check} disabled={!submitButtonShow}>
                                     Submit
                                 </Button>
                             </SheetContent>

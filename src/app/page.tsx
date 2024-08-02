@@ -343,10 +343,9 @@ export default function Home() {
       2. Learning Objectives
       3. ${lesson} Detailed Lessons in Order
       4. Activities
-      5. Instructional Materials Required
-      6. Assessment
+      5. Assessment
 
-      Include the educational benefits of ${activity}, the subjects it covers, and a brief history of ${activity}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
+      Include the brief history of ${activity}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
         Ensure that the curriculum for using ${activity} is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}.
     `;
@@ -368,10 +367,9 @@ export default function Home() {
       2. Learning Objectives
       3. ${lesson} Detailed Lessons in Order
       4. Activities
-      5. Instructional Materials Required
-      6. Assessment
+      5. Assessment
 
-      Include the educational benefits of ${activitiesStr}, the subjects it covers, and a brief history of ${activitiesStr}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
+      Include the brief history of ${activitiesStr}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
       
       Make sure the curriculum is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}. 
