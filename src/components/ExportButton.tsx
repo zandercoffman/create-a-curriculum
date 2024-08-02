@@ -260,7 +260,7 @@ export default function ExportButton(props: Props) {
                     </TabsList>
                     <TabsContent value="overview">
                         {
-                            selIndex == null ? <>
+                            selIndex + 1 <= 0 ? <>
                                 <div className="w-full grid h-[70vh] lg:h-[65vh] place-items-center">
                                     <div className="flex flex-col gap-2 items-center text-center ">
                                         <CircleSlash2 className="w-10 h-10" />

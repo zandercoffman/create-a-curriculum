@@ -45,9 +45,7 @@ interface MessageDat {
 export default function MessageSelector(props: any) {
     const [api, setApi] = React.useState<CarouselApi>()
     const [current, setCurrent] = React.useState(0)
-    const [count, setCount] = React.useState(0)
-    const arr = new Array().fill(false);
-    arr[2] = true;
+    const [count, setCount] = React.useState<number>(0);
 
     const [data, setData] = useState<MessageDat[]>([]);
     const [loading, setLoading] = useState(true);
@@ -55,7 +53,7 @@ export default function MessageSelector(props: any) {
 
     const [selected, setSelected] = useState(0);
 
-    const {toast} = useToast();
+    const { toast } = useToast();
 
     const copy = async (s: string) => {
         try {
@@ -102,7 +100,7 @@ export default function MessageSelector(props: any) {
 
     function capitalizeFirstLetter(string: string = " ") {
         return string.charAt(0).toUpperCase() + string.slice(1);
-      }
+    }
 
     if (cant) {
         return <>
@@ -181,9 +179,9 @@ export default function MessageSelector(props: any) {
 
             <div className="mt-auto">
                 <Button className="w-full" variant={selected == current - 1 ? 'secondary' : 'default'}
-                onClick={() => {
-                    setSelected(current - 1);
-                }}
+                    onClick={() => {
+                        setSelected(current - 1);
+                    }}
                 >{selected == current - 1 ? 'Currently Selected' : 'Select'}</Button>
             </div>
         </div>
