@@ -59,18 +59,37 @@ interface Props {
     messages: any;
     buttonRef: any;
     userData: FORM1 | null;
+    sel: number;
+    setSel: Function;
 }
 
 export default function ExportButton(props: Props) {
 
-    const [selIndex, setselIndex] = useState<number>(0);
+    const [selIndex, setselIndex] = useState<number>(props.sel);
+    const [selected, setSelected] = useState<number>(() => {
+        const savedIndex = localStorage.getItem("selectedCurriculumIndex");
+        if (!savedIndex) {
+            localStorage.setItem("selectedCurriculumIndex", "0");
+            return 0;
+        } else {
+            return parseInt(savedIndex)
+        }
+    });
     const [canedit, setedit] = useState(false)
 
     const { toast } = useToast();
 
 
     const [messageContent, setMessageContent] = useState<string>("");
-    const [curriculumContent, setCurriculumContent] = useState<string>("");
+    const [curriculumContent, setCurriculumContent] = useState<string | null>(() => {
+        const m = localStorage.getItem("messageData");
+        if (m) {
+            const j = JSON.parse(m);
+            const sel = j[selected];
+            const messages = sel.messages;
+            return messages[messages.length - 1].content;
+        }
+    });
 
     const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setMessageContent(e.target.value);
@@ -84,6 +103,7 @@ export default function ExportButton(props: Props) {
 
     useEffect(() => {
         const mess = localStorage.getItem("messageData");
+        props.setSel(props.sel);
         if (mess && selIndex !== null) {
             const pased = JSON.parse(mess);
             const obj = pased[selIndex];
