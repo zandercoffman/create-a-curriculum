@@ -88,6 +88,8 @@ export default function ExportButton(props: Props) {
             const sel = j[selected];
             const messages = sel.messages;
             return messages[messages.length - 1].content;
+        } else {
+            return "";
         }
     });
 
@@ -131,7 +133,7 @@ export default function ExportButton(props: Props) {
 
         // Define form1Data and form2Data
         const form1Data: FORM1 | null = props.userData || null; // Ensure props.userData matches FORM1 type or set to null
-        const c = await remark().use(strip).process(curriculumContent);
+        const c = await remark().use(strip).process(curriculumContent as string);
         const form2Data = curriculumContent;
 
         try {
@@ -280,7 +282,7 @@ export default function ExportButton(props: Props) {
                     </TabsList>
                     <TabsContent value="overview">
                         {
-                            selIndex + 1 <= 0 ? <>
+                            curriculumContent == null ? <>
                                 <div className="w-full grid h-[70vh] lg:h-[65vh] place-items-center">
                                     <div className="flex flex-col gap-2 items-center text-center ">
                                         <CircleSlash2 className="w-10 h-10" />
@@ -310,7 +312,7 @@ export default function ExportButton(props: Props) {
                                         <Textarea
                                             placeholder="Type your message here."
                                             id="curriculum"
-                                            value={curriculumContent}
+                                            value={curriculumContent as string}
                                             onChange={handleCurriculumChange}
                                             readOnly={!canedit}
                                             className="h-[98%]"
