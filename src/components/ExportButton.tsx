@@ -73,11 +73,11 @@ export default function ExportButton(props: Props) {
     const [curriculumContent, setCurriculumContent] = useState<string>("");
 
     const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setMessageContent(e.target.value.replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, ''));
+        setMessageContent(e.target.value);
     };
 
     const handleCurriculumChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setCurriculumContent(e.target.value.replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, ''));
+        setCurriculumContent(e.target.value);
     };
 
     const [loading, setLoading] = useState(false);
