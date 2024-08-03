@@ -44,7 +44,7 @@ interface MessageDat {
 
 export default function MessageSelector(props: any) {
     const [api, setApi] = React.useState<CarouselApi>()
-    const [current, setCurrent] = React.useState(0)
+    const [current, setCurrent] = React.useState(props.selIndex || 0);
     const [count, setCount] = React.useState<number>(0);
 
     const [data, setData] = useState<MessageDat[]>([]);
