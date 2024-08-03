@@ -283,7 +283,7 @@ export default function MessageSelector(props: any) {
 
     if (loading) {
         return <>
-            <div className="w-full grid h-[60vh] lg:h-[65vh] place-items-center">
+            <div className="w-full grid h-[50vh] lg:h-[65vh] place-items-center">
                 <div className="flex flex-col gap-2 align-center items-center">
                     <LoaderCircle className="animate-spin w-10 h-10" />
                     <h1>Creating your curriculum...</h1>
