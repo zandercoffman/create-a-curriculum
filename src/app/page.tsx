@@ -348,7 +348,7 @@ export default function Home() {
 
       Include the brief history of ${activity}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
-        Ensure that the curriculum for using ${activity} is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}.
+        Ensure that the curriculum for using ${activity} is comprehensive and engaging for learners.
     `;
   }
 
@@ -373,7 +373,7 @@ export default function Home() {
       Include the brief history of ${activitiesStr}. Provide a summary of materials required at the end and put a short explanation of it next to the material.
 
       
-      Make sure the curriculum is comprehensive and engaging for learners ${typeof grade == "string" && `who are in the grade ${grade}`}. 
+      Make sure the curriculum is comprehensive and engaging for learners.
       ${activities.length > 1 && `Your goal is to blend ${activitiesStr} into a cohesive curriculum.`}
     `;
   }

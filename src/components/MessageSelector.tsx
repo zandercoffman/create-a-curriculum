@@ -14,16 +14,19 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel"
-import React, { SVGProps, useState } from "react"
+import React, { SVGProps, useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { ScrollArea } from "./ui/scroll-area"
 import { Message } from "ai"
-import { CircleSlash2, ClipboardCopy, FileText, LoaderCircle, SquareArrowOutUpRight, Text } from "lucide-react"
+import { CircleSlash2, ClipboardCopy, FileText, LoaderCircle, Pencil, SquareArrowOutUpRight, Text, UserRound } from "lucide-react"
 import Markdown from "react-markdown"
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
+    DialogFooter,
     DialogHeader,
+    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { useToast } from "./ui/use-toast"
@@ -31,13 +34,57 @@ import { Badge } from "./ui/badge"
 import { remark } from 'remark'
 import strip from 'strip-markdown'
 import { saveAs } from 'file-saver';
+import { Textarea } from "./ui/textarea"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "./ui/input"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+
+
+const formSchema = z.object({
+    username: z.string().optional(),
+    id: z.string().optional(),
+    grade: z.string().optional(),
+    saveInfo: z.boolean().optional(),
+})
 
 interface FORM1 {
-    name: string;
-    uniqueid: string;
-    grade: number | undefined | string;
-    saveinfo: boolean;
-    wantstousegrade: boolean;
+    username: string
+    id: string
+    grade: string
+    saveInfo: boolean
 }
 
 interface FORM2TITLES {
@@ -64,14 +111,71 @@ interface MessageDat {
     messages: Message[]
 }
 
+interface LSUD {
+    name: string,
+    id: string,
+    grade: number,
+}
+
 export default function MessageSelector(props: any) {
     const [api, setApi] = React.useState<CarouselApi>()
     const [current, setCurrent] = React.useState(props.selIndex || 0);
     const [count, setCount] = React.useState<number>(0);
 
+    const [userData, setUserData] = useState<FORM1 | null>(null);
+
+    const [lsData, setLSData] = useState<LSUD[] | null>(null);
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const a = localStorage.getItem("data");
+            if (a) {
+                setLSData(JSON.parse(a) as LSUD[])
+            }
+        }
+    }, [])
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            username: "",
+            id: "",
+            grade: "",
+            saveInfo: false
+        },
+    })
+
+    const [submit, setSubmitted] = useState<boolean>(false);
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        setUserData(values as FORM1);
+        setSubmitted(true);
+
+        if (values.saveInfo) {
+            const data = localStorage.getItem("data");
+            const obj = {
+                name: values.username,
+                id: values.id,
+                grade: values.grade,
+            }
+
+            const users = []
+
+            if (data) {
+                const arr = JSON.parse(data);
+                users.push(...arr);
+            }
+
+            users.push(obj);
+            localStorage.setItem("data", JSON.stringify(users))
+        }
+    }
+
     const [data, setData] = useState<MessageDat[]>([]);
     const [loading, setLoading] = useState(true);
     const [cant, setCant] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<number>(-1);
 
     const [selected, setSelected] = useState<number>(() => {
         const savedIndex = localStorage.getItem("selectedCurriculumIndex");
@@ -139,11 +243,6 @@ export default function MessageSelector(props: any) {
         }
     }, [props]);
 
-    const handleSelect = (index: number) => {
-        setSelected(index);
-        localStorage.setItem("selectedCurriculumIndex", selected.toString());
-    }
-
     function capitalizeFirstLetter(string: string = " ") {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -153,7 +252,12 @@ export default function MessageSelector(props: any) {
         setLoading(true);
 
         // Define form1Data and form2Data
-        const form1Data: FORM1 | null = props.userData || null; // Ensure props.userData matches FORM1 type or set to null
+        const form1Data: FORM1 | null = {
+            username: userData?.username || "",
+            id: userData?.id || "",
+            grade: userData?.grade || "",
+            saveInfo: false
+        } || null; // Ensure props.userData matches FORM1 type or set to null
         const c = await remark().use(strip).process(curriculumContent as string);
         const form2Data = curriculumContent;
 
@@ -207,7 +311,12 @@ export default function MessageSelector(props: any) {
         console.log("Export to DOCX clicked");
         setLoading(true);
 
-        const form1Data: FORM1 | null = props.userData || null;
+        const form1Data: FORM1 | null = {
+            username: userData?.username || "",
+            id: userData?.id || "",
+            grade: userData?.grade || "",
+            saveInfo: false
+        } || null;
         const form2Data = curriculumContent;
 
         try {
@@ -249,7 +358,12 @@ export default function MessageSelector(props: any) {
         console.log("Copy clicked");
         setLoading(true);
 
-        const form1Data: FORM1 | null = props.userData || null;
+        const form1Data: FORM1 | null = {
+            username: userData?.username || "",
+            id: userData?.id || "",
+            grade: userData?.grade || "",
+            saveInfo: false
+        } || null;
         const form2Data = curriculumContent;
 
         try {
@@ -268,6 +382,25 @@ export default function MessageSelector(props: any) {
         }
 
     };
+
+    const handleCurriculumChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setCurriculumContent(e.target.value.replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, ''));
+    };
+
+    
+    const cry = (num: number, key: any) => {
+        setSelectedUser(num);
+        if (lsData) {
+            onSubmit(
+                {
+                    username: lsData[key].name,
+                    id: lsData[key].id,
+                    grade: JSON.stringify(lsData[key].grade),
+                    saveInfo: false
+                }
+            );
+        }
+    }
 
     if (cant) {
         return <>
@@ -293,7 +426,7 @@ export default function MessageSelector(props: any) {
     }
 
     return <>
-        <div className="flex flex-col h-[70vh]  mx-auto gap-3 py-2">
+        <div className="flex flex-col h-[72vh] lg:h-[70vh]  mx-auto gap-3 py-2">
             <Carousel setApi={setApi} className="w-[80%] mx-auto">
                 <CarouselContent>
                     {data.map((dat, index) => (
@@ -341,9 +474,206 @@ export default function MessageSelector(props: any) {
             <div className="py-2 text-center text-sm text-muted-foreground">
                 Curriculum {current} of {count}
             </div>
-            <div className="mt-auto flex flex-row gap-2">
+            <div className="h-[300px] w-[90%] mx-auto flex flex-row my-auto">
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="outline" className="w-fit h-[50px] mx-auto flex flex-row gap-1 relative">
+                            User Data
+                            <UserRound />
+                            <Badge className="absolute top-0 right-0 transform translate-x-[30%] translate-y-[-50%]" variant={"secondary"}>{submit ? "In Use" : "Optional"}</Badge>
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="w-[90vw] lg:w-[60vw] h-[80vh] lg:h-[90vh] rounded-xl">
+                        <DialogHeader>
+                            <DialogTitle className="flex flex-row gap-1">
+                                User Data
+                                <UserRound />
+                            </DialogTitle>
+                            <DialogDescription className="text-left">
+                                Make changes to your profile here. Click save when you{"'"}re done.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <ScrollArea className="h-[60vh] lg:h-[65vh]">
+                            <Accordion type="single" collapsible className="w-full pr-2" defaultValue={lsData !== null ? "item-2" : "item-1"}>
+                                {lsData !== null && <>
+                                    <AccordionItem value="item-2">
+                                        <AccordionTrigger>Use Existing Applicants</AccordionTrigger>
+                                        <AccordionContent>
+                                            <Table>
+                                                <TableCaption>A list of your stored applicants.</TableCaption>
+                                                <TableHeader>
+                                                    <TableRow>
+                                                        <TableHead className="w-[200px]">Name</TableHead>
+                                                        <TableHead>ID</TableHead>
+                                                        <TableHead>Grade</TableHead>
+                                                        <TableHead className="text-right">Select</TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody>
+                                                    {
+                                                        Object.keys(lsData).map((key: any, index) => {
+                                                            return <TableRow key={index}>
+                                                                <TableCell className="font-medium">{lsData[key].name}</TableCell>
+                                                                <TableCell>{lsData[key].id}</TableCell>
+                                                                <TableCell>{lsData[key].grade}</TableCell>
+                                                                <TableCell className="text-right">
+                                                                    <Button
+                                                                        onClick={() => {
+                                                                            cry(index, key);
+                                                                        }}
+                                                                        disabled={selectedUser == index ? true : false}
+                                                                    >{selectedUser == index ? "Currently Selected" : "Use Applicant"}</Button>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        })
+                                                    }
+                                                </TableBody>
+                                            </Table>
+
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </>}
+
+                                <AccordionItem value="item-1">
+                                    <AccordionTrigger>Use/Add New Applicant</AccordionTrigger>
+                                    <AccordionContent>
+                                        <Form {...form}>
+                                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="username"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Name</FormLabel>
+                                                            <FormControl>
+                                                                <Input placeholder="Enter name here" {...field} disabled={submit} />
+                                                            </FormControl>
+                                                            <FormDescription>
+                                                                This is your public display name.
+                                                            </FormDescription>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="id"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>ID</FormLabel>
+                                                            <FormControl>
+                                                                <Input placeholder="Enter a unique identifier" {...field} disabled={submit} />
+                                                            </FormControl>
+                                                            <FormDescription>
+                                                                This is your public display name.
+                                                            </FormDescription>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="grade"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Email</FormLabel>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={submit}>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select a grade" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    <SelectItem value="Kindergarten">Kindergarten</SelectItem>
+                                                                    <SelectItem value="1">1st Grade</SelectItem>
+                                                                    <SelectItem value="2">2nd Grade</SelectItem>
+                                                                    <SelectItem value="3">3rd Grade</SelectItem>
+                                                                    <SelectItem value="4">4th Grade</SelectItem>
+                                                                    <SelectItem value="5">5th Grade</SelectItem>
+                                                                    <SelectItem value="6">6th Grade</SelectItem>
+                                                                    <SelectItem value="7">7th Grade</SelectItem>
+                                                                    <SelectItem value="8">8th Grade</SelectItem>
+                                                                    <SelectItem value="9">9th Grade (Freshman)</SelectItem>
+                                                                    <SelectItem value="10">10th Grade (Sophomore)</SelectItem>
+                                                                    <SelectItem value="11">11th Grade (Junior)</SelectItem>
+                                                                    <SelectItem value="12">12th Grade (Senior)</SelectItem>
+                                                                    <SelectItem value="Undergraduate">Undergraduate</SelectItem>
+                                                                    <SelectItem value="Graduate">Graduate</SelectItem>
+                                                                    <SelectItem value="Postgraduate">Postgraduate</SelectItem>
+                                                                    <SelectItem value="Doctorate">Doctorate</SelectItem>
+                                                                </SelectContent>
+
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="saveInfo"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    onCheckedChange={field.onChange}
+                                                                    disabled={submit}
+                                                                />
+                                                            </FormControl>
+                                                            <div className="space-y-1 leading-none">
+                                                                <FormLabel>
+                                                                    Save Info for Future Curriculums
+                                                                </FormLabel>
+                                                                <FormDescription>
+                                                                    Securely save your preferences.
+                                                                </FormDescription>
+                                                            </div>
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <Button type="submit" disabled={submit}>{!submit ? "Submit" : "Already Submitted"}</Button>
+                                            </form>
+                                        </Form>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+
+                        </ScrollArea>
+                    </DialogContent>
+                </Dialog>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="outline" className="w-fit h-[50px] mx-auto flex flex-row gap-1">
+                            Edit Curriculum
+                            <Pencil />
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="w-[80vw] lg:w-[60vw] h-[90vh] rounded-xl">
+                        <DialogHeader>
+                            <DialogTitle className="flex flex-row gap-2">
+                                Edit Curriculum
+                                <Badge className="flex flex-row gap-1"><span className="hidden lg:block">Curriculum</span> #{current}</Badge>
+                            </DialogTitle>
+                            <DialogDescription>
+                                Make changes to your generated curriculum here. Press save when you{"'"}re done.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <Textarea
+                            placeholder="Type your message here."
+                            id="curriculum"
+                            value={curriculumContent || ""}
+                            onChange={handleCurriculumChange}
+                            className="h-[60vh] lg:h-[55vh]"
+                        />
+                        <DialogFooter>
+                            <p className="my-auto mr-auto text-sm lg:text-base text-center text-gray-600 leading-1">Leave the markdown triggers (ex. **text**). They are necessary.</p>
+                            <Button className="my-auto">Save changes</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            </div>
+            <div className=" flex flex-row gap-2">
                 <BigButton text="Export to .PDF" icon={FileText} callback={handleExportPDF} />
-                <BigButton text="Export to .DOC" icon={Text} callback={handleExportText} />
+                <BigButton text="Export to .DOC" icon={Text} callback={handleExportText} badge={"Best Format"} />
                 <BigButton text="Copy" icon={ClipboardCopy} callback={handleCopy} />
             </div>
         </div>
@@ -412,13 +742,19 @@ interface BigButtonProps {
     text: string;
     icon: React.ComponentType<SVGProps<SVGSVGElement>>;
     callback?: () => void; // Optional callback function
+    badge?: string | null;
 }
 
-function BigButton({ text, icon: Icon, callback }: BigButtonProps) {
+function BigButton({ text, icon: Icon, callback, badge = null }: BigButtonProps) {
     return (
-        <Button className="w-1/3 h-max flex flex-col items-center justify-center my-auto gap-1 py-2" onClick={callback}>
-            <Icon className="w-6 h-6" /> {/* Adjust icon size as needed */}
+        <Button className="relative w-1/3 h-max flex flex-col items-center justify-center my-auto gap-1 py-2" onClick={callback}>
+            <Icon className="w-6 h-6" />
             <p>{text}</p>
+            {
+                badge !== null && (
+                    <Badge className="absolute top-0 right-0 transform translate-x-[30%] z-10 translate-y-[-60%]" variant={"destructive"}>{badge}</Badge>
+                )
+            }
         </Button>
     );
 }

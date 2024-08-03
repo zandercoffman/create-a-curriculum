@@ -93,7 +93,7 @@ function Reccomendation({ message, type, onClick }: RecommendationProps) {
         cursor-pointer font-semibold" onClick={() => onClick()}>
             <div className="flex-grow">
                 <h4 className="scroll-m-20 text-l font-semibold tracking-tight">
-                    {type === "idea" ? "Curriculum Idea:" : ""}
+                    {type === "idea" ? "Idea:" : ""}
                 </h4>
                 <p className="leading-4 font-normal text-sm">
                     {message}

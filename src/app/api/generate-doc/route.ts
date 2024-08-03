@@ -1,13 +1,12 @@
 // pages/api/generate-docx.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { Document, Packer, Paragraph, HeadingLevel, Table, TableRow, TableCell, VerticalAlign } from 'docx';
+import { Document, Packer, Paragraph, HeadingLevel } from 'docx';
 
 interface FORM1 {
-    name: string;
-    uniqueid: string;
+    username: string;
+    id: string;
     grade: number | undefined | string;
-    saveinfo: boolean;
-    wantstousegrade: boolean;
+    saveInfo: boolean
 }
 
 interface RequestBody {
@@ -18,21 +17,39 @@ interface RequestBody {
 export async function POST(req: NextRequest) {
     try {
         const body: RequestBody = await req.json();
-        const { form2, form1 } = body;
+        const { form1, form2 } = body;
 
         // Construct DOCX document
+        const children = [];
+
+        if (form1) {
+            const userP = [
+                new Paragraph({
+                    text: `Applicant Name: ${form1.username}`,
+                    heading: HeadingLevel.HEADING_2,
+                }),
+                new Paragraph({
+                    text: `Applicant ID: ${form1.id}`,
+                    heading: HeadingLevel.HEADING_2,
+                }),
+            ];
+            children.push(...userP);
+        }
+
+        // Add split content from form2
+        const form2Content = form2.split(/\*\*(.*?)\*\*/g).map((section, index) => 
+            new Paragraph({
+                text: section,
+                heading: index % 2 === 1 ? HeadingLevel.HEADING_2 : undefined,
+            })
+        );
+
+        children.push(...form2Content);
+
         const doc = new Document({
             sections: [
                 {
-                    children: [
-                        // Add content based on form1
-                        
-                        // Add split content from form2
-                        ...form2.split(/\*\*(.*?)\*\*/g).map((section, index) => new Paragraph({
-                            text: section,
-                            heading: index % 2 === 1 ? HeadingLevel.HEADING_2 : undefined, // Optional: Add heading for split sections
-                        })),
-                    ],
+                    children,
                 },
             ],
         });

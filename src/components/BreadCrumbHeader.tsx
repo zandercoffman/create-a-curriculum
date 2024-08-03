@@ -51,6 +51,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { ScrollArea } from "./ui/scroll-area";
 
 
 interface FORM1 {
@@ -140,7 +141,7 @@ export default function BreadCrumbHeader(props: Props) {
     return (
         <>
             <Breadcrumb className="normal-case">
-                <BreadcrumbList>
+                <BreadcrumbList className="flex flex-row max-w-fit flex-nowrap overflow-auto">
                     <BreadcrumbItem>
                         <Sheet>
                             <SheetTrigger className="lg:hidden">
@@ -159,22 +160,12 @@ export default function BreadCrumbHeader(props: Props) {
                                 <SheetHeader>
                                     <SheetTitle>Form</SheetTitle>
                                     <SheetDescription className="lg:!text-xs">
-                                        
-To optimize your curriculum, please provide the details needed. All options in the Applicant Information setting are optional and respect your privacy. See our <PrivacyPopup /> for more information.
+                                        <ScrollArea className="lg:h-[80px] overflow-auto">
+                                            To optimize your curriculum, please provide the details needed. See our <PrivacyPopup /> for more information.
+                                        </ScrollArea>
                                     </SheetDescription>
                                 </SheetHeader>
-                                <Tabs defaultValue="product-information" className="w-full flex flex-col justify-center max-h-[70vh] lg:max-h-[60vh] my-2">
-                                    <TabsList className="w-full">
-                                        <TabsTrigger value="product-information" className="w-1/2">Product Information</TabsTrigger>
-                                        <TabsTrigger value="information" className="w-1/2">Applicant Information</TabsTrigger>
-                                    </TabsList>
-                                    <TabsContent value="information">
-                                        <ApplicantInfo form={form1} setForm={setForm1} />
-                                    </TabsContent>
-                                    <TabsContent value="product-information">
-                                        <ProductInfoCard form={form2} setForm={setForm2} check={check} />
-                                    </TabsContent>
-                                </Tabs>
+                                <ProductInfoCard form={form2} setForm={setForm2} check={check} />
                                 <Button className="w-full" onClick={check} disabled={!submitButtonShow}>
                                     Submit
                                 </Button>

@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 interface FORM1 {
-    name: string;
-    uniqueid: string;
+    username: string;
+    id: string;
     grade: number | undefined | string;
-    saveinfo: boolean;
-    wantstousegrade: boolean;
+    saveInfo: boolean
 }
 
 interface RequestBody {
@@ -28,11 +27,11 @@ export async function POST(req: NextRequest) {
         const { width, height } = page.getSize()
         const fontSize = 30
 
-        let yPosition = 1056; // Starting y position for the text
+        let yPosition = 990; // Starting y position for the text
 
         // Draw content based on form1
         if (form1) {
-            page.drawText(`Applicant Name: ${form1.name}`, {
+            page.drawText(`Applicant Name: ${form1.username}`, {
                 x: 50,
                 y: yPosition,
                 size: 20,
@@ -40,7 +39,7 @@ export async function POST(req: NextRequest) {
                 font: timesRomanFont
             });
             yPosition -= 30; // Move down for the next line
-            page.drawText(`ID #:${form1.uniqueid}`, {
+            page.drawText(`ID #:${form1.id}`, {
                 x: 50,
                 y: yPosition,
                 size: 20,
