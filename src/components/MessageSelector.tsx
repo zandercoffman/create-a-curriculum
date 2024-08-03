@@ -293,7 +293,7 @@ export default function MessageSelector(props: any) {
     }
 
     return <>
-        <div className="flex flex-col h-[80vh] lg:h-[69vh]  mx-auto gap-3 py-2">
+        <div className="flex flex-col h-[70vh]  mx-auto gap-3 py-2">
             <Carousel setApi={setApi} className="w-[80%] mx-auto">
                 <CarouselContent>
                     {data.map((dat, index) => (

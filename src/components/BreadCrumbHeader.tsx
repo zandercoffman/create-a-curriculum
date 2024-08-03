@@ -127,7 +127,7 @@ export default function BreadCrumbHeader(props: Props) {
             title: "Successfully deleted!",
         })
         window.location.reload();
-        
+
     }
 
     useEffect(() => {
@@ -159,7 +159,8 @@ export default function BreadCrumbHeader(props: Props) {
                                 <SheetHeader>
                                     <SheetTitle>Form</SheetTitle>
                                     <SheetDescription className="lg:!text-xs">
-                                        Please provide the details needed to optimize your curriculum. All options in the Applicant Information setting are optional, respecting your privacy. Refer to our <PrivacyPopup /> for more details.
+                                        
+To optimize your curriculum, please provide the details needed. All options in the Applicant Information setting are optional and respect your privacy. See our <PrivacyPopup /> for more information.
                                     </SheetDescription>
                                 </SheetHeader>
                                 <Tabs defaultValue="product-information" className="w-full flex flex-col justify-center max-h-[70vh] lg:max-h-[60vh] my-2">
@@ -224,15 +225,19 @@ export default function BreadCrumbHeader(props: Props) {
                             <DialogTrigger><Settings className="mb-2" /></DialogTrigger>
                             <DialogContent className="w-[95vw] lg:w-[60vw] rounded-xl h-[90vh]">
                                 <DialogHeader>
-                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                    <DialogDescription>
-                                        This action cannot be undone. This will permanently delete your account
-                                        and remove your data from our servers.
-                                    </DialogDescription>
+                                    <DialogTitle>Settings</DialogTitle>
                                 </DialogHeader>
-                                <div className="absolute bottom-0 left-0 w-full mb-5 ml-5 flex flex-row gap-2">
-                                    <Button variant={"destructive"}
-                                    onClick={del}>Delete Data</Button>
+                                <div className="w-[90%] mx-auto mb-auto h-max">
+                                    <div className="w-full h-max flex text-center lg:text-left  flex-col lg:flex-row gap-2">
+                                        <div className="flex flex-col">
+                                            <h1 className="font-bold">Delete your Data</h1>
+                                            <p>Delete your preferences, messages, and more.</p>
+                                        </div>
+                                        <div className="mx-auto lg:ml-auto">
+                                            <Button variant={"destructive"}
+                                                onClick={del}>Delete Data</Button>
+                                        </div>
+                                    </div>
                                 </div>
                             </DialogContent>
                         </Dialog>

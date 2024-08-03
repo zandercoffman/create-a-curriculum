@@ -91,6 +91,13 @@ export default function PrivacyPopup() {
                             index={8}
                             tldr="Data is kept on your device."
                         />
+                        
+                        <Rule
+                            title="Curriculums are Stored Temporarily"
+                            desc="To streamline the process of exporting the curriculum, we will temporarily store the data. If history tracking is enabled, the data will be preserved; otherwise, it will be automatically deleted upon re-loading. "
+                            index={9}
+                            tldr="To export, curriculums are stored temporarily."
+                        />
 
                         <div className="w-full h-fit flex flex-col items-center text-center font-bold gap-1">
                             <p>Here is a diagram outlining the direction of where information goes (click the image to view fully):</p>
