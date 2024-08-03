@@ -182,6 +182,7 @@ export default function Home() {
           ]
 
           localStorage.setItem("messageData", JSON.stringify(obj));
+          localStorage.setItem("currentChatId", id);
           setc(false);
         }
       }
