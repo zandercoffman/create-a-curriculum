@@ -140,15 +140,15 @@ export default function BreadCrumbHeader(props: Props) {
 
     return (
         <>
-            <Breadcrumb className="normal-case">
-                <BreadcrumbList className="flex flex-row max-w-fit flex-nowrap overflow-auto">
+            <Breadcrumb className="normal-case flex-shrink-0">
+                <BreadcrumbList className="flex flex-row max-w-fit flex-nowrap overflow-auto flex-shrink-0">
                     <BreadcrumbItem>
                         <Sheet>
                             <SheetTrigger className="lg:hidden">
                                 <TooltipProvider>
                                     <Tooltip>
-                                        <TooltipTrigger>
-                                            <PanelRight className="transform rotate-180 w-full h-full" />
+                                        <TooltipTrigger className="flex-shrink-0">
+                                            <PanelRight className="transform rotate-180 w-full h-full !flex-shrink-0" />
                                         </TooltipTrigger>
                                         <TooltipContent>
                                             <p>Toggle Information Panel</p>
@@ -159,7 +159,7 @@ export default function BreadCrumbHeader(props: Props) {
                             <SheetContent side={"left"} className="rounded-r-3xl">
                                 <SheetHeader>
                                     <SheetTitle>Form</SheetTitle>
-                                    <SheetDescription className="lg:!text-xs">
+                                    <SheetDescription className="text-base">
                                         <ScrollArea className="lg:h-[80px] overflow-auto">
                                             To optimize your curriculum, please provide the details needed. See our <PrivacyPopup /> for more information.
                                         </ScrollArea>

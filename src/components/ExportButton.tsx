@@ -128,7 +128,7 @@ export default function ExportButton(props: Props) {
                             <ArrowRightFromLine className="w-full h-full" />
                         </div>
 
-                        <h1 className="flex-1 transform rotate-180">Export as..</h1>
+                        <h1 className="flex-1 transform rotate-180">Export</h1>
 
                     </div>
                 </Button>
@@ -141,7 +141,7 @@ export default function ExportButton(props: Props) {
             <SheetContent className="normal-case rounded-l-3xl">
                 <SheetHeader className="h-[15%]">
                     <SheetTitle className="justify-center lg:justify-end w-full flex">Export</SheetTitle>
-                    <SheetDescription className="lg:text-right text-center w-full flex">
+                    <SheetDescription className="lg:text-right text-center text-base w-full flex">
                         Check to see your outputted curriculum. Feel free to edit parts you would like to change.
                     </SheetDescription>
                 </SheetHeader>

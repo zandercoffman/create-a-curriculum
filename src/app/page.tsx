@@ -325,7 +325,7 @@ export default function Home() {
     }
   }
 
-  function makeCurriculum(activity: string, grade: string | undefined | null = null, lesson: number | null = null): string {
+  function makeCurriculum(activity: string, grade: string | undefined | null = null, lesson: number = 7): string {
     return `
         Curriculum for ${activity}:
 
@@ -352,7 +352,7 @@ export default function Home() {
     `;
   }
 
-  function makeCurriculums(activities: string[], grade: string | undefined | null = null, lesson: number = 5): string {
+  function makeCurriculums(activities: string[], grade: string | undefined | null = null, lesson: number = 7): string {
     if (activities.length == 1) {
       return makeCurriculum(activities[0]);
     }

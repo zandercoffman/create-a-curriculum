@@ -549,7 +549,7 @@ export default function MessageSelector(props: any) {
                                                                 <Input placeholder="Enter name here" {...field} disabled={submit} />
                                                             </FormControl>
                                                             <FormDescription>
-                                                                This is your public display name.
+                                                                This is a name that will be displayed on the curriculum.
                                                             </FormDescription>
                                                             <FormMessage />
                                                         </FormItem>
@@ -565,7 +565,7 @@ export default function MessageSelector(props: any) {
                                                                 <Input placeholder="Enter a unique identifier" {...field} disabled={submit} />
                                                             </FormControl>
                                                             <FormDescription>
-                                                                This is your public display name.
+                                                                This is a unique identifier that will be displayed on the curriculum.
                                                             </FormDescription>
                                                             <FormMessage />
                                                         </FormItem>
@@ -576,7 +576,7 @@ export default function MessageSelector(props: any) {
                                                     name="grade"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Email</FormLabel>
+                                                            <FormLabel>Grade</FormLabel>
                                                             <Select onValueChange={field.onChange} defaultValue={field.value} disabled={submit}>
                                                                 <FormControl>
                                                                     <SelectTrigger>

@@ -59,7 +59,7 @@ export default function Header(props: Props) {
     const [sel, setSel] = useState<number>(0);
 
     return (
-        <div className="w-full h-[10vh] px-4 flex flex-row justify-between size-7 shrink-0 select-none items-center rounded-b-lg bg-muted/50 text-xs font-medium uppercase text-muted-foreground">
+        <div className="w-full h-[10vh] px-4 flex flex-row flex-shrink-0 overflow-auto justify-between size-7 select-none items-center rounded-b-lg bg-muted/50 text-xs font-medium uppercase text-muted-foreground">
             <BreadCrumbHeader submit={props.submit} setUD={setUD} />
             <ExportButton
                 messages={props.messages}
