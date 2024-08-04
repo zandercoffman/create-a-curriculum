@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster"
+import { Analytics } from "@vercel/analytics/react"
  
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <ThemeProvider  attribute="class" defaultTheme="system">
           {children}
           <Toaster />
+          <Analytics/>
         </ThemeProvider>
       </body>
     </html>
