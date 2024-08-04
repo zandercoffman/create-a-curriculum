@@ -13,18 +13,16 @@ interface RecommendationProps {
 interface FORM2PRODUCT {
     name: string;
     description: string;
-  }
+}
 
-  const getRandomItem = (items: string[]): string => {
+const getRandomItem = (items: string[]): string => {
     const randomIndex = Math.floor(Math.random() * items.length);
     return items[randomIndex];
 };
-  
-  console.log(educationalItems);
-  
-  interface Props {
+
+interface Props {
     submit: Function;
-  }
+}
 
 export default function SplashScreen(props: Props) {
 
@@ -32,7 +30,7 @@ export default function SplashScreen(props: Props) {
     const handleClick = () => {
         setIsSpinning(true);
         setTimeout(() => setIsSpinning(false), 500);
-        
+
         setRan1(getRandomItem(educationalItems))
         setRan2(getRandomItem(educationalItems))
     };
@@ -41,10 +39,10 @@ export default function SplashScreen(props: Props) {
     const [randomItem2, setRan2] = useState<string>(getRandomItem(educationalItems));
 
     const sub1 = () => {
-        props.submit({name: randomItem1, description: `A product about ${randomItem1}`} satisfies FORM2PRODUCT)
+        props.submit({ name: randomItem1, description: `A product about ${randomItem1}` } satisfies FORM2PRODUCT)
     }
     const sub2 = () => {
-        props.submit({name: randomItem2, description: `A product about ${randomItem2}`} satisfies FORM2PRODUCT)
+        props.submit({ name: randomItem2, description: `A product about ${randomItem2}` } satisfies FORM2PRODUCT)
     }
 
     return (
@@ -73,7 +71,7 @@ export default function SplashScreen(props: Props) {
             </div>
             <div className="w-[80vw] lg:w-full h-[25%] flex flex-row gap-3 justify-center p-2">
                 <div className="w-[95%] h-full flex flex-row gap-2">
-                    <Reccomendation message={`Create a ${randomItem1} curriculum`} type="idea" onClick={sub1}/>
+                    <Reccomendation message={`Make a ${randomItem1} curriculum`} type="idea" onClick={sub1} />
                     <Reccomendation message={`${randomItem2} curriculum`} type="idea" onClick={sub2} />
                 </div>
                 <div className="w-[5%] h-full flex mt-auto flex-row">
