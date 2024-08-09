@@ -47,6 +47,7 @@ import { cn } from "@/lib/utils"
 import ChatHistory from "@/components/ChatHistory";
 import { useChat, Message } from 'ai/react'
 import { generateId, ToolInvocation } from 'ai';
+import AppsPopup from "@/components/component/AppsPopup";
 
 const formSchemaLink = z.object({
   link: z.string().refine(
@@ -417,6 +418,7 @@ export default function Home() {
           </ScrollArea>
 
           <div className="w-full h-[10%] bg-slate-300 dark:bg-slate-600 dark:text-white rounded-full flex flex-row gap-3 items-center px-5">
+            <AppsPopup/>
             <Popover>
               <PopoverTrigger>
                 <Button className="p-0 !bg-transparent dark:text-white text-black transform rotate-[-45deg]" disabled={!able}><Paperclip className="dark:text-white" /></Button>
