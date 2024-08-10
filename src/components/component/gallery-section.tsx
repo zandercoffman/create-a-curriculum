@@ -19,69 +19,57 @@ To read more about using these font, please visit the Next.js documentation:
 **/
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { GalleryItems, Item } from "@/lib/galleryItems"
+import { TriangleAlertIcon, Ellipsis, ListIcon, FilePenIcon } from "lucide-react"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent
+} from "../ui/popover"
+import { Switch } from "../ui/switch"
+import CreateByComponent from "./CreateByComponent"
 
-export default function ActualGallery() {
-  const products = [
-    {
-      id: 1,
-      image: "/placeholder.svg",
-      title: "Wireless Earbuds",
-      description: "Experience crystal clear audio on the go.",
-    },
-    {
-      id: 2,
-      image: "/placeholder.svg",
-      title: "Ergonomic Desk Chair",
-      description: "Improve your posture and comfort while working.",
-    },
-    {
-      id: 3,
-      image: "/placeholder.svg",
-      title: "Smart Home Hub",
-      description: "Control your connected devices with ease.",
-    },
-    {
-      id: 4,
-      image: "/placeholder.svg",
-      title: "Portable Bluetooth Speaker",
-      description: "Bring the party wherever you go.",
-    },
-    {
-      id: 5,
-      image: "/placeholder.svg",
-      title: "Fitness Tracker",
-      description: "Monitor your activity and health metrics.",
-    },
-    {
-      id: 6,
-      image: "/placeholder.svg",
-      title: "Noise-Cancelling Headphones",
-      description: "Immerse yourself in your music or podcasts.",
-    },
-  ]
+export default function ActualGallery({
+  searchQuery,
+  selectedSubject,
+  input
+}: {
+  searchQuery: string,
+  selectedSubject: string,
+  input: string
+}) {
+
+  const check = (val: Item) => {
+    return searchQuery === "" || val.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
+  }
+
   return (
-    <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 py-12">
-      {products.map((product) => (
-        <div key={product.id} className="flex flex-col md:flex-row bg-background rounded-lg shadow-lg overflow-hidden">
-          <Image
-            src="/logo.png"
-            alt={product.title}
-            width={400}
-            height={400}
-            className="md:w-1/2 object-cover"
-            style={{ aspectRatio: "400/400", objectFit: "cover" }}
-          />
-          <div className="flex-1 p-6 md:p-8 flex flex-col justify-between max-w-[70%]">
-            <div>
-              <h3 className="text-xl font-bold">{product.title}</h3>
-              <p className="text-muted-foreground mt-2">{product.description}</p>
-            </div>
-            <Button size="sm" className="mt-6">
-              Create Curriculum
-            </Button>
+    <section className="grid gap-6 md:grid-cols-2 px-4 md:px-6 py-12">
+      {
+        GalleryItems.filter((val) => check(val)).length > 0 ? <>
+          {GalleryItems.filter(
+            (val) => check(val)
+          ).map((product, index) => (
+            <CreateByComponent
+               key={index} 
+               product={product}
+               searchQuery={searchQuery}
+               selectedSubject={selectedSubject}
+               input={input}
+              />
+          ))}
+        </> : <>
+          <div className="w-[82vw] grid place-items-center text-center mx-auto">
+            <TriangleAlertIcon className="mx-auto h-12 w-12 text-primary" />
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Sorry, we couldn{"'"}t find what you were looking for.
+            </h1>
+            <p className="mt-4 text-muted-foreground">
+              The content you requested could not be found. Please check your search query and try again.
+            </p>
           </div>
-        </div>
-      ))}
+        </>
+      }
     </section>
   )
 }
