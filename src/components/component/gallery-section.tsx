@@ -46,8 +46,7 @@ export default function ActualGallery({
   return (
     <section className="grid gap-6 md:grid-cols-2 px-4 md:px-6 py-12">
       {
-        GalleryItems.filter((val) => check(val)).length > 0 ? <>
-          {GalleryItems.filter(
+        GalleryItems.filter(
             (val) => check(val)
           ).map((product, index) => (
             <CreateByComponent
@@ -57,18 +56,7 @@ export default function ActualGallery({
                selectedSubject={selectedSubject}
                input={input}
               />
-          ))}
-        </> : <>
-          <div className="w-[82vw] grid place-items-center text-center mx-auto">
-            <TriangleAlertIcon className="mx-auto h-12 w-12 text-primary" />
-            <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Sorry, we couldn{"'"}t find what you were looking for.
-            </h1>
-            <p className="mt-4 text-muted-foreground">
-              The content you requested could not be found. Please check your search query and try again.
-            </p>
-          </div>
-        </>
+          ))
       }
     </section>
   )

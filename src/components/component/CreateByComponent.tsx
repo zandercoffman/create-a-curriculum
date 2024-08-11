@@ -66,30 +66,34 @@ export default function CreateByComponent(
                                 <span className="text-xs">{input} {product.name}</span>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-row cursor-pointer gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-full mt-2 text-left">
-                                <div className="w-[30%]">
-                                    <FilePenIcon className="h-8 w-8" />
-                                    <span className="text-sm font-medium">Or Both</span>
+                        {
+                            (selectedSubject !== "" && input !== "") && <>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-row cursor-pointer gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-full mt-2 text-left">
+                                        <div className="w-[30%]">
+                                            <FilePenIcon className="h-8 w-8" />
+                                            <span className="text-sm font-medium">Or Both</span>
+                                        </div>
+                                        <div className="w-[70%]">
+                                            <span className="text-xs !leading-1">
+                                                {
+                                                    !sel ? <>
+                                                        {selectedSubject} {input}
+                                                    </> : <>
+                                                        {input} {selectedSubject}
+                                                    </>
+                                                }
+                                                {" " + product.name}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-row font-semibold gap-3 mx-auto">
+                                        <p>Switch Order</p>
+                                        <Switch checked={sel} onCheckedChange={() => setSel(!sel)} />
+                                    </div>
                                 </div>
-                                <div className="w-[70%]">
-                                    <span className="text-xs !leading-1"> 
-                                        {
-                                            sel ? <>
-                                            {selectedSubject} {input}
-                                            </> : <>
-                                            {input} {selectedSubject}
-                                            </>
-                                        }
-                                        {" " + product.name}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="flex flex-row font-semibold gap-3 mx-auto">
-                                <p>Switch Order</p>
-                                <Switch checked={sel} onCheckedChange={() => setSel(!sel)}/>
-                            </div>
-                        </div>
+                            </>
+                        }
                     </PopoverContent>
                 </Popover>
             </div>

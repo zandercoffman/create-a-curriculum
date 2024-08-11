@@ -168,7 +168,7 @@ const carouselItems: CarouselItem[] = [
                 <CardContent>
                     <ScrollArea className="h-[20vh] lg:h-auto">
                         <div >
-                            <Accordion type="single" collapsible className="w-full h-full flex flex-col lg:flex-row gap-10 pr-3">
+                            <Accordion type="single" collapsible className="w-full h-full flex flex-col lg:flex-row gap-10 pr-3" >
                                 <div className="w-full lg:w-1/2 h-full">
                                     <AccordionItem value="item-1">
                                         <AccordionTrigger>Code</AccordionTrigger>
