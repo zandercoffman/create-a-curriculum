@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Item } from "@/lib/galleryItems"
 import { useState } from "react"
+import { Badge } from "../ui/badge"
 
 export default function CreateByComponent(
     {
@@ -43,8 +44,13 @@ export default function CreateByComponent(
                 <p className="text-muted-foreground mt-2">{product.description}</p>
             </div>
             <div className="flex flex-row gap-4">
-                <Button size="sm" className="mt-2 w-full">
+                <Button size="sm" className="mt-2 w-full relative">
                     Create Curriculum
+                    {
+                        product.curriculum && <>
+                            <Badge variant={"destructive"} className="absolute right-[-20px] top-[-11px]">Special Curriculum</Badge>
+                        </>
+                    }
                 </Button>
                 <Popover>
                     <PopoverTrigger className=" flex items-center">

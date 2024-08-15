@@ -20,7 +20,7 @@ To read more about using these font, please visit the Next.js documentation:
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { JSX, SVGProps } from "react"
-import { Grid2X2, Pencil, Terminal } from "lucide-react"
+import { Grid2X2, Pencil, Sparkles, Terminal } from "lucide-react"
 import { Badge } from "../ui/badge"
 import GallerySection from "../apps/GallerySection"
 
@@ -36,6 +36,11 @@ export default function AppsPopup() {
       </PopoverTrigger>
       <PopoverContent className="w-[300px] grid grid-cols-3 gap-4 p-4 rounded-3xl">
         <GallerySection />
+        <div className="flex flex-col items-center gap-2 relative text-gray-500 cursor-not-allowed">
+          <Sparkles className="w-6 h-6" />
+          <span className="text-sm font-medium">Suggestions</span>
+          <span className="text-xs text-gray-500">Coming Soon</span> {/* Added "Coming Soon" text */}
+        </div>
         <div className="flex flex-col items-center gap-2 relative text-gray-500 cursor-not-allowed">
           <RewindIcon className="w-6 h-6" />
           <span className="text-sm font-medium">Rebuttal</span>

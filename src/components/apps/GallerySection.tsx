@@ -30,6 +30,145 @@ import {
 import { Button } from "../ui/button";
 import Link from "next/link";
 
+const topics: {
+    title: string,
+    options: string[]
+}[] = [
+    {
+        title: "Core Subjects",
+        options: ["Math", "Science", "History", "Language Arts", "Social Studies", "Physical Education", "Health Education", "Core Subjects"],
+    },
+    {
+        title: "World Language",
+        options: ["English", "Spanish", "Mandarin", "Hindi", "Arabic", "Portuguese", "Bengali", "Russian", "Japanese", "Punjabi", "German", "French", "Italian", "Korean", "Vietnamese", "Turkish", "Urdu", "Javanese", "Telugu", "Marathi", "Latin", "World Language"],
+    },
+    {
+        title: "Computer Science",
+        options: ["Computer Science", "Algorithms", "Data Structures", "Operating Systems", "Computer Networks", "Databases", "Software Engineering", "Artificial Intelligence", "Machine Learning", "Cybersecurity", "Programming Languages", "Computer Architecture", "Web Development", "Mobile Application Development", "Cloud Computing", "Computer Graphics", "Cryptography", "Quantum Computing", "Augmented Reality", "Virtual Reality"],
+    },
+    {
+        title: "Math",
+        options: ["Addition", "Subtraction", "Division", "Multiplication", "Algebra", "Geometry", "Trigonometry", "Calculus", "Linear Algebra", "Statistics"],
+    },
+    {
+        title: "Sports",
+        options: ["Soccer", "Basketball", "Baseball", "Tennis", "Football", "Hockey", "Volleyball", "Swimming", "Track and Field", "Gymnastics", "Golf", "Cricket", "Rugby", "Wrestling", "Boxing", "Badminton", "Table Tennis", "Martial Arts", "Cycling", "Surfing", "Skiing", "Snowboarding"],
+    },
+    {
+        title: "Arts & Humanities",
+        options: ["Art History", "Visual Arts", "Music Theory", "Theater", "Dance", "Film Studies", "Literature", "Philosophy", "Religious Studies", "Cultural Studies", "Anthropology", "Ethics"],
+    },
+    {
+        title: "Engineering & Technology",
+        options: ["Mechanical Engineering", "Electrical Engineering", "Civil Engineering", "Chemical Engineering", "Biomedical Engineering", "Robotics", "Nanotechnology", "Renewable Energy", "Automation", "3D Printing"],
+    },
+    {
+        title: "Social Sciences",
+        options: ["Psychology", "Sociology", "Political Science", "Economics", "Geography", "Civics", "Law", "International Relations", "Archaeology", "Public Policy"],
+    },
+    {
+        title: "Health & Medicine",
+        options: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Nursing", "Public Health", "Nutrition", "Pathology", "Medical Ethics", "Veterinary Medicine"],
+    },
+    {
+        title: "Business & Economics",
+        options: ["Accounting", "Finance", "Marketing", "Entrepreneurship", "Human Resources", "Business Administration", "Economics", "Management", "Supply Chain Management", "E-commerce"],
+    },
+    {
+        title: "Environmental Studies",
+        options: ["Ecology", "Environmental Science", "Sustainability", "Conservation", "Climate Change", "Renewable Energy", "Environmental Policy", "Marine Biology", "Forestry", "Wildlife Management"],
+    },
+    {
+        title: "History & Culture",
+        options: ["Ancient Civilizations", "World History", "U.S. History", "European History", "Asian History", "African History", "Middle Eastern History", "Latin American History", "Historiography", "Cultural Heritage"],
+    },
+    {
+        title: "Communication & Media Studies",
+        options: ["Journalism", "Public Relations", "Advertising", "Digital Media", "Film Production", "Broadcasting", "Speech Communication", "Media Literacy", "Interpersonal Communication", "Corporate Communication"],
+    },
+    {
+        title: "Psychology & Human Behavior",
+        options: ["Cognitive Psychology", "Developmental Psychology", "Behavioral Psychology", "Clinical Psychology", "Social Psychology", "Educational Psychology", "Forensic Psychology", "Neuroscience", "Counseling", "Psychotherapy"],
+    },
+    {
+        title: "Ethics & Philosophy",
+        options: ["Moral Philosophy", "Logic", "Metaphysics", "Epistemology", "Aesthetics", "Political Philosophy", "Philosophy of Mind", "Philosophy of Science", "Existentialism", "Stoicism"],
+    },
+    {
+        title: "Life Sciences",
+        options: ["Biology", "Genetics", "Botany", "Zoology", "Microbiology", "Ecology", "Evolutionary Biology", "Marine Biology", "Biotechnology", "Molecular Biology"],
+    },
+    {
+        title: "Fine Arts",
+        options: ["Painting", "Sculpture", "Photography", "Drawing", "Ceramics", "Printmaking", "Graphic Design", "Textile Arts", "Fashion Design", "Jewelry Design"],
+    },
+    {
+        title: "Performing Arts",
+        options: ["Acting", "Directing", "Stage Design", "Playwriting", "Choreography", "Vocal Performance", "Instrumental Performance", "Musical Theater", "Opera", "Improvisation"],
+    },
+    {
+        title: "Astronomy & Space Sciences",
+        options: ["Astronomy", "Astrophysics", "Planetary Science", "Cosmology", "Space Exploration", "Astrobiology", "Stellar Evolution", "Exoplanets", "Space Technology", "Astronautics"],
+    },
+    {
+        title: "Agricultural Sciences",
+        options: ["Agronomy", "Horticulture", "Animal Science", "Soil Science", "Agricultural Engineering", "Plant Breeding", "Agricultural Economics", "Agroecology", "Agricultural Biotechnology", "Sustainable Agriculture"],
+    },
+    {
+        title: "Design & Architecture",
+        options: ["Architecture", "Interior Design", "Urban Planning", "Landscape Architecture", "Graphic Design", "Industrial Design", "Fashion Design", "Product Design", "Environmental Design", "Sustainable Architecture"],
+    },
+    {
+        title: "Ethnic & Gender Studies",
+        options: ["African American Studies", "Latino Studies", "Asian American Studies", "Native American Studies", "Gender Studies", "Women’s Studies", "Intersectionality", "Cultural Identity", "Postcolonial Studies"],
+    },
+    {
+        title: "Literary Studies",
+        options: ["Literary Analysis", "Poetry", "Drama", "Prose Fiction", "Literary Criticism", "Comparative Literature", "World Literature", "Modern Literature", "Classical Literature", "Postmodern Literature"],
+    },
+    {
+        title: "Culinary Arts",
+        options: ["Culinary Techniques", "Baking and Pastry", "Culinary Nutrition", "International Cuisine", "Culinary Management", "Food Safety", "Gastronomy", "Wine and Beverage Studies", "Culinary Entrepreneurship", "Food Science"],
+    },
+    {
+        title: "Education & Pedagogy",
+        options: ["Educational Theory", "Curriculum Development", "Instructional Design", "Special Education", "Early Childhood Education", "Educational Psychology", "Classroom Management", "Assessment and Evaluation", "Educational Technology", "Adult Education"],
+    },
+    {
+        title: "Ethics & Social Responsibility",
+        options: ["Business Ethics", "Environmental Ethics", "Bioethics", "Social Justice", "Corporate Social Responsibility", "Human Rights", "Ethical Leadership", "Ethics in Technology", "Global Ethics", "Civic Responsibility"],
+    },
+    {
+        title: "Geology & Earth Sciences",
+        options: ["Geology", "Geophysics", "Mineralogy", "Volcanology", "Seismology", "Paleontology", "Hydrology", "Environmental Geology", "Geomorphology", "Petrology"],
+    },
+    {
+        title: "Global Studies & International Relations",
+        options: ["Globalization", "International Development", "Global Politics", "International Law", "Humanitarian Studies", "Global Health", "Conflict Resolution", "Global Trade", "International Organizations", "Diplomacy"],
+    },
+    {
+        title: "History of Science & Technology",
+        options: ["History of Medicine", "History of Technology", "Scientific Revolutions", "History of Mathematics", "History of Engineering", "History of Physics", "History of Biology", "History of Computing", "Industrial Revolution", "Space Race"],
+    },
+    {
+        title: "Media & Popular Culture",
+        options: ["Popular Culture", "Film Studies", "Television Studies", "Music Studies", "Comic Books", "Video Games", "Social Media", "Celebrity Culture", "Cultural Criticism", "Fan Studies"],
+    },
+    {
+        title: "Military & Defense Studies",
+        options: ["Military History", "Strategic Studies", "Defense Policy", "Intelligence Studies", "Military Ethics", "Security Studies", "Peacekeeping", "Cyber Warfare", "Counterterrorism", "Arms Control"],
+    },
+    {
+        title: "Transportation & Logistics",
+        options: ["Transportation Engineering", "Logistics Management", "Supply Chain Management", "Urban Transportation", "Aviation Management", "Maritime Studies", "Rail Transport", "Automotive Engineering", "Public Transportation", "Transportation Safety"],
+    },
+    {
+        title: "Urban & Regional Planning",
+        options: ["Urban Planning", "Regional Planning", "Urban Design", "Land Use Planning", "Sustainable Cities", "Transportation Planning", "Community Development", "Environmental Planning", "Housing Policy", "Urban Economics"],
+    }
+];
+
+
 
 export default function GallerySection() {
 
@@ -50,7 +189,7 @@ export default function GallerySection() {
                 <DialogHeader>
                     <DialogTitle>Gallery</DialogTitle>
                     <DialogDescription className="flex flex-row gap-2">
-                        <>A scroll page where you explore products and generate a custom curriculum based on what piques your interest. All images are generated by Meta AI. <Link href={"https://forms.gle/TKgtnAL6qjtYAQLGA"} className="text-blue-400 font-semibold">Recommendation Form</Link></>
+                        <p>A scroll page where you explore products and generate a custom curriculum based on what piques your interest. All images are generated by Meta AI. <Link href={"https://forms.gle/TKgtnAL6qjtYAQLGA"} className="text-blue-400 font-semibold">Recommendation Form</Link></p>
                     </DialogDescription>
                     <Accordion type="single" collapsible className="w-[96%] mx-auto" defaultValue="item-1">
                         <AccordionItem value="item-1">
@@ -76,103 +215,20 @@ export default function GallerySection() {
                                             }
                                         }>
                                             <SelectTrigger className="pl-10 w-full">
-                                                <SelectValue placeholder={selectedSubject == "" ? "Subject" : selectedSubject} />
+                                                <SelectValue placeholder={selectedSubject === "" ? "Subject" : selectedSubject} />
                                             </SelectTrigger>
                                             <ScrollArea className="max-h-[350px]">
                                                 <SelectContent className="max-h-[350px]">
-                                                    <SelectTitle>Core Subjects</SelectTitle>
-                                                    <SelectItem value="Math">Math</SelectItem>
-                                                    <SelectItem value="Science">Science</SelectItem>
-                                                    <SelectItem value="History">History</SelectItem>
-                                                    <SelectItem value="Language Arts">Language Arts</SelectItem>
-                                                    <SelectItem value="Social Studies">Social Studies</SelectItem>
-                                                    <SelectItem value="Physical Education">Physical Education</SelectItem>
-                                                    <SelectItem value="Health Education">Health Education</SelectItem>
-                                                    <SelectItem value="Core Subjects">Core Subjects</SelectItem>
-
-                                                    {/** */}
-                                                    <SelectTitle>World Language</SelectTitle>
-                                                    <SelectItem value="English">English</SelectItem>
-                                                    <SelectItem value="Spanish">Spanish</SelectItem>
-                                                    <SelectItem value="Mandarin">Mandarin</SelectItem>
-                                                    <SelectItem value="Hindi">Hindi</SelectItem>
-                                                    <SelectItem value="Arabic">Arabic</SelectItem>
-                                                    <SelectItem value="Portuguese">Portuguese</SelectItem>
-                                                    <SelectItem value="Bengali">Bengali</SelectItem>
-                                                    <SelectItem value="Russian">Russian</SelectItem>
-                                                    <SelectItem value="Japanese">Japanese</SelectItem>
-                                                    <SelectItem value="Punjabi">Punjabi</SelectItem>
-                                                    <SelectItem value="German">German</SelectItem>
-                                                    <SelectItem value="French">French</SelectItem>
-                                                    <SelectItem value="Italian">Italian</SelectItem>
-                                                    <SelectItem value="Korean">Korean</SelectItem>
-                                                    <SelectItem value="Vietnamese">Vietnamese</SelectItem>
-                                                    <SelectItem value="Turkish">Turkish</SelectItem>
-                                                    <SelectItem value="Urdu">Urdu</SelectItem>
-                                                    <SelectItem value="Javanese">Javanese</SelectItem>
-                                                    <SelectItem value="Telugu">Telugu</SelectItem>
-                                                    <SelectItem value="Marathi">Marathi</SelectItem>
-                                                    <SelectItem value="Latin">Latin</SelectItem>
-                                                    <SelectItem value="World Language">World Language</SelectItem>
-                                                    {/** */}
-                                                    <SelectTitle>Computer Science</SelectTitle>
-                                                    <SelectItem value="Computer Science">Computer Science</SelectItem>
-                                                    <SelectItem value="Algorithms">Algorithms</SelectItem>
-                                                    <SelectItem value="Data Structures">Data Structures</SelectItem>
-                                                    <SelectItem value="Operating Systems">Operating Systems</SelectItem>
-                                                    <SelectItem value="Computer Networks">Computer Networks</SelectItem>
-                                                    <SelectItem value="Databases">Databases</SelectItem>
-                                                    <SelectItem value="Software Engineering">Software Engineering</SelectItem>
-                                                    <SelectItem value="Artificial Intelligence">Artificial Intelligence</SelectItem>
-                                                    <SelectItem value="Machine Learning">Machine Learning</SelectItem>
-                                                    <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
-                                                    <SelectItem value="Programming Languages">Programming Languages</SelectItem>
-                                                    <SelectItem value="Computer Architecture">Computer Architecture</SelectItem>
-                                                    <SelectItem value="Web Development">Web Development</SelectItem>
-                                                    <SelectItem value="Mobile Application Development">Mobile Application Development</SelectItem>
-                                                    <SelectItem value="Cloud Computing">Cloud Computing</SelectItem>
-                                                    <SelectItem value="Computer Graphics">Computer Graphics</SelectItem>
-                                                    <SelectItem value="Cryptography">Cryptography</SelectItem>
-                                                    <SelectItem value="Quantum Computing">Quantum Computing</SelectItem>
-                                                    <SelectItem value="Augmented Reality">Augmented Reality</SelectItem>
-                                                    <SelectItem value="Virtual Reality">Virtual Reality</SelectItem>
-                                                    {/** */}
-                                                    <SelectTitle>Math</SelectTitle>
-                                                    <SelectItem value="Addition">Addition</SelectItem>
-                                                    <SelectItem value="Subtraction">Subtraction</SelectItem>
-                                                    <SelectItem value="Division">Division</SelectItem>
-                                                    <SelectItem value="Multiplication">Multiplication</SelectItem>
-                                                    <SelectItem value="Algebra">Algebra</SelectItem>
-                                                    <SelectItem value="Geometry">Geometry</SelectItem>
-                                                    <SelectItem value="Trigonometry">Trigonometry</SelectItem>
-                                                    <SelectItem value="Calculus">Calculus</SelectItem>
-                                                    <SelectItem value="Linear Algebra">Linear Algebra</SelectItem>
-                                                    <SelectItem value="Statistics">Statistics</SelectItem>
-                                                    {/** */}
-                                                    <SelectTitle>Sports</SelectTitle>
-                                                    <SelectItem value="Soccer">Soccer</SelectItem>
-                                                    <SelectItem value="Basketball">Basketball</SelectItem>
-                                                    <SelectItem value="Baseball">Baseball</SelectItem>
-                                                    <SelectItem value="Tennis">Tennis</SelectItem>
-                                                    <SelectItem value="Football">Football</SelectItem>
-                                                    <SelectItem value="Hockey">Hockey</SelectItem>
-                                                    <SelectItem value="Volleyball">Volleyball</SelectItem>
-                                                    <SelectItem value="Swimming">Swimming</SelectItem>
-                                                    <SelectItem value="Track and Field">Track and Field</SelectItem>
-                                                    <SelectItem value="Gymnastics">Gymnastics</SelectItem>
-                                                    <SelectItem value="Golf">Golf</SelectItem>
-                                                    <SelectItem value="Cricket">Cricket</SelectItem>
-                                                    <SelectItem value="Rugby">Rugby</SelectItem>
-                                                    <SelectItem value="Wrestling">Wrestling</SelectItem>
-                                                    <SelectItem value="Boxing">Boxing</SelectItem>
-                                                    <SelectItem value="Badminton">Badminton</SelectItem>
-                                                    <SelectItem value="Table Tennis">Table Tennis</SelectItem>
-                                                    <SelectItem value="Martial Arts">Martial Arts</SelectItem>
-                                                    <SelectItem value="Cycling">Cycling</SelectItem>
-                                                    <SelectItem value="Surfing">Surfing</SelectItem>
-                                                    <SelectItem value="Skiing">Skiing</SelectItem>
-                                                    <SelectItem value="Snowboarding">Snowboarding</SelectItem>
-
+                                                    {topics.map((topic) => (
+                                                        <div key={topic.title}>
+                                                            <SelectTitle>{topic.title}</SelectTitle>
+                                                            {topic.options.map((option) => (
+                                                                <SelectItem key={option} value={option}>
+                                                                    {option}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </div>
+                                                    ))}
                                                 </SelectContent>
                                             </ScrollArea>
                                         </Select>
