@@ -59,7 +59,7 @@ to learn about ${products.length > 0 ? products.map(product => ` ${product.label
 for a ${products.length > 0 ? products.map(product => ` ${product.label}`) : product} Field Trip curriculum, including the additional products mentioned. For each item, 
 give a detailed explanation of how it is specifically used within the curriculum, including which lessons 
 or activities it's used for and any particular techniques or applications involved. List materials at the end. 
-            `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map((product) => `\n- ${product.label} ticket`) : product}`
+            `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map((product) => `\n- ${product.label} ticket`) : "-" + product + " ticket"}`
         else if (type == CurriculumTypes.Museum)
             return `
 Write a curriculum that has the word "educational" somewhere 
@@ -72,7 +72,7 @@ used within the curriculum, including which lessons or activities it's used for
 and any particular techniques or applications involved. List materials at the end. 
 
                 
-        `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map(product => `\n- ${product.label}  ticket`) : product} `
+        `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map(product => `\n- ${product.label} ticket`) : "-" + product + " ticket"} `
         return `
 Write a curriculum that has the word "educational" somewhere in it with scope and sequence, 
 learning objectives, ${lessons} detailed lessons in order, activity, and assessment for a child wanting 
