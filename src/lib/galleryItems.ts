@@ -46,20 +46,12 @@ export const GalleryItems: Item[] = [
         description: "Media content intended for educational purposes, such as audiobooks or educational lectures."
     },
     {
-        name: "Google One",
-        description: "A subscription service offering more storage, access to Google Docs, Sheets, Slides, and the effects of AI on productivity."
-    },
-    {
         name: "Audio Recorder",
         description: "A device that records and plays back audio, useful for capturing lectures or personal notes."
     },
     {
         name: "Physical Calendar",
         description: "A traditional calendar used for scheduling and tracking important dates and educational milestones."
-    },
-    {
-        name: "Gemini AI",
-        description: "An AI model from Google that can assist with various educational tasks, including answering questions and providing insights."
     },
     {
         name: "Educational Figurines",
@@ -90,8 +82,8 @@ export const GalleryItems: Item[] = [
         description: "Physical tools like algebra tiles or geometric shapes used to teach mathematical concepts through hands-on activities."
     },
     {
-        name: "Study Planner App",
-        description: "An app designed to help students plan their study schedules, track assignments, and set goals."
+        name: "Study Planner",
+        description: "An way designed to help students plan their study schedules, track assignments, and set goals."
     },
     {
         name: "Digital Drawing Tablet",
@@ -147,83 +139,39 @@ export const GalleryItems: Item[] = [
     },
     {
         name: "Resistance Bands",
-        description: "Elastic bands used for strength training and rehabilitation exercises, suitable for all fitness levels."
-    },
-    {
-        name: "Yoga Mat",
-        description: "A cushioned mat used for practicing yoga, stretching, and other floor exercises, enhancing comfort and stability."
+        description: "Elastic bands for strength training and rehabilitation."
     },
     {
         name: "Dumbbell Set",
-        description: "A set of hand weights for strength training, allowing for a range of exercises targeting different muscle groups."
+        description: "Hand weights for strength training."
     },
     {
-        name: "Stability Ball",
-        description: "A large inflatable ball used for balance exercises, core strengthening, and improving flexibility."
-    },
-    {
-        name: "Jump Rope",
-        description: "A simple yet effective tool for cardiovascular workouts and improving coordination and agility."
-    },
-    {
-        name: "Foam Roller",
-        description: "A cylindrical foam tool used for self-myofascial release to relieve muscle soreness and improve flexibility."
+        name: "Yoga Mat",
+        description: "Cushioned mat for yoga and floor exercises."
     },
     {
         name: "Treadmill",
-        description: "A piece of cardio equipment that allows for walking or running indoors, useful for cardiovascular fitness and endurance."
-    },
-    {
-        name: "Stationary Bike",
-        description: "An indoor cycling machine that provides a low-impact cardiovascular workout, suitable for building leg strength and endurance."
+        description: "Cardio equipment for indoor walking or running."
     },
     {
         name: "Kettlebell Set",
-        description: "A set of cast iron weights with a handle used for dynamic strength and conditioning exercises."
+        description: "Weights with a handle for strength exercises."
     },
     {
-        name: "Elliptical Machine",
-        description: "A cardio machine that provides a low-impact workout, combining the motions of running and cycling."
+        name: "Foam Roller",
+        description: "Tool for muscle soreness relief and flexibility."
     },
     {
-        name: "Medicine Ball",
-        description: "A weighted ball used for various exercises, including strength training, core work, and plyometric drills."
-    },
-    {
-        name: "Pull-Up Bar",
-        description: "A bar mounted in a doorway or on a wall for performing pull-ups and chin-ups, targeting upper body strength."
-    },
-    {
-        name: "Exercise Bike",
-        description: "A bike designed for indoor cycling workouts, offering adjustable resistance for varied intensity."
+        name: "Stationary Bike",
+        description: "Indoor cycling machine for cardiovascular workout."
     },
     {
         name: "Rowing Machine",
-        description: "A cardio machine that mimics the motion of rowing, providing a full-body workout and improving cardiovascular health."
-    },
-    {
-        name: "Barbell Set",
-        description: "A bar with weights on either end used for heavy lifting and strength training exercises."
-    },
-    {
-        name: "Balance Board",
-        description: "A board that challenges balance and stability, used for improving core strength and coordination."
-    },
-    {
-        name: "Stepper Machine",
-        description: "A cardio machine that simulates stair climbing, effective for lower body strength and cardiovascular fitness."
-    },
-    {
-        name: "Exercise Ball Chair",
-        description: "A chair with an inflatable ball as the seat, promoting better posture and core strength while sitting."
-    },
-    {
-        name: "Agility Ladder",
-        description: "A tool used for agility training, improving foot speed, coordination, and quickness through ladder drills."
+        description: "Cardio machine mimicking rowing motion."
     },
     {
         name: "Heart Rate Monitor",
-        description: "A device that tracks heart rate during exercise, helping to optimize workout intensity and monitor cardiovascular health."
+        description: "Device for tracking heart rate during exercise."
     },
     {
         name: "Exercise Equipment",
@@ -244,14 +192,6 @@ export const GalleryItems: Item[] = [
     {
         name: "Cognitive Skills Development App",
         description: "An app designed to improve cognitive skills such as memory, attention, and problem-solving through interactive exercises."
-    },
-    {
-        name: "Lamp",
-        description: "A source of light that improves visibility for reading and studying, essential for a conducive learning environment."
-    },
-    {
-        name: "Laundry Hamper",
-        description: "A practical item for organizing laundry, contributing to a tidy and organized study space."
     },
     {
         name: "Wireless Earbuds",
@@ -342,7 +282,7 @@ export const GalleryItems: Item[] = [
         description: "Create vibrant tye-dye patterns on clothing and fabric."
     },
     {
-        name: "Board Game (Strategy)",
+        name: "Board Game",
         description: "Engage in strategic thinking with this classic board game."
     },
     {
