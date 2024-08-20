@@ -32,11 +32,15 @@ import CreateByComponent from "./CreateByComponent"
 export default function ActualGallery({
   searchQuery,
   selectedSubject,
-  input
+  input,
+  submit,
+  closePopover
 }: {
   searchQuery: string,
   selectedSubject: string,
-  input: string
+  input: string,
+  submit: Function,
+  closePopover: Function
 }) {
 
   const check = (val: Item) => {
@@ -55,6 +59,8 @@ export default function ActualGallery({
                searchQuery={searchQuery}
                selectedSubject={selectedSubject}
                input={input}
+               submit={submit}
+               closePopover={closePopover}
               />
           ))
       }

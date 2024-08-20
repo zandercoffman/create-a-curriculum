@@ -118,13 +118,21 @@ export default function Home() {
   const [id, setId] = useState<string>(generateId());
   const [canCreateNew, setCanNew] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const exportRef = useRef<any>(null);
   const [c, setc] = useState<boolean>(false);
+
+  const handleRefresh = () => {
+    if (exportRef.current)
+      exportRef.current();
+  }
 
   const handleButtonClick = () => {
     if (buttonRef.current) {
       buttonRef.current.click(); // Trigger the button click
     }
   };
+
+
 
   const { messages, input, handleInputChange, handleSubmit, setMessages, append } = useChat(
     {
@@ -166,7 +174,7 @@ export default function Home() {
               extra: "",
               messages: [message] as Message[]
             }
-  
+
             localStorage.setItem("messageData", JSON.stringify(a));
             setc(false);
           }
@@ -203,17 +211,24 @@ export default function Home() {
     resolver: zodResolver(formSchemaLink),
   })
 
-
+  useEffect(() => {
+    handleRefresh();
+  }, [c])
 
   function getProductFromLink(link: string) {
     const linkParsed = getLink(link);
     return linkParsed;
   }
 
-  const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => {
-    
+  const submit = async (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null, curriculum?: Function | null) => {
+
     setc(true);
-    const input = decideCurToUse(form2, form1);
+    var input = "";
+    if (curriculum) {
+      input = decideCurToUse(form2, form1, curriculum);
+    } else {
+      input = decideCurToUse(form2, form1);
+    }
 
     // Append the user message
     const obj = {
@@ -227,6 +242,8 @@ export default function Home() {
     append(obj as Message);
     const lastAiMessageId = messages.length > 0 ? messages[messages.length - 1].id : null;
     handleLocalStorage([...messages, obj] as Message[], lastAiMessageId, form2, id);
+
+
   };
 
   useEffect(() => {
@@ -314,7 +331,12 @@ export default function Home() {
     }
   };
 
-  const decideCurToUse = (obj: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null | undefined): string => {
+  const decideCurToUse = (obj: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null | undefined, curriculum?: Function): string => {
+
+    if (curriculum && 'name' in obj) {
+      return `${curriculum(obj.name)}`
+    }
+
     if ('link' in obj) {
       return `${makeCurriculum(obj.name, form1?.grade?.toString(), 8)}`;
     } else if ('titles' in obj) {
@@ -389,7 +411,7 @@ export default function Home() {
 
   return (
     <main className="h-screen w-screen overflow-hidden">
-      <Header messages={messages} submit={submit} buttonRef={buttonRef} />
+      <Header messages={messages} submit={submit} buttonRef={buttonRef} exportRef={exportRef} c={c} />
 
       {/** Es Tiempo de enviar mensajes (suavemente) */}
       <div className="w-full h-[90vh] flex justify-center">
@@ -409,8 +431,8 @@ export default function Home() {
               }
               {
                 c && <><MessageBubble
-                key={"w"} 
-                is={true} /></>
+                  key={"w"}
+                  is={true} /></>
               }
             </> : (
               <SplashScreen submit={submit} />
@@ -418,7 +440,7 @@ export default function Home() {
           </ScrollArea>
 
           <div className="w-full h-[10%] bg-slate-300 dark:bg-slate-600 dark:text-white rounded-full flex flex-row gap-3 items-center px-5">
-            <AppsPopup/>
+            <AppsPopup submit={submit} />
             <Popover>
               <PopoverTrigger>
                 <Button className="p-0 !bg-transparent dark:text-white text-black transform rotate-[-45deg]" disabled={!able}><Paperclip className="dark:text-white" /></Button>

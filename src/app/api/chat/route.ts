@@ -14,7 +14,7 @@ export async function POST(req: Request) {
  
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
-    model: 'llama-3.1-70b-versatile',
+    model: 'llama3-8b-8192',
     stream: true,
     messages,
   });

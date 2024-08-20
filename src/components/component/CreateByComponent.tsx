@@ -13,17 +13,27 @@ import { Item } from "@/lib/galleryItems"
 import { useState } from "react"
 import { Badge } from "../ui/badge"
 
+interface FORM2PRODUCT {
+    name: string;
+    description: string;
+    lessons: number;
+}
+
 export default function CreateByComponent(
     {
         product,
         searchQuery,
         selectedSubject,
-        input
+        input,
+        submit,
+        closePopover
     }: {
         product: Item,
         searchQuery: string,
         selectedSubject: string,
-        input: string
+        input: string,
+        submit: Function,
+        closePopover: Function
     }
 ) {
 
@@ -44,7 +54,16 @@ export default function CreateByComponent(
                 <p className="text-muted-foreground mt-2">{product.description}</p>
             </div>
             <div className="flex flex-row gap-4">
-                <Button size="sm" className="mt-2 w-full relative">
+                <Button size="sm" className="mt-2 w-full relative"
+                onClick={() => {
+                    closePopover()
+                    submit({
+                        name: product.name,
+                        description: "",
+                        lessons: 5,
+                    } as FORM2PRODUCT, null, product.curriculum && product.curriculum)
+                    
+                }}>
                     Create Curriculum
                     {
                         product.curriculum && <>
@@ -61,12 +80,30 @@ export default function CreateByComponent(
                             Create by..
                         </h3>
                         <div className="flex flex-row gap-2 mt-2 w-full text-center">
-                            <div className="flex flex-col cursor-pointer items-center gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-1/2">
+                            <div className="flex flex-col cursor-pointer items-center gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-1/2"
+                                onClick={() => {
+                                    closePopover()
+                                    submit({
+                                        name: selectedSubject + " " + product.name,
+                                        description: "",
+                                        lessons: 5,
+                                    } as FORM2PRODUCT, null, product.curriculum && product.curriculum)
+                                    
+                                }}>
                                 <ListIcon className="h-8 w-8" />
                                 <span className="text-sm font-medium">Subject</span>
                                 <span className="text-xs">{selectedSubject} {product.name}</span>
                             </div>
-                            <div className="flex flex-col cursor-pointer items-center gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-1/2">
+                            <div className="flex flex-col cursor-pointer items-center gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-1/2"
+                                onClick={() => {
+                                    closePopover()
+                                    submit({
+                                        name: input  + " " + product.name,
+                                        description: "",
+                                        lessons: 5,
+                                    } as FORM2PRODUCT, null, product.curriculum && product.curriculum)
+                                    
+                                }}>
                                 <FilePenLineIcon className="h-8 w-8" />
                                 <span className="text-sm font-medium">Input</span>
                                 <span className="text-xs">{input} {product.name}</span>
@@ -75,7 +112,16 @@ export default function CreateByComponent(
                         {
                             (selectedSubject !== "" && input !== "") && <>
                                 <div className="flex flex-col gap-2">
-                                    <div className="flex flex-row cursor-pointer gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-full mt-2 text-left">
+                                    <div className="flex flex-row cursor-pointer gap-2 rounded-md bg-muted p-4 transition-colors hover:bg-muted-foreground hover:text-muted-foreground w-full mt-2 text-left"
+                                    onClick={() => {
+                                        closePopover()
+                                        submit({
+                                            name: !sel ? selectedSubject + " " + input : input + " " + selectedSubject,
+                                            description: "",
+                                            lessons: 5,
+                                        } as FORM2PRODUCT, null, product.curriculum && product.curriculum)
+                                        
+                                    }}>
                                         <div className="w-[30%]">
                                             <FilePenIcon className="h-8 w-8" />
                                             <span className="text-sm font-medium">Or Both</span>

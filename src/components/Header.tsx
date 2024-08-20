@@ -51,6 +51,8 @@ interface Props {
     messages: any;
     submit: (form2: FORM2TITLES | FORM2PRODUCT | LINKStorage, form1: FORM1 | null) => void;
     buttonRef: any;
+    exportRef: any;
+    c: boolean
 }
 
 export default function Header(props: Props) {
@@ -67,6 +69,8 @@ export default function Header(props: Props) {
                 userData={ud}
                 sel={sel} // Pass down state
                 setSel={setSel} // Pass down setter
+                exportRef={props.exportRef}
+                c={props.c}
             />
         </div>
     );

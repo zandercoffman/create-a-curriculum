@@ -24,7 +24,13 @@ import { Grid2X2, Pencil, Sparkles, Terminal } from "lucide-react"
 import { Badge } from "../ui/badge"
 import GallerySection from "../apps/GallerySection"
 
-export default function AppsPopup() {
+export default function AppsPopup(
+  {
+    submit
+  }: {
+    submit: Function
+  }
+) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -35,7 +41,7 @@ export default function AppsPopup() {
 
       </PopoverTrigger>
       <PopoverContent className="w-[300px] grid grid-cols-3 gap-4 p-4 rounded-3xl">
-        <GallerySection />
+        <GallerySection submit={submit} />
         <div className="flex flex-col items-center gap-2 relative text-gray-500 cursor-not-allowed">
           <Sparkles className="w-6 h-6" />
           <span className="text-sm font-medium">Suggestions</span>

@@ -13,16 +13,13 @@ import { ArrowRightFromLine, CircleSlash2, Loader } from "lucide-react"
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileText, Text, ClipboardCopy } from "lucide-react";
-import { SVGProps, useEffect, useState } from "react";
+import { SVGProps, useEffect, useReducer, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import MessageSelector from "./MessageSelector"
 import { Badge } from "./ui/badge"
 import { useToast } from "./ui/use-toast"
-
-import { remark } from 'remark'
-import strip from 'strip-markdown'
-import { saveAs } from 'file-saver';
+import Image from "next/image"
 
 
 interface BigButtonProps {
@@ -61,6 +58,8 @@ interface Props {
     userData: FORM1 | null;
     sel: number;
     setSel: Function;
+    exportRef: any
+    c: boolean
 }
 
 export default function ExportButton(props: Props) {
@@ -86,7 +85,7 @@ export default function ExportButton(props: Props) {
             }
         };
         setSelected(a());
-        
+
         const g = () => {
             const m = localStorage.getItem("messageData");
             if (m) {
@@ -101,7 +100,7 @@ export default function ExportButton(props: Props) {
 
         setCurriculumContent(g());
 
-        
+
     }, [selected])
 
     const [loading, setLoading] = useState(false);
@@ -117,7 +116,7 @@ export default function ExportButton(props: Props) {
             const goodm = m[m.length - 1];
             setCurriculumContent((goodm.content))
         }
-    }, [selIndex])
+    }, [props, selIndex])
 
     return <>
         <Sheet>
@@ -145,7 +144,17 @@ export default function ExportButton(props: Props) {
                         Check to see your outputted curriculum. Feel free to edit parts you would like to change.
                     </SheetDescription>
                 </SheetHeader>
-                <MessageSelector setselIndex={setselIndex} selIndex={selIndex} />
+                <MessageSelector setselIndex={setselIndex} selIndex={selIndex} ref={props.exportRef} c={props.c}/>
+
+                <Image
+                    src="/waves.svg"
+                    alt="description"
+                    width={500}
+                    height={100}
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[-10]"
+                />
+
+
             </SheetContent>
         </Sheet>
     </>

@@ -14,7 +14,7 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel"
-import React, { SVGProps, useEffect, useState } from "react"
+import React, { SVGProps, useCallback, useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { ScrollArea } from "./ui/scroll-area"
 import { Message } from "ai"
@@ -124,6 +124,10 @@ export default function MessageSelector(props: any) {
 
     const [userData, setUserData] = useState<FORM1 | null>(null);
 
+    const [pkey, setKey] = useState(0);
+
+    
+
     const [lsData, setLSData] = useState<LSUD[] | null>(null);
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -228,20 +232,29 @@ export default function MessageSelector(props: any) {
     }, [current]);
 
     const [curriculumContent, setCurriculumContent] = useState<string | null>(null);
-
-    React.useEffect(() => {
+    
+    const doCoolStuff = useCallback(() => {
         if (typeof window !== 'undefined') {
             const dat = localStorage.getItem("messageData");
             if (dat && dat.length > 0) {
                 setData(JSON.parse(dat) as MessageDat[]);
                 props.setselIndex(props.selIndex);
                 setLoading(false);
+                setCant(false);
             } else {
                 setCant(true);
                 return;
             }
         }
-    }, [props]);
+    }, [props, pkey]);
+
+    React.useEffect(() => {
+        doCoolStuff();
+    }, [props,doCoolStuff]);
+
+    const handleReRender = () => {
+        setKey(prevKey => prevKey + 1); // Change the key to force re-render
+    };
 
     function capitalizeFirstLetter(string: string = " ") {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -387,7 +400,7 @@ export default function MessageSelector(props: any) {
         setCurriculumContent(e.target.value.replace(/[^a-zA-Z0-9:]/g, ' ').replace(/\t/g, ''));
     };
 
-    
+
     const cry = (num: number, key: any) => {
         setSelectedUser(num);
         if (lsData) {
@@ -408,8 +421,9 @@ export default function MessageSelector(props: any) {
                 <div className="flex flex-col gap-2 items-center text-center">
                     <CircleSlash2 className="w-10 h-10" />
                     <span className="text-2xl">We couldn{"'"}t locate any curriculums at the moment. Please check back later.</span>
-                    <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try pressing to a different section.<span className="hidden lg:block">On desktop, resize your browser to be in the shape of a mobile screen and maximise. This is a bug and will be patched.</span></span>
+                    <span className="text-1xl"><span className="font-bold">Note:</span> Curriculums may not update immediately. Please try pressing to a different section.</span>
                 </div>
+                <Button onClick={() => handleReRender()} className="hidden">Reso</Button>
             </div>
         </>
     }
@@ -426,7 +440,7 @@ export default function MessageSelector(props: any) {
     }
 
     return <>
-        <div className="flex flex-col h-[72vh] lg:h-[70vh]  mx-auto gap-3 py-2">
+        <div  className="flex flex-col h-[72vh] lg:h-[70vh]  mx-auto gap-3 py-2" >
             <Carousel setApi={setApi} className="w-[80%] mx-auto">
                 <CarouselContent>
                     {data.map((dat, index) => (
@@ -747,7 +761,7 @@ interface BigButtonProps {
 
 function BigButton({ text, icon: Icon, callback, badge = null }: BigButtonProps) {
     return (
-        <Button className="relative w-1/3 h-max flex flex-col items-center justify-center my-auto gap-1 py-2" onClick={callback}>
+        <Button className="relative w-1/3 h-max flex flex-col items-center justify-center my-auto gap-1 py-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]" onClick={callback}>
             <Icon className="w-6 h-6" />
             <p>{text}</p>
             {
