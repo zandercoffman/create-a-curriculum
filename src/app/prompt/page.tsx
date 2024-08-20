@@ -58,7 +58,10 @@ learning objectives, ${lessons} detailed lessons in order, activity, and assessm
 to learn about ${products.length > 0 ? products.map(product => ` ${product.label}`) : product} Field Trip.  Please provide a comprehensive list of all materials needed 
 for a ${products.length > 0 ? products.map(product => ` ${product.label}`) : product} Field Trip curriculum, including the additional products mentioned. For each item, 
 give a detailed explanation of how it is specifically used within the curriculum, including which lessons 
-or activities it's used for and any particular techniques or applications involved. List materials at the end. 
+or activities it's used for and any particular techniques or applications involved. List materials at the end. Add these two lines at the beginning of curriculum:
+
+STUDENT NAME:
+STUDENT APPLICATION ID#:
             `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map((product) => `\n- ${product.label} ticket`) : "-" + product + " ticket"}`
         else if (type == CurriculumTypes.Museum)
             return `
@@ -69,7 +72,10 @@ ${products.length > 0 ? products.map(product => ` ${product.label}`) : product}.
 needed for a ${products.length > 0 ? products.map(product => ` ${product.label}`) : product}  curriculum, including the additional products 
 mentioned. For each item, give a detailed explanation of how it is specifically 
 used within the curriculum, including which lessons or activities it's used for 
-and any particular techniques or applications involved. List materials at the end. 
+and any particular techniques or applications involved. List materials at the end. Add these two lines at the beginning of curriculum:
+
+STUDENT NAME:
+STUDENT APPLICATION ID#:
 
                 
         `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map(product => `\n- ${product.label} ticket`) : "-" + product + " ticket"} `
@@ -79,7 +85,10 @@ learning objectives, ${lessons} detailed lessons in order, activity, and assessm
 to learn about ${products.length > 0 ? products.map(product => ` ${product.label}`) : product}.  Please provide a comprehensive list of all materials needed for the
 ${products.length > 0 ? products.map(product => ` ${product.label}`) : product} curriculum, including the additional products mentioned. For each item, give a 
 detailed explanation of how it is specifically used within the curriculum, including which lessons 
-or activities it's used for and any particular techniques or applications involved. List materials at the end.`.replaceAll("\n", "");
+or activities it's used for and any particular techniques or applications involved. List materials at the end. Add these two lines at the beginning of curriculum:
+
+STUDENT NAME:
+STUDENT APPLICATION ID#:`.replaceAll("\n", "");
     }, [product, products, type, lessons]);
 
 
