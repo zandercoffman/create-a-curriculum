@@ -172,7 +172,7 @@ STUDENT APPLICATION ID#:`.replaceAll("\n", "");
                                             <TableCaption>List of your materials</TableCaption>
                                             <TableHeader>
                                                 <TableRow>
-                                                    <TableHead className="w-[100px]">ID</TableHead>
+                                                  
                                                     <TableHead>Label</TableHead>
                                                     <TableHead>Delete</TableHead>
                                                 </TableRow>
@@ -180,7 +180,7 @@ STUDENT APPLICATION ID#:`.replaceAll("\n", "");
                                             <TableBody >
                                                 {products.map((product) => (
                                                     <TableRow key={product.id}>
-                                                        <TableCell className="font-medium">{product.id}</TableCell>
+                                                      
                                                         <TableCell>
                                                             <Input
                                                                 type="text"
