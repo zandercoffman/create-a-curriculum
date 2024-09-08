@@ -168,6 +168,7 @@ export default function RebuttalPage() {
                             <div className="grid w-full items-center gap-1.5">
                                 <Label htmlFor="desc">Description</Label>
                                 <Textarea id="desc" className="w-full  h-[100px]" placeholder="Enter Other Details Here" value={desc} onChange={(e) => setDesc(e.target.value)} />
+                                <p className="text-sm">Enter a description of your situation, rejection emails, etc.</p>
                             </div>
                             <div className="grid w-full items-center gap-1.5">
                                 <Label htmlFor="a">Type of Establishment</Label>
