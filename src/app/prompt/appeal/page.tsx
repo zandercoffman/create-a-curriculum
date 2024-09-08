@@ -54,9 +54,8 @@ export default function RebuttalPage() {
     };
 
     const makePrompt = useCallback(() => {
-        return `Write a ${tiempodesarcasm ? "sarcastic" : "formal"} letter appealing the initial rejection of the product(s) ${
-            (productf != "" || curf != "") ? `"${productf}" from the original collection of ${curf}.` : products.length > 0 ? products.map(product => `"${product.label}"`).join(', ') : `"${product}"`
-        } Argue why it should be considered an allowable expense under ${type}. Write it as a ${tiempodesarcasm ? "sarcastic" : "formal"} letter, ensuring the tone is ${tiempodesarcasm ? "VERY sarcastic and detailed to make it as funny as possible" : "professional and respectful"}. ${desc.length > 0 ? `\n\nAdditional context: ${desc}` : ""}${isReq ? `Also, ${productf} is required for the curriculum to begin. Please keep that in mind.` : ""}`.trim().replaceAll("\n", "")
+        return `Write a ${tiempodesarcasm ? "sarcastic" : "formal"} letter appealing the initial rejection of the product(s) ${(productf != "" || curf != "") ? `"${productf}" from the original collection of ${curf}.` : products.length > 0 ? products.map(product => `"${product.label}"`).join(', ') : `"${product}"`
+            } Argue why it should be considered an allowable expense under ${type}. Write it as a ${tiempodesarcasm ? "sarcastic" : "formal"} letter, ensuring the tone is ${tiempodesarcasm ? "VERY sarcastic and detailed to make it as funny as possible" : "professional and respectful"}. ${desc.length > 0 ? `\n\nAdditional context: ${desc}` : ""}${isReq ? `Also, ${productf} is required for the curriculum to begin. Please keep that in mind.` : ""}`.trim().replaceAll("\n", "")
     }, [curf, desc, isReq, product, productf, products, tiempodesarcasm, type])
 
     useEffect(() => {
@@ -80,7 +79,7 @@ export default function RebuttalPage() {
         <div className="w-screen h-max lg:h-[100vh] grid place-items-center p-14 overflow-hidden">
             <div className="flex flex-col lg:flex-row size-full gap-10">
                 <div className="flex flex-col gap-2 w-full lg:w-1/2">
-                    <ScrollArea className="w-full max-h-[90vh] pr-4 pb-10">
+                    <ScrollArea className="w-full h-max lg:max-h-[90vh] pr-4 pb-10">
                         <div className="flex flex-col gap-1 mb-5">
                             <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                                 Appeal Prompt Generator
@@ -141,18 +140,18 @@ export default function RebuttalPage() {
                                         <div className="flex flex-col lg:flex-row items-center gap-4">
                                             <div className="space-y-2">
                                                 <Label htmlFor="current">Product</Label>
-                                                <Input id="current" className="w-full" value={productf} onChange={(e) => setProductf(e.target.value)}/>
+                                                <Input id="current" className="w-full" value={productf} onChange={(e) => setProductf(e.target.value)} />
                                             </div>
                                             <span className="text-center mx-auto self-end mb-2">from</span>
                                             <div className="space-y-2">
                                                 <Label htmlFor="total">Curriculum</Label>
-                                                <Input id="total" className="w-full" value={curf} onChange={(e) => setCurf(e.target.value)}/>
+                                                <Input id="total" className="w-full" value={curf} onChange={(e) => setCurf(e.target.value)} />
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-2">
                                             <Checkbox id="required"
-                                            checked={isReq}
-                                            onCheckedChange={(e: boolean) => setReq(e)} />
+                                                checked={isReq}
+                                                onCheckedChange={(e: boolean) => setReq(e)} />
                                             <label
                                                 htmlFor="required"
                                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -194,7 +193,7 @@ export default function RebuttalPage() {
                                 checked={tiempodesarcasm}
                                 onCheckedChange={handleCheckboxChange} />
                         </div>
-                        <div className="flex flex-col mt-10">
+                        <div className=" flex-col mt-10 hidden lg:flex">
                             <p className="leading-7 text-base [&:not(:first-child)]:mt-6">
                                 <span className="font-bold">Note:</span> This product is not affiliated nor endorsed by the companies mentioned.
                             </p>
@@ -230,6 +229,12 @@ export default function RebuttalPage() {
                             })
                         }}
                     >Copy</Button>
+                    <div className="flex lg:hidden flex-col mt-10">
+                        <p className="leading-7 text-center lg:text-left text-base [&:not(:first-child)]:mt-6">
+                            <span className="font-bold">Note:</span> This product is not affiliated nor endorsed by the companies mentioned.
+                        </p>
+                        <p className="text-center lg:text-left">Made by <Link href={"https://create-a-curriculum.vercel.app/"} className="text-blue-500 font-semibold">create-a-curriculum.vercel.app</Link>. <Link href={"https://forms.gle/eCGixYxjtVYJ4QK99"} className="text-blue-500 font-semibold">Reccomendation Form</Link></p>
+                    </div>
                 </div>
             </div>
         </div>
