@@ -77,7 +77,7 @@ export default function RebuttalPage() {
     };
 
     return <>
-        <div className="w-[95vw] lg:w-screen h-[200vh] lg:h-[100vh] grid place-items-center p-14 overflow-hidden">
+        <div className="w-screen h-[200vh] lg:h-[100vh] grid place-items-center p-14 overflow-hidden">
             <div className="flex flex-col lg:flex-row size-full gap-10">
                 <div className="flex flex-col gap-2 w-full lg:w-1/2">
                     <ScrollArea className="w-full max-h-[90vh] pr-4 pb-10">
