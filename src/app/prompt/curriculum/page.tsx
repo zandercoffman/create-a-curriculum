@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 
 enum CurriculumTypes {
     Default,
@@ -45,6 +46,11 @@ export default function PromptPage() {
     const [products, setProducts] = useState<{ id: number; label: string }[]>([]);
     const [lessons, setLessons] = useState(5);
     const [type, setType] = useState<CurriculumTypes>(CurriculumTypes.Default);
+    const [tiempodesarcasm, setSarcasim] = useState(false);
+
+    const handleCheckboxChange = (event: boolean) => {
+        setSarcasim(event);
+    };
 
     const { toast } = useToast();
 
@@ -62,7 +68,7 @@ or activities it's used for and any particular techniques or applications involv
 
 STUDENT NAME:
 STUDENT APPLICATION ID#:
-            `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map((product) => `\n- ${product.label} ticket`) : "-" + product + " ticket"}`
+            ${tiempodesarcasm ? "NOTE: Do not make the curriculum serious, make the curriculum as sarcastic as you can be and make it detailed so the curriculum is even more funny." : ""}`.replaceAll("\n", "") + `\n${products.length > 0 ? products.map((product) => `\n- ${product.label} ticket`) : "-" + product + " ticket"}`
         else if (type == CurriculumTypes.Museum)
             return `
 Write a curriculum that has the word "educational" somewhere 
@@ -76,7 +82,7 @@ and any particular techniques or applications involved. List materials at the en
 
 STUDENT NAME:
 STUDENT APPLICATION ID#:
-
+${tiempodesarcasm ? "NOTE: Do not make the curriculum serious, make the curriculum as sarcastic as you can be and make it detailed so the curriculum is even more funny." : ""}
                 
         `.replaceAll("\n", "") + `\n${products.length > 0 ? products.map(product => `\n- ${product.label} ticket`) : "-" + product + " ticket"} `
         return `
@@ -88,8 +94,9 @@ detailed explanation of how it is specifically used within the curriculum, inclu
 or activities it's used for and any particular techniques or applications involved. List materials at the end. Add these two lines at the beginning of curriculum:
 
 STUDENT NAME:
-STUDENT APPLICATION ID#:`.replaceAll("\n", "");
-    }, [product, products, type, lessons]);
+STUDENT APPLICATION ID#:
+${tiempodesarcasm ? "NOTE: Do not make the curriculum serious, make the curriculum as sarcastic as you can be and make it detailed so the curriculum is even more funny." : ""}`.replaceAll("\n", "");
+    }, [product, products, type, lessons, tiempodesarcasm]);
 
 
     const [prompt, setPrompt] = useState("");
@@ -172,7 +179,7 @@ STUDENT APPLICATION ID#:`.replaceAll("\n", "");
                                             <TableCaption>List of your materials</TableCaption>
                                             <TableHeader>
                                                 <TableRow>
-                                                  
+
                                                     <TableHead>Label</TableHead>
                                                     <TableHead>Delete</TableHead>
                                                 </TableRow>
@@ -180,7 +187,7 @@ STUDENT APPLICATION ID#:`.replaceAll("\n", "");
                                             <TableBody >
                                                 {products.map((product) => (
                                                     <TableRow key={product.id}>
-                                                      
+
                                                         <TableCell>
                                                             <Input
                                                                 type="text"
@@ -204,6 +211,12 @@ STUDENT APPLICATION ID#:`.replaceAll("\n", "");
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion>
+                        </div>
+                        <div className="flex flex-row w-full items-center gap-2 mt-6">
+                            <Label htmlFor="desc">Sarcasm Mode (Guaranteed to Shiver your Timbers 😂)</Label>
+                            <Checkbox
+                                checked={tiempodesarcasm}
+                                onCheckedChange={handleCheckboxChange} />
                         </div>
                     </ScrollArea>
 
@@ -237,6 +250,7 @@ STUDENT APPLICATION ID#:`.replaceAll("\n", "");
                         >Copy</Button>
                     </div>
                 </div>
+
                 <p className="text-center lg:text-left">Made by <Link href={"https://create-a-curriculum.vercel.app/"} className="text-blue-500 font-semibold">create-a-curriculum.vercel.app</Link>. <Link href={"https://forms.gle/eCGixYxjtVYJ4QK99"} className="text-blue-500 font-semibold">Reccomendation Form</Link></p>
             </div>
         </main>
