@@ -34,8 +34,8 @@ export default function AppsPopup(
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="!bg-transparent p-0  relative mr-5">
-          <Grid2X2 className="hover:animate-pulse text-gray-600" />
+        <Button className="!bg-transparent p-0 relative">
+          <Grid2X2 className="text-gray-600 dark:text-white" />
         </Button>
 
       </PopoverTrigger>
