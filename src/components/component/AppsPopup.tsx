@@ -36,7 +36,6 @@ export default function AppsPopup(
       <PopoverTrigger asChild>
         <Button className="!bg-transparent p-0  relative mr-5">
           <Grid2X2 className="hover:animate-pulse text-gray-600" />
-          <Badge className="absolute left-[12px] top-[-9px] " variant={"destructive"}>New</Badge>
         </Button>
 
       </PopoverTrigger>
