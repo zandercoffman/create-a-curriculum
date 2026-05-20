@@ -50,11 +50,7 @@ import { LinkPreview } from "./link-preview"
 import { ScrollArea } from "./ui/scroll-area"
 
 const FormSchema = z.object({
-  chat: z
-    .string({
-      required_error: "Please select a chat to display.",
-    })
-    .email(),
+  chat: z.string().min(1, "Please select a chat to display."),
 })
 
 interface FORMStorage {

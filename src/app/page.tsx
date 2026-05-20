@@ -46,16 +46,11 @@ import {
 import { cn } from "@/lib/utils"
 import ChatHistory from "@/components/ChatHistory";
 import { useChat, Message } from 'ai/react'
-import { generateId, ToolInvocation } from 'ai';
+import { generateId } from 'ai';
 import AppsPopup from "@/components/component/AppsPopup";
 
 const formSchemaLink = z.object({
-  link: z.string().refine(
-    (value) => value.length > 1,
-    {
-      message: "Please enter a product.",
-    }
-  ).default(""),
+  link: z.string().min(2, "Please enter a product."),
 })
 
 interface FORMStorage {

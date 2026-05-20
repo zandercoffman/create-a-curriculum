@@ -11,7 +11,7 @@ import useMediaQuery from "@/hooks/useMediaQuery";
 import { ScrollArea } from "./ui/scroll-area";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Carousel,
@@ -33,7 +33,7 @@ import Link from "next/link";
 interface CarouselItem {
     id: string;
     title: string;
-    html: JSX.Element;
+    html: ReactElement;
 }
 
 // Define items with JSX content

@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google"
 import "./globals.css";
 
-import { cn } from "@/lib/utils"
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@vercel/analytics/react"
- 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
 
 export const metadata: Metadata = {
   title: "Create-A-Curriculum",
@@ -24,12 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
+      <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider  attribute="class" defaultTheme="system">
           {children}
           <Toaster />

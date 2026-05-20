@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
         const pdfBytes = await pdfDoc.save();
 
         // Create a new Response with PDF data
-        const response = new NextResponse(pdfBytes, {
+        const response = new NextResponse(Buffer.from(pdfBytes), {
             headers: {
                 'Content-Type': 'application/pdf',
                 'Content-Disposition': 'attachment; filename="curriculum.pdf"',

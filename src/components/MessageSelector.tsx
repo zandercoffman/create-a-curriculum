@@ -14,7 +14,7 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel"
-import React, { SVGProps, useCallback, useEffect, useState } from "react"
+import React, { SVGProps, useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { ScrollArea } from "./ui/scroll-area"
 import { Message } from "ai"
@@ -217,6 +217,8 @@ export default function MessageSelector(props: any) {
         });
     }, [api]);
 
+    const [curriculumContent, setCurriculumContent] = useState<string | null>(null);
+
     React.useEffect(() => {
         try {
             const m = localStorage.getItem("messageData");
@@ -231,9 +233,7 @@ export default function MessageSelector(props: any) {
         }
     }, [current]);
 
-    const [curriculumContent, setCurriculumContent] = useState<string | null>(null);
-    
-    const doCoolStuff = useCallback(() => {
+    React.useEffect(() => {
         if (typeof window !== 'undefined') {
             const dat = localStorage.getItem("messageData");
             if (dat && dat.length > 0) {
@@ -243,14 +243,9 @@ export default function MessageSelector(props: any) {
                 setCant(false);
             } else {
                 setCant(true);
-                return;
             }
         }
     }, [props, pkey]);
-
-    React.useEffect(() => {
-        doCoolStuff();
-    }, [props,doCoolStuff]);
 
     const handleReRender = () => {
         setKey(prevKey => prevKey + 1); // Change the key to force re-render
@@ -270,7 +265,7 @@ export default function MessageSelector(props: any) {
             id: userData?.id || "",
             grade: userData?.grade || "",
             saveInfo: false
-        } || null; // Ensure props.userData matches FORM1 type or set to null
+        };
         const c = await remark().use(strip).process(curriculumContent as string);
         const form2Data = curriculumContent;
 
@@ -329,7 +324,7 @@ export default function MessageSelector(props: any) {
             id: userData?.id || "",
             grade: userData?.grade || "",
             saveInfo: false
-        } || null;
+        };
         const form2Data = curriculumContent;
 
         try {
@@ -376,7 +371,7 @@ export default function MessageSelector(props: any) {
             id: userData?.id || "",
             grade: userData?.grade || "",
             saveInfo: false
-        } || null;
+        };
         const form2Data = curriculumContent;
 
         try {
