@@ -260,7 +260,7 @@ export default function MessageSelector(props: any) {
         setLoading(true);
 
         // Define form1Data and form2Data
-        const form1Data: FORM1 | null = {
+        const form1Data: FORM1 = {
             username: userData?.username || "",
             id: userData?.id || "",
             grade: userData?.grade || "",
@@ -319,7 +319,7 @@ export default function MessageSelector(props: any) {
         console.log("Export to DOCX clicked");
         setLoading(true);
 
-        const form1Data: FORM1 | null = {
+        const form1Data: FORM1 = {
             username: userData?.username || "",
             id: userData?.id || "",
             grade: userData?.grade || "",
@@ -366,7 +366,7 @@ export default function MessageSelector(props: any) {
         console.log("Copy clicked");
         setLoading(true);
 
-        const form1Data: FORM1 | null = {
+        const form1Data: FORM1 = {
             username: userData?.username || "",
             id: userData?.id || "",
             grade: userData?.grade || "",

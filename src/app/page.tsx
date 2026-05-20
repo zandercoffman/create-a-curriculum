@@ -50,7 +50,7 @@ import { generateId } from 'ai';
 import AppsPopup from "@/components/component/AppsPopup";
 
 const formSchemaLink = z.object({
-  link: z.string().min(2, "Please enter a product."),
+  link: z.string().min(2, "Please enter a product (minimum 2 characters)."),
 })
 
 interface FORMStorage {
